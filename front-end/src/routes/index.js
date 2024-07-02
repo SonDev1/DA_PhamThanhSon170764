@@ -1,4 +1,5 @@
 import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
+import { SocialRedirect } from "../pages/Auth/SocialMediaRedirect";
 import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import Product from "../pages/Product";
@@ -22,6 +23,12 @@ export const routes = [
         path:'/products',
         exact: true,
         page : Product,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/auth/social/redirect',
+        page : SocialRedirect,
         isShowHeader : true,
         isShowFooter : true,
     },
