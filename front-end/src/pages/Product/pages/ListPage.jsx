@@ -12,8 +12,12 @@ function ListPage(props) {
           <ProductFilter/>
         </div>
         <div className='wrapper__product__productList'>
-          <FilterViewer/>
-          <ProductList/>
+          <div className='wrapper__product__productList__filterViewer '>
+            <FilterViewer/>
+          </div>
+          <div className='wrapper__product__productList__products '>
+            <ProductList/>
+          </div>
         </div>
       </div>
   )
