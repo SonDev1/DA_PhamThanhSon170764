@@ -6,7 +6,6 @@ import DefaultComponent from './components/DefaultComponent'
 export default function App() {
 
   return (
-    <div>
       <Router>
         <Routes>
           {routes.map((route) => {
@@ -28,6 +27,5 @@ export default function App() {
           })}
         </Routes>
       </Router>
-    </div>
   )
 }

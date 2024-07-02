@@ -1,6 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import '../HomePage/style.scss';
+// import ImageProduct from '../assets/images/NewImageProduct.png'
+import newImageProduct from '../../assets/images/NewImageProduct.png';
+
 
 
 function HomePage(props) {
@@ -11,15 +14,17 @@ function HomePage(props) {
     >
       <section className="wrapper__home">
           <div className='wrapper__home__content'>
-            <h1>Car Dealing Experian </h1>
+            <h1>New Detroit
+            Arrival </h1>
             <h3>Redefined !</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, ut ipsa? Impedit suscipit voluptates in delectus debitis sapiente labore unde assumenda, quae vel a modi ratione accusamus dignissimos ab rem!</p>
-            <a href="details" className="wrapper__home__content__button"> Explore car</a>
+            <a href="products" className="wrapper__home__content__button">SHOP NOW</a>
           </div>
 
           <div className='wrapper__home__image'>
             <div className='wrapper__home__image__rhombus'>
-              <img src="https://via.placeholder.com/1920x1080" alt="Car Dealing Experian" />
+              <img src={newImageProduct} alt="Detroit Watch Model 2"/>
+              {/* <img src="https://via.placeholder.com/1920x1080" alt="Car Dealing Experian" /> */}
             </div>
           </div>
 
