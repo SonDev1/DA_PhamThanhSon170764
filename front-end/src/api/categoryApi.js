@@ -1,15 +1,25 @@
 import axiosClient from "./axiosClient"
 
 const categoryApi = {
+    // async getAll(){
+    //     const category = await axiosClient.get('/api/categories');
+    //     return category;
+    // },
     getAll(params){
-        const url = '/categories';
+        const url = '/api/categories';
         return axiosClient.get(url,{
             params: params
         })
     },
 
+    getTypesByGender: async (typeGender) => {
+        console.log(`/api/categories/${typeGender}`);
+        const response = await axiosClient.get(`/api/categories/${typeGender}`);
+        return response;
+      },
+
     get(id){
-        const url = `/categories/${id}`;
+        const url = `/api/categories/${id}`;
         return axiosClient.get(url)
     },
 

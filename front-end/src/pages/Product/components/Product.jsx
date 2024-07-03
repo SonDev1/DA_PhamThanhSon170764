@@ -8,7 +8,7 @@ function Product({ product }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/products/${product.id}`);
+        navigate(`/products/${product._id}`);
     };
 
     return (
@@ -16,28 +16,33 @@ function Product({ product }) {
             padding={1}
             onClick={handleClick}
             style={{
-                height: '498px',
-                width: '325px',
-                background: "transparent",
-                display:'flex',
-                flexDirection:'row'
+                minHeight: '442px',
+                minWidth: '260px',
+                background: 'transparent',
+                display: 'flex',
+                flexDirection: 'row',
+                borderRadius: 'none',
             }}
-            sx={{ cursor: 'pointer' }}
         >
-            <Card sx={{ maxWidth: 325, height: 498, display: 'flex', flexDirection: 'column' }}
-                    style={{
-                        background: "transparent",
-                        borderRadius:'none'
-                    }}>
+            <Card
+                style={{
+                    background: 'transparent',
+                    maxWidth: 260, 
+                    height: 442, 
+                    display: 'flex', 
+                    flexDirection: 'column'
+                }}
+            >
                 <CardMedia
                     component='img'
-                    // alt={product.name}
+                    alt={product.name}
                     image={
                         'https://curnonwatch.com/wp-content/uploads/2024/06/NGO06970-1-e1717429748128.jpg'
                     }
-                    sx={{
-                        height: 'fit-content',
-                        // paddingTop: '100%', // 1:1 aspect ratio
+                    style={{
+                        maxWidth: 260, 
+                        height: 346,
+                        // height: 'fit-content',
                         objectFit: 'cover',
                     }}
                 />
@@ -45,34 +50,44 @@ function Product({ product }) {
                     <Typography
                         variant='h6'
                         component='div'
-                        sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                        style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' ,fontWeight: 'bold',
+                            color: '#333',}}
                     >
-                        Dong ho nam
+                        {product.name}
                     </Typography>
                     <Box
-                        sx={{
+                        style={{
                             display: 'flex',
+                            flexDirection: 'row',
                             alignItems: 'center',
-                            justifyContent: 'space-between',
-                            my: 1,
-                            background: "transparent"
-
+                            background: 'transparent',
+                            padding: '10px 0 0 0',
                         }}
                     >
-                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' ,background: "transparent"}}>
+                        <Box>
                             <Typography
                                 variant='h6'
                                 component='div'
-                                sx={{ marginRight: '8px' }}
+                                style={{
+                                    marginRight: '12px',
+                                    fontWeight: 'bold',
+                                    color: '#333',
+                                }}
                             >
-                                {formatPrice(100000)}
+                                {formatPrice(product.salePrice)}
                             </Typography>
+                        </Box>
+                        <Box>
                             <Typography
-                                variant='h7'
+                                variant='body2'
                                 component='div'
-                                sx={{ color: '#808089', textDecoration: 'line-through' }}
+                                style={{
+                                    color: '#808089',
+                                    textDecoration: 'line-through',
+                                    fontSize: '0.875rem',
+                                }}
                             >
-                                {formatPrice(100000)}
+                                {formatPrice(product.originalPrice)}
                             </Typography>
                         </Box>
                     </Box>
@@ -82,6 +97,13 @@ function Product({ product }) {
     );
 }
 
-Product.propTypes = {};
+Product.propTypes = {
+    product: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        salePrice: PropTypes.number.isRequired,
+        originalPrice: PropTypes.number.isRequired,
+    }).isRequired,
+};
 
 export default Product;

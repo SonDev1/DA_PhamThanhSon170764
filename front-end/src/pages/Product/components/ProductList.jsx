@@ -17,27 +17,15 @@ function ProductList({data}) {
         background: "transparent"
     }}>
         <Grid container
-            // spacing={2}
             style={{
               background: "transparent"
           }}
         >
-            {/* {data.map((product) => (
+            {data.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                     <Product  product={product}/>
                 </Grid>
-            ))} */}
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
+            ))}
         </Grid>
     </Box>
   )
