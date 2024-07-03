@@ -20,4 +20,9 @@ export class ProductController {
   getProductBycategoryId(@Param('typeId') typeId: string) {
     return this.productService.getProductByTypeId(typeId);
   }
+
+  // @Get('/filter')
+  // getProductsByFilter(@Query() filter) {
+  //   return this.productService.getProductsByFilter(filter);
+  // }
 }

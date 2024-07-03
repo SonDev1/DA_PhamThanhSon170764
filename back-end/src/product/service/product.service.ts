@@ -18,7 +18,27 @@ export class ProductService {
     return await this.productRepository.getProductByTypeId(typeId);
   }
 
+  async getProductsByGender(categoryId: string) {
+    return await this.productRepository.getProductsByCategoryId(categoryId);
+  }
+
+  // async getProductsByFilter(filter: any) {
+  //   const products = await this.productRepository.getProductByCategory(
+  //     filter.categoryId,
+  //   );
+  //   const filteredProducts = products.filter((product) => {
+  //     return (
+  //       product.gender === filter.gender &&
+  //       product.dialColor === filter.dialColor &&
+  //       product.dialSize === filter.dialSize &&
+  //       product.strapMaterial === filter.strapMaterial
+  //     );
+  //   });
+  // }
+
   async createProduct(createProductDto: CreateProductDto) {
+    console.log('createProductDto :', createProductDto);
+
     try {
       const Newproduct = await this.productRepository.create(createProductDto);
       return {
