@@ -11,12 +11,12 @@
     left: 0;
     width: 100%;
     padding: 30px 8%;
-    background: transparent;
+    background: #eaeaea;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    z-index: 100;
+    z-index: 1000;
     border-bottom: 1px solid #000;
 
     &__logo {

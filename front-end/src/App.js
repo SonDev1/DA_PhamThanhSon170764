@@ -13,7 +13,7 @@ export default function App() {
             const Layout = route.isShowHeader ? DefaultComponent : Fragment 
             return (
               <Route
-              key={route.path}
+                key={route.path}
                 path={route.path}
                 element={
                   <>

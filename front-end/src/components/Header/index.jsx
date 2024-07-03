@@ -42,7 +42,8 @@ function Header(props) {
           ></box-icon>
         </a>
         <a style={{ "--i": 3 }} href="https://www.instagram.com/curnonwatchcom/">
-          <box-icon type="logo" name="instagram-alt" color="#000"></box-icon>
+          {/* <box-icon type="logo" name="instagram-alt" color="#000"></box-icon> */}
+          <box-icon name='search-alt-2'></box-icon>
         </a>
       </div>
     </div>
