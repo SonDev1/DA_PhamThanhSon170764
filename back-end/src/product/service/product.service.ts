@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ProductRepository } from '../repository/product.repository';
 import { CreateProductDto } from '../dto/createProduct.dto';
-
+import { Types } from 'mongoose';
 @Injectable()
 export class ProductService {
   constructor(private productRepository: ProductRepository) {}
@@ -37,10 +37,10 @@ export class ProductService {
   // }
 
   async createProduct(createProductDto: CreateProductDto) {
-    console.log('createProductDto :', createProductDto);
-
+    const typeIdObject = new Types.ObjectId(createProductDto.typeId);
+    const data = { ...createProductDto, typeId: typeIdObject };
     try {
-      const Newproduct = await this.productRepository.create(createProductDto);
+      const Newproduct = await this.productRepository.create(data);
       return {
         message: 'Create product success',
       };

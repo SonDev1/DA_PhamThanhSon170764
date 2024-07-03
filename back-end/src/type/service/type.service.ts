@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TypeRepository } from '../repository/type.repository';
 import { CreateTypeDto } from '../dto/CreateType.dto';
-
+import { Types } from 'mongoose';
 @Injectable()
 export class TypeService {
   constructor(private typeRepository: TypeRepository) {}
@@ -16,7 +16,9 @@ export class TypeService {
 
   async createType(createTypeDto: CreateTypeDto) {
     try {
-      const Newtype = await this.typeRepository.create(createTypeDto);
+      const categoryIdObject = new Types.ObjectId(createTypeDto.categoryId);
+      const data = { ...createTypeDto, categoryId: categoryIdObject };
+      const Newtype = await this.typeRepository.create(data);
       return {
         message: 'Create type success',
       };

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import mongoose from 'mongoose';
 
 @Schema()
 export class Product extends Document {
@@ -42,7 +43,7 @@ export class Product extends Document {
   @Prop()
   strapMaterial: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'type' }) // Thêm ref để chỉ ra collection liên quan
+  @Prop({ type: Types.ObjectId })
   typeId: Types.ObjectId;
 }
 

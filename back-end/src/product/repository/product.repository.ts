@@ -41,8 +41,8 @@ export class ProductRepository {
     ]);
   }
 
-  async create(createProductDto: CreateProductDto) {
-    const createdProduct = new this.productModel(createProductDto);
+  async create(data: any) {
+    const createdProduct = new this.productModel(data);
     return createdProduct.save();
   }
 }

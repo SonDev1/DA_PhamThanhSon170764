@@ -19,7 +19,7 @@ export class TypeRepository {
     return await this.typeModel.find({ categoryId: categoryId });
   }
 
-  async create(createTypeDto: CreateTypeDto) {
-    return this.typeModel.create(createTypeDto);
+  async create(data: any) {
+    return this.typeModel.create(data);
   }
 }
