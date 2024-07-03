@@ -17,21 +17,11 @@ export class CategoryRepository {
         $match: { gender: gender },
       },
       {
-        $addFields: {
-          categoryIdString: { $toString: '$_id' },
-        },
-      },
-      {
         $lookup: {
           from: 'types',
-          localField: 'categoryIdString',
-          foreignField: 'categoyrId',
+          localField: '_id',
+          foreignField: 'categoryId',
           as: 'type',
-        },
-      },
-      {
-        $project: {
-          categoryIdString: 0, // Optionally remove the temporary field
         },
       },
     ]);
