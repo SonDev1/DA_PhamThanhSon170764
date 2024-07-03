@@ -15,6 +15,9 @@ export class ProductRepository {
   async getAll() {
     return await this.productModel.find();
   }
+  async findById(id: string) {
+    return await this.productModel.findById(id);
+  }
 
   async findAllAndSort(sortOrder: string) {
     console.log('sortOrder in repo: ' + sortOrder);
@@ -39,6 +42,15 @@ export class ProductRepository {
         },
       },
     ]);
+  }
+
+  async updateImagesOfProduct(productId: string, urlFiles: string[]) {
+    return await this.productModel.findOneAndUpdate(
+      { _id: productId },
+      {
+        images: urlFiles,
+      },
+    );
   }
 
   async create(data: any) {

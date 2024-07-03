@@ -22,6 +22,27 @@ export class ProductService {
     return await this.productRepository.getProductsByCategoryId(categoryId);
   }
 
+  async updateImagesOfProduct(productId: string, urlFiles: string[]) {
+    try {
+      const product = await this.productRepository.findById(productId);
+      console.log(product);
+      if (!product) {
+        throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.productRepository.updateImagesOfProduct(productId, urlFiles);
+      return {
+        message: 'Update images success',
+      };
+    } catch (err) {
+      console.log('error', err);
+      throw new HttpException(
+        'Update images error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   // async getProductsByFilter(filter: any) {
   //   const products = await this.productRepository.getProductByCategory(
   //     filter.categoryId,
