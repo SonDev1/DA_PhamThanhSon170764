@@ -18,6 +18,6 @@ export class TypeController {
 
   @Get(':categoryId')
   getTypeBycategoryId(@Param('categoryId') categoryId: string) {
-    return this.typeService.getTypeByCategoryId(categoryId);
+    return this.typeService.getTypesByCategoryId(categoryId);
   }
 }
