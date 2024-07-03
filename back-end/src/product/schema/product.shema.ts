@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema()
-export class Product {
+export class Product extends Document {
   @Prop()
   name: string;
 
@@ -41,8 +42,8 @@ export class Product {
   @Prop()
   strapMaterial: string;
 
-  @Prop()
-  typeId: string;
+  @Prop({ type: Types.ObjectId, ref: 'type' }) // Thêm ref để chỉ ra collection liên quan
+  typeId: Types.ObjectId;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

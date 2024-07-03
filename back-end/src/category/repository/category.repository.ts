@@ -29,11 +29,11 @@ export class CategoryRepository {
           as: 'type',
         },
       },
-      //   {
-      //     $project: {
-      //       categoryIdString: 0, // Optionally remove the temporary field
-      //     },
-      //   },
+      {
+        $project: {
+          categoryIdString: 0, // Optionally remove the temporary field
+        },
+      },
     ]);
   }
 

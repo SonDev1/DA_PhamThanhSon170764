@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateProductDto } from '../dto/createProduct.dto';
 import { Product } from '../schema/product.shema';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ProductRepository {
@@ -27,7 +28,21 @@ export class ProductRepository {
     return await this.productModel.find({ typeId: typeId });
   }
 
+  async getProductsByCategoryId(categoryId: string) {
+    return await this.productModel.aggregate([
+      {
+        $lookup: {
+          from: 'types',
+          localField: 'categoryIdString',
+          foreignField: 'categoyrId',
+          as: 'type',
+        },
+      },
+    ]);
+  }
+
   async create(createProductDto: CreateProductDto) {
-    return this.productModel.create(createProductDto);
+    const createdProduct = new this.productModel(createProductDto);
+    return createdProduct.save();
   }
 }
