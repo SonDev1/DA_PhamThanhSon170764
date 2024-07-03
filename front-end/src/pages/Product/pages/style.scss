@@ -1,6 +1,6 @@
 .wrapper__product {
     width: 100%;
-    height: 100vh;
+    // height: 100vh;
     display: flex;
     flex-direction: row;
     margin-top: 103px; 
@@ -8,16 +8,19 @@
     &__filter{
         width: 20%; 
         padding: 20px; 
-        // border-right: 1px solid #000;
         opacity: 0;
         animation: slideRight .5s ease forwards;
-        animation-delay: calc
+        animation-delay: calc;
+        border-bottom: 1px solid #000;
     }
 
     &__productList{
         width: 80%; 
         padding: 20px; 
         border-left: 1px solid #000;
+        border-bottom: 1px solid #000;
+        // animation: slideTop .5s ease forwards;
+        // animation-delay: calc(0.2s * var(--i));
 
         &__filterViewer{
             opacity: 0;
