@@ -11,17 +11,17 @@ export class ProductController {
     return this.productService.createProduct(createProductDto);
   }
 
-  @Get('')
-  getProductSortByOriginPrice(@Query('sortOrder') sortOrder: string) {
-    return this.productService.getProductSortByOriginPrice(sortOrder);
-  }
-
   @Get('type/:typeId')
   getProductByTypeId(@Param('typeId') typeId: string) {
     return this.productService.getProductByTypeId(typeId);
   }
 
-  @Get('/filter')
+  @Get(':productId')
+  getProductById(@Param('productId') productId: string) {
+    return this.productService.getProductById(productId);
+  }
+
+  @Get('')
   getProductsByFilter(@Query() filter) {
     return this.productService.getProductsByFilter(filter);
   }

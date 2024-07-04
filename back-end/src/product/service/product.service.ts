@@ -11,12 +11,12 @@ export class ProductService {
     private typeService: TypeService,
   ) {}
 
-  async getProductSortByOriginPrice(sortOrder: string) {
-    if (sortOrder) {
-      console.log('sortOrder in service: ' + sortOrder);
-      return await this.productRepository.findAllAndSort(sortOrder);
+  async getProductById(productId: string) {
+    const product = await this.productRepository.findById(productId);
+    if (!product) {
+      throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
     }
-    return await this.productRepository.getAll();
+    return product;
   }
 
   async getProductByTypeId(typeId: string) {
@@ -53,8 +53,11 @@ export class ProductService {
     const types = await this.typeService.getTypesByCategoryId(
       filter.categoryId,
     );
+
     const typeIds = types.map((type) => type._id);
+
     const products = await this.productRepository.getProductByTypeIds(typeIds);
+    const totalProducts = products.length;
 
     const filteredProducts = products.filter((product) => {
       return (
@@ -77,7 +80,7 @@ export class ProductService {
 
     return {
       rows: result,
-      totalPage,
+      totalProducts,
       page: filter._page,
     };
   }
