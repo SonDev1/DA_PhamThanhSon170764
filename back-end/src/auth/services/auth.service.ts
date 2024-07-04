@@ -7,6 +7,7 @@ import { RegisterUserDto } from '../dto/register-user.dto';
 import { LoginUserDto } from '../dto/login.dto';
 import { AuthRepository } from '../repository/auth.repository';
 import { Response } from 'express';
+import { User } from '../schemas/user.schema';
 require('dotenv').config();
 
 @Injectable()
@@ -21,27 +22,20 @@ export class AuthService {
     const username = profile_google.id;
     const avaUrl = profile_google.photos[0].value;
 
-    let payload = {
-      username: username,
-      displayName: displayName,
-      avaUrl: avaUrl,
-      facebookId: '',
-      contactPhone: '',
-    };
-
-    const user = await this.authRepository.findUserByGoogleType(username);
+    let user = await this.authRepository.findUserByGoogleType(username);
     if (!user) {
-      await this.authRepository.createUserByGoogleType(
+      user = await this.authRepository.createUserByGoogleType(
         username,
         displayName,
         avaUrl,
       );
-    } else {
-      payload.facebookId = user.facebookId;
-      payload.contactPhone = user.contactPhone;
     }
-    const token = await this.genarateToken(payload);
-    return token;
+    const token = await this.genarateToken(user.username);
+    return {
+      access_token: token.accessToken,
+      refresh_token: token.refreshToken,
+      userId: user._id.toString(),
+    };
   }
 
   async loginWithFacebook(profile_facebook: any) {
@@ -51,30 +45,22 @@ export class AuthService {
       profile_facebook._json.first_name;
     const username = profile_facebook._json.id;
 
-    let payload = {
-      username: username,
-      displayName: displayName,
-      avaUrl: '',
-      facebookId: username,
-      contactPhone: '',
-    };
-    const user = await this.authRepository.findUserByFacebookType(username);
+    let user = await this.authRepository.findUserByFacebookType(username);
 
     if (!user) {
-      const newUser = await this.authRepository.createUserByFacebookType(
+      user = await this.authRepository.createUserByFacebookType(
         username,
         displayName,
       );
-      payload.avaUrl = newUser.avaUrl;
-    } else {
-      payload.avaUrl = user.avaUrl;
-      payload.contactPhone = user.contactPhone;
     }
-    const token = await this.genarateToken(payload);
-    return token;
-  }
+    const token = await this.genarateToken(user.username);
 
-  async handleRedirectResponse() {}
+    return {
+      access_token: token.accessToken,
+      refresh_token: token.refreshToken,
+      userId: user._id.toString(),
+    };
+  }
 
   async register(registerUserDto: RegisterUserDto) {
     const user = await this.authRepository.findByUserName(
@@ -90,7 +76,9 @@ export class AuthService {
       ...registerUserDto,
       password: hashedPassword,
     });
-    throw new HttpException('Register user success', HttpStatus.OK);
+    return {
+      message: 'Register user success',
+    };
   }
 
   async login(loginUserDto: LoginUserDto, @Res() res: Response) {
@@ -114,14 +102,7 @@ export class AuthService {
     }
 
     // update access token and refresh token
-    const payload = {
-      username: user.username,
-      displayName: user.displayName,
-      avaUrl: user.avaUrl,
-      contactPhone: user.contactPhone,
-      facebookId: user.facebookId,
-    };
-    const token = await this.genarateToken(payload);
+    const token = await this.genarateToken(user.username);
 
     res.cookie('refreshToken', token.refreshToken, {
       httpOnly: true,
@@ -129,7 +110,11 @@ export class AuthService {
       sameSite: 'strict',
     });
 
-    return res.status(HttpStatus.OK).json({ accessToken: token.accessToken });
+    return res.status(HttpStatus.OK).json({
+      access_token: token.accessToken,
+      refresh_token: token.refreshToken,
+      userId: user._id.toString(),
+    });
   }
 
   async refreshToken(refreshToken: string) {
@@ -137,13 +122,7 @@ export class AuthService {
       const verify = await this.jwtService.verifyAsync(refreshToken, {
         secret: process.env.REFRESH_TOKEN_SECRET,
       });
-      return this.genarateToken({
-        username: verify.username,
-        displayName: verify.displayName,
-        avaUrl: verify.avaUrl,
-        contactPhone: verify.contactPhone,
-        facebookId: verify.facebookId,
-      });
+      return this.genarateToken(verify.username);
     } catch (err) {
       throw new HttpException(
         err.message + ' -- Refresh token is not valid',
@@ -152,24 +131,18 @@ export class AuthService {
     }
   }
 
-  private async genarateToken(payload: {
-    username: string;
-    displayName: string;
-    avaUrl: string;
-    contactPhone: string;
-    facebookId: string;
-  }) {
-    const accessToken = await this.jwtService.signAsync(payload, {
+  private async genarateToken(username: string) {
+    const accessToken = await this.jwtService.signAsync({
       secret: process.env.ACCESS_TOKEN_SECRET,
       expiresIn: '8h',
     });
-    const refreshToken = await this.jwtService.signAsync(payload, {
+    const refreshToken = await this.jwtService.signAsync({
       secret: process.env.REFRESH_TOKEN_SECRET,
       expiresIn: '7d',
     });
 
     await this.authRepository.findUserAndUpdateToken(
-      payload.username,
+      username,
       accessToken,
       refreshToken,
     );
@@ -177,6 +150,18 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
+    };
+  }
+
+  getExistingUser(user: User, userId: string) {
+    return {
+      userId,
+      type: user.type,
+      userName: user.username,
+      displayName: user.displayName,
+      avaUrl: user.avaUrl,
+      contactPhone: user.contactPhone,
+      facebookId: user.facebookId,
     };
   }
 
