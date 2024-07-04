@@ -8,6 +8,7 @@ import { TypeModule } from './type/type.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UploadModule } from './upload/upload.module';
+import { CartModule } from './cart/cart.module';
 require('dotenv').config();
 
 @Module({
@@ -23,6 +24,7 @@ require('dotenv').config();
     TypeModule,
     ProductModule,
     UploadModule,
+    CartModule,
   ],
 })
 export class AppModule {}
