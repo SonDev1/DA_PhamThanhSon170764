@@ -102,7 +102,7 @@ function ListPage(props) {
       _page: Number.parseInt(params._page) || 1,
       _limit: Number.parseInt(params._limit) || 9,
       _sort: params._sort || 'asc',
-      _type: params._type || '',
+      // _type: params._type || '',
 
     };
   }, [location.search]);
@@ -118,7 +118,7 @@ function ListPage(props) {
         console.log('Failed to get all products:', error);
       }
     };
-
+    console.log('call api again');
     fetchData();
   }, [queryParams]);
   const handleSortChange = (newSortValue) => {

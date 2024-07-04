@@ -31,22 +31,22 @@ const productsApi = {
     },
 
     get(id) {
-        const url = `/product/${id}`;
+        const url = `/api/products/${id}`;
         return axiosClient.get(url);
     },
 
     add(data) {
-        const url = '/product';
+        const url = '/api/product';
         return axiosClient.post(url, data);
     },
 
     update(data) {
-        const url = `/product/${data.id}`;
+        const url = `/api/product/${data.id}`;
         return axiosClient.patch(url, data);
     },
 
     remove(id) {
-        const url = `/product/${id}`;
+        const url = `/api/product/${id}`;
         return axiosClient.delete(url);
     },
 };
