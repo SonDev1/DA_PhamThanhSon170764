@@ -7,8 +7,8 @@ export class Product extends Document {
   @Prop()
   name: string;
 
-  @Prop({ default: '' })
-  image: string;
+  @Prop({ default: [''] })
+  images: string[];
 
   @Prop()
   description: string;
