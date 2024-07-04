@@ -10,8 +10,8 @@ export class TypeService {
     return await this.typeRepository.getAll();
   }
 
-  async getTypeByCategoryId(categoryId: string) {
-    return await this.typeRepository.getTypeByCategoryId(categoryId);
+  async getTypesByCategoryId(categoryId: string) {
+    return await this.typeRepository.getTypesByCategoryId(categoryId);
   }
 
   async createType(createTypeDto: CreateTypeDto) {

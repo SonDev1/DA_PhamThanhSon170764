@@ -16,13 +16,13 @@ export class ProductController {
     return this.productService.getProductSortByOriginPrice(sortOrder);
   }
 
-  @Get(':typeId')
-  getProductBycategoryId(@Param('typeId') typeId: string) {
+  @Get('type/:typeId')
+  getProductByTypeId(@Param('typeId') typeId: string) {
     return this.productService.getProductByTypeId(typeId);
   }
 
-  // @Get('/filter')
-  // getProductsByFilter(@Query() filter) {
-  //   return this.productService.getProductsByFilter(filter);
-  // }
+  @Get('/filter')
+  getProductsByFilter(@Query() filter) {
+    return this.productService.getProductsByFilter(filter);
+  }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateProductDto } from '../dto/createProduct.dto';
@@ -15,6 +15,9 @@ export class ProductRepository {
   async getAll() {
     return await this.productModel.find();
   }
+  async findById(id: string) {
+    return await this.productModel.findById(id);
+  }
 
   async findAllAndSort(sortOrder: string) {
     console.log('sortOrder in repo: ' + sortOrder);
@@ -25,7 +28,19 @@ export class ProductRepository {
   }
 
   async getProductByTypeId(typeId: string) {
-    return await this.productModel.find({ typeId: typeId });
+    try {
+      const typeIdObject = new ObjectId(typeId);
+      return await this.productModel.find({ typeId: typeIdObject });
+    } catch (err) {
+      throw new HttpException(
+        'Find product by type id error',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async getProductByTypeIds(typeIds: ObjectId[]) {
+    return await this.productModel.find({ typeId: { $in: typeIds } });
   }
 
   async getProductsByCategoryId(categoryId: string) {
@@ -39,6 +54,15 @@ export class ProductRepository {
         },
       },
     ]);
+  }
+
+  async updateImagesOfProduct(productId: string, urlFiles: string[]) {
+    return await this.productModel.findOneAndUpdate(
+      { _id: productId },
+      {
+        images: urlFiles,
+      },
+    );
   }
 
   async create(data: any) {
