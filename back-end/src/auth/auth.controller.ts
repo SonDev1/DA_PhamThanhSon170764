@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Req,
   Res,
@@ -25,6 +26,10 @@ export class AuthController {
     private jwtService: JwtService,
   ) {}
 
+  @Get(':userId')
+  getUserById(@Param('userId') userId: string) {
+    return this.authService.getUserById(userId);
+  }
   @Post('register')
   register(@Body() registerUserDto: RegisterUserDto) {
     return this.authService.register(registerUserDto);
