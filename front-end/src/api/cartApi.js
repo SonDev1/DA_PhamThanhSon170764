@@ -1,6 +1,6 @@
 import axiosClient from './axiosClient';
 
-const productsApi = {
+const cartsApi = {
     async getAll(userId) {
         // Transform _page to _start
         const cartList = await axiosClient.get(`/api/cart/user/${userId}`,
@@ -10,24 +10,24 @@ const productsApi = {
     },
 
     get(id) {
-        const url = `/product/${id}`;
+        const url = `api/carts/${id}`;
         return axiosClient.get(url);
     },
 
-    add(data) {
-        const url = '/product';
-        return axiosClient.post(url, data);
+    add(payload) {
+        const url = 'api/carts';
+        return axiosClient.post(url,payload);
     },
 
     update(data) {
-        const url = `/product/${data.id}`;
+        const url = `api/cart/${data.id}`;
         return axiosClient.patch(url, data);
     },
 
     remove(id) {
-        const url = `/product/${id}`;
+        const url = `api/cart/${id}`;
         return axiosClient.delete(url);
     },
 };
 
-export default productsApi;
+export default cartsApi;

@@ -3,6 +3,7 @@ import { SocialRedirect } from "../pages/Auth/SocialMediaRedirect";
 import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import Product from "../pages/Product";
+import DetailPage from "../pages/Product/pages/DetailPage";
 
 export const routes = [
     { 
@@ -21,8 +22,15 @@ export const routes = [
     },
     { 
         path:'/products',
-        exact: true,
+        // exact: true,
         page : Product,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/products/:productId',
+        // exact: true,
+        page : DetailPage,
         isShowHeader : true,
         isShowFooter : true,
     },

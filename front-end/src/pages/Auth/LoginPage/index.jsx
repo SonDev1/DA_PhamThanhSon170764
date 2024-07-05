@@ -31,13 +31,15 @@ export const LoginPage = () => {
             const resultAction = await dispatch(action);
             unwrapResult(resultAction);
             enqueueSnackbar('Login successfully !!!', { variant: 'success' });
+            navigate('/products')
         } catch (error) {
             const errMessage = error.response?.data?.message || error.message || 'Login failed';
             console.log('Failed to login : ', errMessage);
             enqueueSnackbar(errMessage, { variant: 'error' });
+            navigate('/login')
         }
         setSubmitting(false);
-        navigate('/products')
+        // navigate('/products')
     };
 
     const handleRegisterSubmit = async (values, { setSubmitting }) => {

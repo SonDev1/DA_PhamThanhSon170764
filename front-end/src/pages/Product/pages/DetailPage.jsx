@@ -68,14 +68,14 @@ const useStyles = makeStyles((theme) => ({
 
 function DetailPage() {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { productId } = useParams();
-  console.log("productId :",productId);
-  const location = useLocation();
-  const url = location.pathname;
-  console.log("url :",url);
+  // console.log("productId :",productId);
+  // const location = useLocation();
+  // const url = location.pathname;
+  // console.log("url :",url);
 
   const { product, loading } = useProductDetail(productId);
+  // console.log("product",product);
 
   if (loading) {
     return (
@@ -118,15 +118,6 @@ function DetailPage() {
         <Box className={classes.productMenu}>
           {/* <ProductMenu /> */}
         </Box>
-
-        {/* <Switch>
-          <Route exact path={url}>
-            <ProductDescription product={product} />
-          </Route>
-
-          <Route path={`${url}/additional`} component={ProductAdditional} />
-          <Route path={`${url}/reviews`} component={ProductReviews} />
-        </Switch> */}
       </Container>
     </Box>
   );

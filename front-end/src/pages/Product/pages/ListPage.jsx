@@ -102,7 +102,7 @@ function ListPage(props) {
       _page: Number.parseInt(params._page) || 1,
       _limit: Number.parseInt(params._limit) || 9,
       _sort: params._sort || 'asc',
-      // _type: params._type || '',
+      _type: params._type || '',
 
     };
   }, [location.search]);
@@ -113,6 +113,8 @@ function ListPage(props) {
     const fetchData = async () => {
       try {
         const data = await productsApi.getAll(queryParams);
+        console.log("queryParams",queryParams);
+        debugger
         setProductList(data);
       } catch (error) {
         console.log('Failed to get all products:', error);
