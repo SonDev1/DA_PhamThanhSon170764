@@ -22,7 +22,7 @@ export class ProductController {
   }
 
   @Get('')
-  getProductsByFilter(@Query() filter) {
+  getProductsByFilter(@Query() filter: any) {
     return this.productService.getProductsByFilter(filter);
   }
 }
