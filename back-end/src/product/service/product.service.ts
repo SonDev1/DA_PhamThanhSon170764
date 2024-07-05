@@ -42,7 +42,6 @@ export class ProductService {
         message: 'Update images success',
       };
     } catch (err) {
-      console.log('error', err);
       throw new HttpException(
         'Update images error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -51,23 +50,20 @@ export class ProductService {
   }
 
   async getProductsByFilter(filter: any) {
+    let products;
     if (!filter.categoryId) {
-      const products = await this.productRepository.getAll();
-      const result = this.getProductsByPageNumber(products, filter._page);
-      return {
-        rows: result,
-        totalProducts: products.length,
-        page: filter._page,
-      };
+      products = await this.productRepository.getAll();
+    } else {
+      const types = await this.typeService.getTypesByCategoryId(
+        filter.categoryId,
+      );
+
+      const typeIds = types.map((type) => type._id);
+
+      products = await this.productRepository.getProductByTypeIds(typeIds);
     }
 
-    const types = await this.typeService.getTypesByCategoryId(
-      filter.categoryId,
-    );
-
-    const typeIds = types.map((type) => type._id);
-
-    const products = await this.productRepository.getProductByTypeIds(typeIds);
+    console.log(products);
     const totalProducts = products.length;
 
     const filteredProducts = products.filter((product) => {
