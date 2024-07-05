@@ -3,6 +3,7 @@ import { ProductRepository } from '../repository/product.repository';
 import { CreateProductDto } from '../dto/createProduct.dto';
 import { Types } from 'mongoose';
 import { TypeService } from 'src/type/service/type.service';
+import { Product } from '../schema/product.shema';
 @Injectable()
 export class ProductService {
   private readonly _limit = 2;
@@ -50,6 +51,16 @@ export class ProductService {
   }
 
   async getProductsByFilter(filter: any) {
+    if (!filter.categoryId) {
+      const products = await this.productRepository.getAll();
+      const result = this.getProductsByPageNumber(products, filter._page);
+      return {
+        rows: result,
+        totalProducts: products.length,
+        page: filter._page,
+      };
+    }
+
     const types = await this.typeService.getTypesByCategoryId(
       filter.categoryId,
     );
@@ -74,15 +85,19 @@ export class ProductService {
       filteredProducts.sort((a, b) => sortOrder * (a.salePrice - b.salePrice));
     }
 
-    let skip = (filter._page - 1) * this._limit;
-    const result = filteredProducts.slice(skip, skip + this._limit);
-    const totalPage = Math.ceil(filteredProducts.length / this._limit);
+    const result = this.getProductsByPageNumber(filteredProducts, filter._page);
 
     return {
       rows: result,
       totalProducts,
       page: filter._page,
     };
+  }
+
+  getProductsByPageNumber(products: Product[], _page: number) {
+    let skip = (_page - 1) * this._limit;
+    const result = products.slice(skip, skip + this._limit);
+    return result;
   }
 
   async createProduct(createProductDto: CreateProductDto) {
