@@ -113,14 +113,11 @@ function ListPage(props) {
     const fetchData = async () => {
       try {
         const data = await productsApi.getAll(queryParams);
-        console.log("queryParams",queryParams);
-        debugger
-        setProductList(data);
+        setProductList(data.rows);
       } catch (error) {
         console.log('Failed to get all products:', error);
       }
     };
-    console.log('call api again');
     fetchData();
   }, [queryParams]);
   const handleSortChange = (newSortValue) => {

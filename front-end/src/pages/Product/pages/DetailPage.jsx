@@ -14,11 +14,13 @@ import { useParams, useLocation } from 'react-router-dom';
 // import AddToCart from '../components/AddToCart';
 import ProductInfo from '../components/ProductInfo';
 import useProductDetail from '../hooks/useProductDetail';
+import ProductThumnail from '../components/ProductThumnail';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3, 0),
     backgroundColor: '#f9f9f9',
+    marginTop:'100px'
   },
   productContainer: {
     padding: theme.spacing(2),
@@ -106,7 +108,7 @@ function DetailPage() {
           </Typography>
           <Grid container spacing={3} className={classes.productContainer}>
             <Grid item className={classes.thumbnail}>
-              {/* <ProductThumnail product={product} /> */}
+              <ProductThumnail product={product} />
             </Grid>
             <Grid item className={classes.info}>
               <ProductInfo product={product} />

@@ -52,7 +52,7 @@ const handleCategoryClick = (category) => {
   if (onChange) {
       onChange(category.gender)
     }
-    console.log('Click cate :' ,category.gender);
+    // console.log('Click cate :' ,category.gender);
 }
 
   
@@ -63,7 +63,7 @@ const handleCategoryClick = (category) => {
         <ul className={classes.menu}>
             {
                 categoryList.map((category) => {
-                    return <li key={category._id} onClick={() => handleCategoryClick(category)}>
+                    return <li key={category.id} onClick={() => handleCategoryClick(category)}>
                         <Typography variant='subtitle2'>
                             {category.gender}
                         </Typography>

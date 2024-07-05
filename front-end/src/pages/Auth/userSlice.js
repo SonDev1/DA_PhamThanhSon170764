@@ -9,12 +9,18 @@ export const register = createAsyncThunk(
       // console.log('payload',payload);
         //Call API to register
         const data = await userApi.register(payload);
-        console.log("createAsyncThunk :" ,data);
+        // console.log("createAsyncThunk :" ,data);
+        
+//=====================================================================================================================================================
+        
         // Save data to local storage
-        localStorage.setItem("access_token", data.accessToken);
+        // localStorage.setItem("access_token", data.accessToken);
         // localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
 
         // Return user data
+
+//=====================================================================================================================================================
+
         return data.user;
     }
   )
@@ -23,8 +29,7 @@ export const register = createAsyncThunk(
     'user/login',
     async (payload) => {
         const data = await userApi.login(payload);
-        console.log("createAsyncThunk Login:" ,data);
-        console.log("access_token", data.access_token);
+        // console.log("createAsyncThunk Login:" ,data);
 
         // Save data to local storage
         localStorage.setItem("access_token", data.access_token);
@@ -56,15 +61,6 @@ const userSlice = createSlice({
         state.settings = {};
       }
     },
-    // extraReducers: {
-    //     [register.fulfilled] : (state,action) => {
-    //         state.current = action.payload;
-    //     }
-     //     [login.fulfilled] : (state,action) => {
-    //         state.current = action.payload;
-    //     }
-    // },
-
     extraReducers: builder => {
       builder
           .addCase(register.fulfilled, (state, action) => {

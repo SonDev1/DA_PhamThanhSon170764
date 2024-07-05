@@ -7,11 +7,8 @@ ProductList.propTypes = {
   data: PropTypes.array,
 }
 
-ProductList.defaultProps = {
-  data: [],
-}
 
-function ProductList({data}) {
+function ProductList({data = []}) {
   return (
     <Box style={{
         background: "transparent"
@@ -22,7 +19,7 @@ function ProductList({data}) {
           }}
         >
             {data.map((product) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                     <Product  product={product}/>
                 </Grid>
             ))}
