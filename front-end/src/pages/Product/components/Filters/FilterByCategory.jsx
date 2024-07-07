@@ -36,9 +36,11 @@ function FilterByCategory({onChange}) {
     (async () =>{
         try {    
             const list = await categoryApi.getAll()
+            console.log("data api  category :",list);
+            debugger
             setCategoryList(list.map(x => ({
                 id: x._id,
-                gender : x.gender,
+                name : x.name,
             })))
         } catch (error) {
             console.log('Failed to fetch category list', error);
@@ -52,7 +54,6 @@ const handleCategoryClick = (category) => {
   if (onChange) {
       onChange(category.gender)
     }
-    // console.log('Click cate :' ,category.gender);
 }
 
   
@@ -65,7 +66,7 @@ const handleCategoryClick = (category) => {
                 categoryList.map((category) => {
                     return <li key={category.id} onClick={() => handleCategoryClick(category)}>
                         <Typography variant='subtitle2'>
-                            {category.gender}
+                            {category.name}
                         </Typography>
                     </li>
                 })

@@ -4,6 +4,7 @@ import { Box, Typography, makeStyles } from '@material-ui/core';
 import { discountPercentage, formatPrice } from '../../../utils/common';
 import { Button, Form, Input } from 'antd';
 import cartsApi from '../../../api/cartApi';
+import { enqueueSnackbar } from 'notistack';
 
 ProductInfo.propTypes = {
     product: PropTypes.object,
@@ -98,29 +99,26 @@ function ProductInfo({ product = {} }) {
     const productId = _id ? _id.toString() : '';
     const quantity = 1;
     const payload = { userId, productId, quantity };
-    console.log("payload",payload);
-    // debugger
 
     const handleAddToCart = async () => {
         try {
             const response = await cartsApi.add(payload);
             console.log('response :', response);
-            // console.log('Add to cart success:', response);
             alert('Đã thêm vào giỏ hàng thành công!');
         } catch (error) {
             console.error('Add to cart failed:', error);
-            alert('Thêm vào giỏ hàng thất bại. Vui lòng thử lại sau!');
+            enqueueSnackbar('Đã thêm vào giỏ hàng  ', { variant: 'success' });
         }
     };
     const handleBuyNow = async () => {
         try {
             const response = await cartsApi.add(payload);
             console.log('response :', response);
-            // console.log('Add to cart success:', response);
             alert('Đã thêm vào giỏ hàng thành công!');
         } catch (error) {
             console.error('Add to cart failed:', error);
-            alert('Thêm vào giỏ hàng thất bại. Vui lòng thử lại sau!');
+            enqueueSnackbar('Không thành công, vui lòng thử lại sau!  ', { variant: 'error' });
+
         }
     };
 
@@ -164,7 +162,7 @@ function ProductInfo({ product = {} }) {
             <Box className={classes.dialSize}>
                 <Typography className={classes.sizeName}>Kích thước mặt:</Typography>
                 <Box className={classes.size}>
-                    <Form style={{ maxWidth: 38, marginLeft: '10px' }}>
+                    <Form style={{ maxWidth: 40, marginLeft: '10px' }}>
                         <Form.Item>
                             <Input
                                 value={dialSize}

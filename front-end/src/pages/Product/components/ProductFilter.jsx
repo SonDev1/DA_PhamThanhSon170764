@@ -7,7 +7,7 @@ function ProductFilter({ filters, onChange }) {
     if (!onChange) return;
     const newFilters = {
         ...filters,
-        'gender': newCategoryGender,
+        'name': newCategoryGender,
     };
     onChange(newFilters);
     // console.log('newFilters',newFilters);

@@ -13,7 +13,7 @@ function Header(props) {
       </a>
 
       <nav className="wrapper__header__navbar">
-        <a style={{ "--i": 1 }} href="/" className="active">
+        <a style={{ "--i": 1 }} href="/products" className="active">
           HOME
         </a>
         <a style={{ "--i": 2 }} href="about">
