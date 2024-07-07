@@ -153,6 +153,12 @@ export class AuthService {
     };
   }
 
+  async getUserById(userId: string) {
+    const user = await this.authRepository.findById(userId);
+
+    return this.getExistingUser(user, userId);
+  }
+
   getExistingUser(user: User, userId: string) {
     return {
       userId,

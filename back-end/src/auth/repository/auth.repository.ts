@@ -11,6 +11,10 @@ export class AuthRepository {
     private UserModel: Model<User>,
   ) {}
 
+  async findById(userId: string) {
+    return await this.UserModel.findById(userId);
+  }
+
   async findUserAndUpdateToken(
     username: string,
     accessToken: string,
