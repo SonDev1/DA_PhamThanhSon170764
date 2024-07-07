@@ -7,37 +7,22 @@ ProductList.propTypes = {
   data: PropTypes.array,
 }
 
-ProductList.defaultProps = {
-  data: [],
-}
 
-function ProductList({data}) {
+function ProductList({data = []}) {
   return (
     <Box style={{
         background: "transparent"
     }}>
         <Grid container
-            // spacing={2}
             style={{
               background: "transparent"
           }}
         >
-            {/* {data.map((product) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+            {data.map((product) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                     <Product  product={product}/>
                 </Grid>
-            ))} */}
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
-            <Product/>
+            ))}
         </Grid>
     </Box>
   )

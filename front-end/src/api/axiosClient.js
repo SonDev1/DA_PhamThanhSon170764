@@ -45,7 +45,6 @@ axiosClient.interceptors.response.use(
       // Handle 401 status
     //   console.log("err :",data.message);
       const err1 = data.message
-    //   debugger
       if (URLS.includes(config.url) && status === 401 ) {
         throw new Error(err1);
         }
