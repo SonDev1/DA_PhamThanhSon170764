@@ -1,12 +1,16 @@
 import axiosClient from './axiosClient';
 
 const cartsApi = {
+    // async getAll(userId) {
+    //     // Transform _page to _start
+    //     const cartList = await axiosClient.get(`/api/user/${userId}`,
+    //         //  { params: newParams }
+    //         );
+    //     return cartList;
+    // },
     async getAll(userId) {
-        // Transform _page to _start
-        const cartList = await axiosClient.get(`/api/cart/user/${userId}`,
-            //  { params: newParams }
-            );
-        return cartList;
+        const url = `api/carts/user/${userId}`;
+        return axiosClient.get(url);
     },
 
     get(id) {

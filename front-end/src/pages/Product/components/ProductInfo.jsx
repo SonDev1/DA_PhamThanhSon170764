@@ -99,6 +99,7 @@ function ProductInfo({ product = {} }) {
     const productId = _id ? _id.toString() : '';
     const quantity = 1;
     const payload = { userId, productId, quantity };
+    console.log("payload: ", payload);
 
     const handleAddToCart = async () => {
         try {

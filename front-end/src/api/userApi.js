@@ -10,6 +10,10 @@ const userApi = {
         const url = 'api/auth/login';
         return axiosClient.post(url,data)
     },
+    getInfo(userId){
+        const url = `api/auth/${userId}`;
+        return axiosClient.get(url)
+    }
 }
 // console.log('userApi',userApi);
 
