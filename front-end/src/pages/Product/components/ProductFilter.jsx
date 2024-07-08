@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FilterByCategory from './Filters/FilterByCategory'
+import MenuItemLeft from '../components/Menu'
 
 function ProductFilter({ filters, onChange }) {
   const handleCategoryChange = (newCategoryGender) => {
@@ -15,7 +16,8 @@ function ProductFilter({ filters, onChange }) {
 
   return (
     <div>
-      <FilterByCategory onChange={handleCategoryChange}/>
+      {/* <FilterByCategory onChange={handleCategoryChange}/> */}
+      <MenuItemLeft/>
     </div>
   )
 }

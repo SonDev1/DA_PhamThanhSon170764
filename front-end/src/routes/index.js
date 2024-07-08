@@ -1,9 +1,12 @@
 import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
+import AccountInfo from "../pages/AccountInfo";
 import { SocialRedirect } from "../pages/Auth/SocialMediaRedirect";
+import CartPages from "../pages/Cart";
 import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import Product from "../pages/Product";
 import DetailPage from "../pages/Product/pages/DetailPage";
+import MenuItemLeft from "../pages/Product/components/Menu/index";
 
 export const routes = [
     { 
@@ -37,6 +40,24 @@ export const routes = [
     { 
         path:'/auth/social/redirect',
         page : SocialRedirect,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/cart',
+        page : CartPages,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/account',
+        page : AccountInfo,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/test',
+        page : MenuItemLeft,
         isShowHeader : true,
         isShowFooter : true,
     },

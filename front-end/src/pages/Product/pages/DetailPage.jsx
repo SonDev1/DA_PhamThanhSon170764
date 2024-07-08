@@ -103,9 +103,9 @@ function DetailPage() {
     <Box className={classes.root}>
       <Container>
         <Paper elevation={0} className={classes.paper}>
-          <Typography variant="h5" className={classes.productTitle}>
+          {/* <Typography variant="h5" className={classes.productTitle}>
             {product.name}
-          </Typography>
+          </Typography> */}
           <Grid container spacing={3} className={classes.productContainer}>
             <Grid item className={classes.thumbnail}>
               <ProductThumnail product={product} />

@@ -37,7 +37,6 @@ function FilterByCategory({onChange}) {
         try {    
             const list = await categoryApi.getAll()
             console.log("data api  category :",list);
-            debugger
             setCategoryList(list.map(x => ({
                 id: x._id,
                 name : x.name,

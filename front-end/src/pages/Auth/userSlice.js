@@ -33,7 +33,8 @@ export const register = createAsyncThunk(
 
         // Save data to local storage
         localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("user", JSON.stringify(data.userId));
+        localStorage.setItem("userId", data.userId);
+        // localStorage.setItem("userId", JSON.stringify(data.userId));
 
         // Return user data
         return data.user;
