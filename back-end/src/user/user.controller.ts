@@ -1,24 +1,16 @@
 import { Body, Controller, Param, Put } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { UpdateUserDto } from './dto/update-user.Dto';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Put(':username')
+  @Put(':userId')
   async updateUser(
-    @Param('username') username: string,
+    @Param('userId') userId: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    const updatedUser = await this.userService.updateUser(
-      username,
-      updateUserDto,
-    );
-    return {
-      statusCode: 200,
-      message: 'Update user success',
-      user: updatedUser,
-    };
+    return this.userService.updateUser(userId, updateUserDto);
   }
 }

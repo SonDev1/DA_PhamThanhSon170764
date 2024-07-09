@@ -5,7 +5,7 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { VerifyTokenMiddleware } from 'src/middlewares/logging.middleware';
 import { User, UserSchema } from 'src/auth/schemas/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -23,10 +23,11 @@ import { JwtModule } from '@nestjs/jwt';
   controllers: [UserController],
   providers: [UserService, UserRepository],
 })
-export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(VerifyTokenMiddleware)
-      .forRoutes({ path: 'user/:username', method: RequestMethod.PUT });
-  }
-}
+export class UserModule {}
+// export class UserModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(VerifyTokenMiddleware)
+//       .forRoutes({ path: 'user/:username', method: RequestMethod.PUT });
+//   }
+// }

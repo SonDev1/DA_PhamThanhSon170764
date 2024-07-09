@@ -28,4 +28,18 @@ export class UploadController {
 
     return await this.productService.updateImagesOfProduct(productId, urlFiles);
   }
+
+  @Post('avatar')
+  @UseInterceptors(
+    FilesInterceptor('files', 1, { storage: storageOptions('avatar') }),
+  )
+  uploadAvatarFile(@UploadedFiles() files: Express.Multer.File[]) {
+    const uploadedFiles = files.map((file) => ({
+      url: `http://localhost:5000/api/uploads/avatar/${file.filename}`,
+      name: file.filename,
+      status: 'done',
+      uid: file.filename,
+    }));
+    return uploadedFiles;
+  }
 }
