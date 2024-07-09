@@ -6,12 +6,15 @@ import { TypeService } from 'src/type/service/type.service';
 import { Product } from '../schema/product.shema';
 @Injectable()
 export class ProductService {
-  private readonly _limit = 2;
+  private readonly _limit = 16;
   constructor(
     private productRepository: ProductRepository,
     private typeService: TypeService,
   ) {}
 
+  async getAllProducts() {
+    return await this.productRepository.getAll();
+  }
   async getProductById(productId: string) {
     const product = await this.productRepository.findById(productId);
     if (!product) {
