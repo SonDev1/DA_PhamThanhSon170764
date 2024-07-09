@@ -11,6 +11,11 @@ export class ProductController {
     return this.productService.createProduct(createProductDto);
   }
 
+  @Get('get-all')
+  getAllProduct() {
+    return this.productService.getAllProducts();
+  }
+
   @Get('type/:typeId')
   getProductByTypeId(@Param('typeId') typeId: string) {
     return this.productService.getProductByTypeId(typeId);
