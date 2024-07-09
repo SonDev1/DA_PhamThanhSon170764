@@ -7,7 +7,8 @@ import logo from '../../assets/logo/logo.svg';
 function Footer(props) {
   return (
     <div className="wrapper__footer">
-      <a href="/" className="wrapper__footer__logo">
+      Footer
+      {/* <a href="/" className="wrapper__footer__logo">
       <img src={logo} alt="logo"/>
 
       </a>
@@ -44,7 +45,7 @@ function Footer(props) {
         <a style={{ "--i": 3 }} href="https://www.instagram.com/curnonwatchcom/">
           <box-icon type="logo" name="instagram-alt" color="#000"></box-icon>
         </a>
-      </div>
+      </div> */}
     </div>
   )
 }

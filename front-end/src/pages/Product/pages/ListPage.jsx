@@ -193,6 +193,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import ProductSort from '../components/ProductSort';
 import { Pagination } from 'antd';
+import SearchComponent from '../components/Search';
 
 function ListPage(props) {
   const [productList, setProductList] = useState([]);
@@ -260,6 +261,7 @@ function ListPage(props) {
         </div>
         <div className='wrapper__product__productList__products'>
           <ProductList data={productList} />
+          <SearchComponent/>
           <Pagination
             align="center"
             current={Number.parseInt(queryParams._page)}

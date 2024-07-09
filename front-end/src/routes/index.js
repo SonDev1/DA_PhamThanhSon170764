@@ -7,6 +7,8 @@ import NotFound from "../pages/NotFound";
 import Product from "../pages/Product";
 import DetailPage from "../pages/Product/pages/DetailPage";
 import MenuItemLeft from "../pages/Product/components/Menu/index";
+import TestPage from "../pages/Product/components/Search";
+import SearchComponent from "../pages/Product/components/Search";
 
 export const routes = [
     { 
@@ -57,7 +59,7 @@ export const routes = [
     },
     { 
         path:'/test',
-        page : MenuItemLeft,
+        page : SearchComponent,
         isShowHeader : true,
         isShowFooter : true,
     },
