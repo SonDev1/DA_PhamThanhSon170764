@@ -14,6 +14,7 @@ const userApi = {
         const url = `api/auth/${userId}`;
         return axiosClient.get(url)
     }
+    // updateUser()
 }
 // console.log('userApi',userApi);
 

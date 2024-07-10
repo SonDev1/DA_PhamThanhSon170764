@@ -1,0 +1,24 @@
+
+.wrapper__search {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    height: 170px; 
+    width: 100%;
+    background-color: #eaeaea;
+    border-top: 1px solid black;
+}
+
+// .ant-input-affix-wrapper {
+//     width: 100%;
+//     max-width: 400px; /* Điều chỉnh chiều rộng tối đa của ô search */
+//     height: 45px;
+//     margin-left: 100px;
+// }
+
+.search-input {
+    width: 100%;
+    max-width: 805px;
+    height: 45px;
+  }
+  
