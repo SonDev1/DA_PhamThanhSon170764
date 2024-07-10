@@ -18,6 +18,10 @@ require('dotenv').config();
       rootPath: join(__dirname, '..', '..', 'uploads', 'products'),
       serveRoot: '/api/uploads/products',
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'uploads', 'avatars'),
+      serveRoot: '/api/uploads/avatars',
+    }),
     AuthModule,
     UserModule,
     CategoryModule,
