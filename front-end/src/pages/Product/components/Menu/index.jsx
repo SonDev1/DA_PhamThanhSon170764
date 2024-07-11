@@ -66,7 +66,6 @@ const data = [
 ];
 
 function MenuItemLeft() {
-    console.log("test");
   const handleOnClick = (e) => {
     console.log("Clicked item:", e);
   };

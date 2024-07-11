@@ -89,6 +89,20 @@
         }
     }
 }
+.search-dropdown {
+    position: absolute;
+    top: 100%; /* Đặt vị trí bên dưới thanh header */
+    left: 0;
+    width: 100%; /* Chiều rộng bằng header */
+    background-color: #eaeaea;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Đảm bảo nằm trên header */
+    display: none; /* Mặc định ẩn đi */
+}
+
+.search-dropdown.active {
+    display: block; /* Hiển thị khi được kích hoạt */
+}
 
 @keyframes slideRight {
     0% {
