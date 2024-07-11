@@ -13,9 +13,11 @@ const userApi = {
     getInfo(userId){
         const url = `api/auth/${userId}`;
         return axiosClient.get(url)
-    }
-    // updateUser()
+    },
+    update(userId, data) {
+        const url = `api/users/${userId}`;
+        return axiosClient.put(url, data);
+      }
 }
-// console.log('userApi',userApi);
 
 export default userApi

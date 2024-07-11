@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/auth/schemas/user.schema';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UserRepository {
@@ -10,8 +11,8 @@ export class UserRepository {
     private UserModel: Model<User>,
   ) {}
 
-  async findUserToUpdate(username: string): Promise<User> {
-    const user = await this.UserModel.findOne({ username: username })
+  async findUserToUpdate(userId: string): Promise<User> {
+    const user = await this.UserModel.findById(userId)
       .select('displayName contactPhone facebookId avaUrl')
       .lean();
 
@@ -20,9 +21,13 @@ export class UserRepository {
     }
     return user;
   }
-  async saveUserByUsername(username: string, updateData: any): Promise<User> {
+  async saveUserByUserId(userId: string, updateData: any): Promise<User> {
+    console.log('updateData :', updateData);
+    console.log('userId :', userId);
+
+    const userIdObject = new ObjectId(userId);
     const updatedUser = await this.UserModel.findOneAndUpdate(
-      { username: username },
+      { _id: userIdObject },
       { $set: updateData },
       { new: true, runValidators: true },
     ).select('displayName contactPhone facebookId avaUrl');

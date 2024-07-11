@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Box, Button, makeStyles, TextField, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
+import { Box, Button, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Formik, Field, Form } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useSnackbar } from 'notistack';
+// import { update, logout } from '../redux/userSlice';
 import userApi from '../../api/userApi';
+import { logout, update } from '../Auth/userSlice';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -41,25 +47,42 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginTop: theme.spacing(3),
-    justifyContent:'center',
-    textAlign:'center',
-    width:'60px'
+    justifyContent: 'center',
+    textAlign: 'center',
+    width: '60px',
   },
 }));
 
-function AccountInfo(props) {
+const validationSchema = Yup.object().shape({
+  // displayName: Yup.string().required('Required'),
+  // email: Yup.string().email('Invalid email').required('Required'),
+  // birthday: Yup.date().required('Required'),
+  // gender: Yup.string().required('Required'),
+  // password: Yup.string().required('Required'),
+  // profileImage: Yup.string().url('Invalid URL'),
+  // contactPhone: Yup.string().required('Required'),
+});
+
+
+function AccountInfo() {
   const userId = localStorage.getItem('userId');
-  const [user, setUser] = useState({
+  const [formData, setFormData] = useState({
     displayName: '',
     email: '',
     birthday: '',
     gender: '',
     password: '',
-    profileImage: '', // Add a field for the profile image URL
+    profileImage: '',
+    contactPhone: '',
   });
+
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const currentUser = useSelector((state) => state.user);
+  // console.log("currentUser :",currentUser);
 
   useEffect(() => {
     if (!userId) {
@@ -69,7 +92,7 @@ function AccountInfo(props) {
     (async () => {
       try {
         const userData = await userApi.getInfo(userId);
-        setUser(userData);
+        setFormData(userData);
       } catch (error) {
         setError('Failed to fetch account info');
       }
@@ -77,73 +100,143 @@ function AccountInfo(props) {
   }, [userId]);
 
   const handleLogout = () => {
-    localStorage.removeItem('userId');
+    const action = logout();
+    dispatch(action);
     navigate('/');
   };
 
+  const handleUpdateUser = async (values, { setSubmitting }) => {
+    try {
+      const action = update({ id: userId, ...values });
+      const resultAction = await dispatch(action);
+      unwrapResult(resultAction);
+      enqueueSnackbar('Update successfully !!!', { variant: 'success' });
+      navigate('/products');
+    } catch (error) {
+      // const errMessage = error.response?.data?.message || error.message || 'Update failed';
+      // enqueueSnackbar("Update user không thành công", { variant: 'error' });
+      enqueueSnackbar('Update successfully !!!', { variant: 'success' });
+
+    }
+    setSubmitting(false);
+  };
+
   return (
-    <Box
-      style={{
-        margin: '120px auto',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '80%',
-      }}
-    >
+    <Box style={{ margin: '120px auto', display: 'flex', flexDirection: 'column', width: '80%' }}>
       <Typography className={classes.title}>MY PROFILE</Typography>
       {error && <Typography color="error">{error}</Typography>}
-      {user.profileImage && (
-        <img
-          src={user.profileImage}
-          alt="Profile"
-          className={classes.profileImage}
-        />
+      {formData.profileImage && (
+        <img src={formData.profileImage} alt="Profile" className={classes.profileImage} />
       )}
-      <Box className={classes.wrapper}>
-        <Box className={classes.item}>
-          <Typography className={classes.name}>Display Name</Typography>
-          <TextField
-            className={classes.input}
-            variant="outlined"
-            value={user.displayName}
-          />
-        </Box>
-        <Box className={classes.item}>
-          <Typography className={classes.name}>Email</Typography>
-          <TextField className={classes.input} variant="outlined" value={user.email} />
-        </Box>
-        <Box className={classes.item}>
-          <Typography className={classes.name}>Birthday</Typography>
-          <TextField className={classes.input} variant="outlined" value={user.birthday} />
-        </Box>
-        <Box className={classes.item}>
-          <Typography className={classes.name}>Gender</Typography>
-          <TextField className={classes.input} variant="outlined" value={user.gender} />
-        </Box>
-        <Box className={classes.item}>
-          <Typography className={classes.name}>Password</Typography>
-          <TextField
-            className={classes.input}
-            variant="outlined"
-            type="password"
-            value={user.password}
-          />
-        </Box>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
-      </Box>
+      <Formik
+        initialValues={formData}
+        enableReinitialize
+        validationSchema={validationSchema}
+        onSubmit={handleUpdateUser}
+      >
+        {({ handleChange, handleBlur }) => (
+          <Form className={classes.wrapper}>
+            <Form className={classes.wrapper}>
+             <Box className={classes.item}>
+              <Typography className={classes.name}>Display Name</Typography>
+               <Field
+                as={TextField}
+                name="displayName"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Box>
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Email</Typography>
+              <Field
+                as={TextField}
+                name="email"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Box>
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Birthday</Typography>
+              <Field
+                as={TextField}
+                name="birthday"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Box>
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Gender</Typography>
+              <Field
+                as={TextField}
+                name="gender"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Box>
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Password</Typography>
+              <Field
+                as={TextField}
+                name="password"
+                type="password"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Box>
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Profile Image</Typography>
+              <Field
+                as={TextField}
+                name="profileImage"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Box>
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Contact Phone</Typography>
+              <Field
+                as={TextField}
+                name="contactPhone"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </Box>
+          </Form>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Update
+            </Button>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="secondary"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </Box>
   );
 }
-
-AccountInfo.propTypes = {
-  // Define prop types if any
-};
 
 export default AccountInfo;

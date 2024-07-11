@@ -104,11 +104,17 @@ function ProductInfo({ product = {} }) {
     const handleAddToCart = async () => {
         try {
             const response = await cartsApi.add(payload);
-            console.log('response :', response);
-            alert('Đã thêm vào giỏ hàng thành công!');
+            // const action = addToCart({
+            //     id: product._id,
+            //     product,
+            //     quantity: quantity,
+            //   });
+            //   dispatch(action);
+            enqueueSnackbar('Đã thêm vào giỏ hàng  ', { variant: 'success' });
         } catch (error) {
             console.error('Add to cart failed:', error);
-            enqueueSnackbar('Đã thêm vào giỏ hàng  ', { variant: 'success' });
+            enqueueSnackbar('Đã xảy ra lỗi ! ', { variant: 'error' });
+
         }
     };
     const handleBuyNow = async () => {
