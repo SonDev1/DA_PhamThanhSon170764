@@ -4,14 +4,59 @@ import { Model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 import { Menu } from '../schema/menu.shema';
 import { CreateMenuDto } from '../dto/CreateMenu.dto';
+import { MenuController } from './../menu.controller';
+
+interface MENU {
+  _id: number;
+  name: string;
+  order: number;
+  categories: any;
+}
 @Injectable()
 export class MenuRepository {
   constructor(
     @InjectModel(Menu.name)
-    private cartModel: Model<Menu>,
+    private menuModel: Model<Menu>,
   ) {}
 
   async create(createMenuDto: CreateMenuDto) {
-    return await this.cartModel.create(createMenuDto);
+    return await this.menuModel.create(createMenuDto);
+  }
+
+  async findAll() {
+    return this.menuModel
+      .aggregate([
+        {
+          $lookup: {
+            from: 'categories',
+            localField: '_id',
+            foreignField: 'menuId',
+            as: 'categories',
+          },
+        },
+        {
+          $unwind: {
+            path: '$categories',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: 'types',
+            localField: 'categories._id',
+            foreignField: 'categoryId',
+            as: 'categories.types',
+          },
+        },
+        {
+          $group: {
+            _id: '$_id',
+            name: { $first: '$name' },
+            order: { $first: '$order' },
+            categories: { $push: '$categories' },
+          },
+        },
+      ])
+      .exec();
   }
 }

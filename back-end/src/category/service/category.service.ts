@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CategoryRepository } from '../repository/category.repository';
 import { CreateCategoryDto } from '../dto/CreateCategory.dto';
-
+import { ObjectId } from 'mongodb';
 @Injectable()
 export class CategoryService {
   constructor(private categoryRepository: CategoryRepository) {}
@@ -16,8 +16,11 @@ export class CategoryService {
 
   async createCategory(createCategoryDto: CreateCategoryDto) {
     try {
-      const Newcategory =
-        await this.categoryRepository.create(createCategoryDto);
+      const menuIdObjectId = new ObjectId(createCategoryDto.menuId);
+      const newMenu = { ...createCategoryDto, menuId: menuIdObjectId };
+      console.log('newMenu :', newMenu);
+
+      const Newcategory = await this.categoryRepository.create(newMenu);
       return {
         message: 'Create category success',
       };

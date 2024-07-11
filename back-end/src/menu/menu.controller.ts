@@ -18,6 +18,12 @@ export class MenuController {
 
   @Post('')
   createMenu(@Body() createMenuDto: CreateMenuDto) {
+    console.log('createMenuDto :', createMenuDto);
     return this.menuService.createMenu(createMenuDto);
+  }
+
+  @Get('')
+  getAllMenu() {
+    return this.menuService.getAllMenus();
   }
 }

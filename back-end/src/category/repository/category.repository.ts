@@ -31,7 +31,7 @@ export class CategoryRepository {
     return await this.categoryModel.find();
   }
 
-  async create(createCategoryDto: CreateCategoryDto) {
-    return this.categoryModel.create(createCategoryDto);
+  async create(data: any) {
+    return this.categoryModel.create(data);
   }
 }
