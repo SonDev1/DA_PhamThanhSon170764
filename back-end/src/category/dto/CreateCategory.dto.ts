@@ -12,4 +12,8 @@ export class CreateCategoryDto {
   @IsNotEmpty()
   @IsString()
   order: number;
+
+  @IsNotEmpty()
+  @IsString()
+  menuId: string;
 }

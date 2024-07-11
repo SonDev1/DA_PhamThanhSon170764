@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ObjectId } from 'mongodb';
 
 @Schema()
 export class Category {
@@ -10,6 +11,9 @@ export class Category {
 
   @Prop()
   order: number;
+
+  @Prop()
+  menuId: ObjectId;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
