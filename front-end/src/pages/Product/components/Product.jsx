@@ -35,7 +35,7 @@ function Product({ product }) {
                     position: 'absolute',
                     top: '0px',
                     left: '0px',
-                    backgroundColor: 'red',
+                    backgroundColor: '#EB2F3A',
                     color: 'white',
                     padding: '5px 10px',
                     borderRadius: 'none',
