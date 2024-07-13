@@ -3,6 +3,8 @@ import { Types } from 'mongoose';
 import { CartRepository } from '../repository/cart.repository';
 import { CreateCartDto } from '../dto/CreateCart.dto';
 import { ObjectId } from 'mongodb';
+import { Cart } from './../schema/cart.shema';
+import { log } from 'console';
 
 @Injectable()
 export class CartService {
@@ -61,23 +63,51 @@ export class CartService {
   async getAllCarts() {
     return this.cartRepository.getAll();
   }
-
+  async deleteCartById(CartId: string) {
+    const cartIdObjectId = new Types.ObjectId(CartId);
+    const cartExists = await this.cartRepository.getById(cartIdObjectId);
+    if (!cartExists) {
+      throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
+    }
+    return await this.cartRepository.deleteCartById(cartIdObjectId);
+  }
   async deleteCartByProductIdAndUserId(productId: ObjectId, userId: ObjectId) {
+    const cartExists = await this.cartRepository.getByProductIdAndUserId(
+      productId,
+      userId,
+    );
+
+    if (!cartExists || cartExists.length === 0) {
+      throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
+    }
+
     return await this.cartRepository.deleteCartByProductIdAndUserId(
       productId,
       userId,
     );
   }
-
-  async deleteCartsByUserId(userId: string, productIds: string[]) {
+  async deleteCartByProductIdsAndUserId(userId: string, productIds: string[]) {
     const userIdObjectId = new ObjectId(userId);
     const productIdsObjectId = productIds.map(
       (productId) => new ObjectId(productId),
     );
+
     try {
-      productIdsObjectId.forEach(async (productId) => {
-        await this.deleteCartByProductIdAndUserId(productId, userIdObjectId);
+      const deletePromises = productIdsObjectId.map(async (productId) => {
+        try {
+          await this.deleteCartByProductIdAndUserId(productId, userIdObjectId);
+        } catch (err) {
+          // Ném ra ngoại lệ để xử lý bởi catch ở order module
+          throw new Error(
+            `Error deleting cart for productId ${productId}: ${err.message}`,
+          );
+        }
       });
-    } catch (err) {}
+
+      await Promise.all(deletePromises);
+    } catch (err) {
+      console.log('Delete carts error:', err.message);
+      throw new HttpException('Delete carts error', HttpStatus.BAD_REQUEST);
+    }
   }
 }
