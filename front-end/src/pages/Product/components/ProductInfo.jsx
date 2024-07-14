@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, makeStyles } from '@material-ui/core';
+import { Box, Typography, makeStyles ,Modal} from '@material-ui/core';
 import { discountPercentage, formatPrice } from '../../../utils/common';
 import { Button, Form, Input } from 'antd';
 import cartsApi from '../../../api/cartApi';
 import { enqueueSnackbar } from 'notistack';
+import orderApi from '../../../api/ordersApi';
+import { useNavigate } from 'react-router-dom';
+
 
 ProductInfo.propTypes = {
     product: PropTypes.object,
@@ -86,24 +89,52 @@ const useStyles = makeStyles((theme) => ({
             fontSize: '20px',
         },
     },
+    modal: {
+        position: 'absolute',
+        width: 400,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+    },
 }));
 
 function ProductInfo({ product = {} }) {
     const classes = useStyles();
     const { name, description, salePrice, originalPrice, dialSize, _id } = product;
-    console.log('product', product);
-    const promotionPercent = discountPercentage(originalPrice, salePrice);
-
     const userId = localStorage.getItem('userId');
-    console.log("userId", userId);
+    const promotionPercent = discountPercentage(originalPrice, salePrice);
+    const [openModal, setOpenModal] = useState(false);
+    const navigate = useNavigate();
+
+    // Fake data for test pay now
+    // ============================================================================================================================
+    const shippingInfo = {
+        receiver:"Pham Thanh Son",
+        phone: "0982201057",
+        address: "Thanh Tri , Ha Noi",
+        adressDetail: "so 6 , day D , Ngu Hiep",
+        isInCart: false
+    }
+    // ============================================================================================================================
+
+
+
+    // Payload add to cart 
+    // ============================================================================================================================
     const productId = _id ? _id.toString() : '';
     const quantity = 1;
     const payload = { userId, productId, quantity };
-    console.log("payload: ", payload);
-
+    // ============================================================================================================================
     const handleAddToCart = async () => {
+        if (!userId) {
+            setOpenModal(true);
+            return;
+        }
         try {
-            const response = await cartsApi.add(payload);
+            const req = await cartsApi.add(payload);
             // const action = addToCart({
             //     id: product._id,
             //     product,
@@ -114,20 +145,35 @@ function ProductInfo({ product = {} }) {
         } catch (error) {
             console.error('Add to cart failed:', error);
             enqueueSnackbar('Đã xảy ra lỗi ! ', { variant: 'error' });
-
         }
     };
+    
+
+    // Payload pay now
+    // ============================================================================================================================
+    const price = salePrice
+    const products  = [{ productId , price , quantity }]
+    const payloadPay = {userId , products , shippingInfo}
+    // ============================================================================================================================
     const handleBuyNow = async () => {
+        if (!userId) {
+            setOpenModal(true);
+            return;
+        }
         try {
-            const response = await cartsApi.add(payload);
-            console.log('response :', response);
-            alert('Đã thêm vào giỏ hàng thành công!');
+            const req = await orderApi.add(payloadPay);
+            enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+    
         } catch (error) {
-            console.error('Add to cart failed:', error);
-            enqueueSnackbar('Không thành công, vui lòng thử lại sau!  ', { variant: 'error' });
-
+            enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
         }
     };
+    const handleCloseModal = () => {
+        setOpenModal(false);
+    };
+    const handleNavigate = () => {
+        navigate('/login')
+    }
 
 
     return (
@@ -184,7 +230,11 @@ function ProductInfo({ product = {} }) {
                 <Button
                     type='primary'
                     onClick={handleBuyNow}
-                    style={{ marginRight: '10px', background: 'black' }}
+                    style={{ 
+                        marginRight: '10px', 
+                        background: 'black' ,
+                        borderRadius: '0px' ,
+                    }}
                 >
                     Buy Now
                 </Button>
@@ -197,6 +247,7 @@ function ProductInfo({ product = {} }) {
                         color: 'black',
                         border: '1px solid black',
                         fontWeight: 'bold',
+                        borderRadius: '0px' ,
                     }}
                 >
                     Add to Cart
@@ -235,6 +286,22 @@ function ProductInfo({ product = {} }) {
                     {description}
                 </Typography>
             </Box>
+            <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby='modal-title'
+                aria-describedby='modal-description'
+            >
+                <div className={classes.modal}>
+                    <Typography variant='h5' id='modal-title' style={{fontFamily :'Montserrat'}}>
+                        Vui lòng đăng nhập để tiếp tục 
+                    </Typography>
+                    <Box style={{display: "flex",justifyContent: "space-between" , marginTop:'10px'}}>
+                        <Button style={{ borderRadius: '0px' ,height:'32px',width:'100px'}} onClick={handleCloseModal}>Đóng</Button>
+                        <Button style={{ borderRadius: '0px' ,height:'32px',width:'100px' , background:'black',color:'#fff'}} onClick={handleNavigate}>Đăng nhập</Button>
+                    </Box>
+                </div>
+            </Modal>
         </Box>
     );
 }
