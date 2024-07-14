@@ -160,7 +160,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import cartsApi from '../../api/cartApi';
 import { formatPrice } from '../../../src/utils/common';
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { Box, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
+import userApi from '../../api/userApi';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -256,12 +262,22 @@ const useStyles = makeStyles((theme) => ({
   },
   leftPanel: {
     width: '50%',
+    borderRight: '1px solid black',
+    padding :'20px'
   },
   rightPanel: {
     width: '50%',
   },
+  input:{
+    fontFamily: 'monospace',
+  }
 }));
 
+const validationSchema = Yup.object().shape({
+  // displayName: Yup.string().required('Required'),
+  // email: Yup.string().email('Invalid email').required('Required'),
+  // contactPhone: Yup.string().required('Required'),
+});
 function CartPages(props) {
   const classes = useStyles();
 
@@ -269,23 +285,131 @@ function CartPages(props) {
 
   const userId = localStorage.getItem('userId');
 
+  const [formData, setFormData] = useState({
+    displayName: '',
+    email: '',
+    contactPhone: '',
+  });
+
+  const [error, setError] = useState('');
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  
+
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const cartList = await cartsApi.getAll(userId);
+  //       setCartList(cartList);
+  //       console.log('cartItem:', cartList);
+  //     } catch (error) {
+  //       console.log('Failed to fetch carts list', error);
+  //     }
+  //   })();
+  // }, [userId]);
+
   useEffect(() => {
+    if (!userId) {
+      setError('No user ID found in local storage');
+      return;
+    }
+  
     (async () => {
       try {
-        const cartList = await cartsApi.getAll(userId);
+        const [cartList, userData] = await Promise.all([
+          cartsApi.getAll(userId),
+          userApi.getInfo(userId)
+        ]);
+  
         setCartList(cartList);
         console.log('cartItem:', cartList);
+  
+        setFormData(userData);
       } catch (error) {
-        console.log('Failed to fetch carts list', error);
+        console.log('Failed to fetch data', error);
+        setError('Failed to fetch data');
       }
     })();
   }, [userId]);
+  
 
   return (
     <Box className={classes.cartContainer}>
       <Box className={classes.leftPanel}>
-        {/* Thêm nội dung cho phần bên trái nếu cần */}
-        Left
+        <Box className={classes.address}>
+          <Typography  component="h1" variant='h5' style={{fontFamily:'monospace'}}>
+            Thông tin vận chuyển
+          </Typography>
+          <Formik
+        initialValues={formData}
+        enableReinitialize
+        validationSchema={validationSchema}
+        // onSubmit={handleUpdateUser}
+      >
+        {({ handleChange, handleBlur }) => (
+          <Form className={classes.wrapper}>
+            <Form className={classes.wrapper}>
+             <Box className={classes.item}>
+              <Typography className={classes.name}>Tên người đặt</Typography>
+               <Field
+                as={TextField}
+                name="displayName"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                fullWidth={true}
+                fontFamily='monospace'
+              />
+            </Box>
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Email</Typography>
+              <Field
+                as={TextField}
+                name="email"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                fullWidth={true}
+              />
+            </Box>
+       
+            <Box className={classes.item}>
+              <Typography className={classes.name}>Số điện thoại</Typography>
+              <Field
+                as={TextField}
+                name="contactPhone"
+                className={classes.input}
+                variant="outlined"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                fullWidth={true}
+              />
+            </Box>
+          </Form>
+            {/* <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Update
+            </Button>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="secondary"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button> */}
+          </Form>
+        )}
+      </Formik>  
+
+        </Box>
       </Box>
       <Box className={classes.rightPanel}>
         {cartList.map((cartItem) => (

@@ -10,6 +10,8 @@ import slide6 from '../../assets/slide/slide6.jpg';
 import slide7 from '../../assets/slide/slide7.jpg';
 import slide8 from '../../assets/slide/slide8.jpg';
 import slide9 from '../../assets/slide/slide9.jpg';
+import slide10 from '../../assets/slide/slide10.jpg';
+import slide11 from '../../assets/slide/slide11.jpg';
 
 const imageList = [
     {
@@ -40,6 +42,11 @@ const imageList = [
                 key: '1-5',
                 src: slide4,
                 alt: 'Image 5',
+            },
+            {
+                key: '1-12',
+                src: slide11,
+                alt: 'Image 12',
             },
         ],
     },
@@ -72,6 +79,11 @@ const imageList = [
                 src: slide9,
                 alt: 'Image 10',
             },
+            {
+                key: '1-11',
+                src: slide10,
+                alt: 'Image 11',
+            },
         ],
     },
 ];
@@ -80,7 +92,7 @@ const Slideshow = () => {
     return (
         <Carousel
             autoplay
-            autoplaySpeed={1000}
+            autoplaySpeed={1500}
             arrows
             draggable
             waitForAnimate

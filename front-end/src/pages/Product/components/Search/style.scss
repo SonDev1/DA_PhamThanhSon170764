@@ -1,8 +1,9 @@
 
 .wrapper__search {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    // align-items: center;
+    align-items: center;
     height: 170px; 
     width: 100%;
     background-color: #eaeaea;
@@ -16,7 +17,19 @@
 //     margin-left: 100px;
 // }
 
-.search-input {
+// .search-input {
+//     width: 100%;
+//     max-width: 805px;
+//     height: 45px;
+//   }
+.autocomplete-custom .ant-input-search-button {
+    display: none; /* Ẩn icon tìm kiếm */
+  }
+  .search-input-custom input {
+    border-radius: 0px !important; /* Loại bỏ border radius của input */
+  }
+  .search-input-custom input {
+    border-radius: 0px !important; /* Loại bỏ border radius của input */
     width: 100%;
     max-width: 805px;
     height: 45px;

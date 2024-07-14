@@ -5,10 +5,8 @@ import CartPages from "../pages/Cart";
 import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import Product from "../pages/Product";
-import DetailPage from "../pages/Product/pages/DetailPage";
-import MenuItemLeft from "../pages/Product/components/Menu/index";
-import TestPage from "../pages/Product/components/Search";
 import SearchComponent from "../pages/Product/components/Search";
+import DetailPage from "../pages/Product/pages/DetailPage";
 
 export const routes = [
     { 

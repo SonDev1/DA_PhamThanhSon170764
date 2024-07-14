@@ -374,7 +374,7 @@ function ListPage(props) {
                     </div>
                 </div>
             </div>
-            <div className="wrapper__slide" style={{height:'100px'}}>
+            <div className="wrapper__slide" style={{height:'100px', borderBottom:'1px solid black'}}>
               <img src={slideImage} alt="Slide" style={{ width: '100%', height: '100%' }} />
             </div>
               <Slideshow/>
