@@ -149,7 +149,7 @@
 //===================================================================================================================
 
 import React, { useEffect, useState } from "react";
-import { AutoComplete, Input } from "antd";
+import { AutoComplete, Button, Input } from "antd";
 import axios from "axios";
 import '../Search/style.scss'
 import { Box } from "@material-ui/core";
@@ -165,6 +165,7 @@ const SearchComponent = () => {
       try {
         const response = await axios.get('http://localhost:5000/api/products/get-all');
         const products = response.data;
+        setOptions([]);
   
         if (Array.isArray(products)) {
           let filteredProducts = [];
@@ -185,6 +186,7 @@ const SearchComponent = () => {
           }));
   
           setOptions(options);
+          console.log("setOptions",setOptions);
         } else {
           console.error("Products data format is not an array:", products);
         }
@@ -213,17 +215,22 @@ const SearchComponent = () => {
   return (
     <Box className="wrapper__search">
       <AutoComplete
-      style={{ width: '80%' }}
+      style={{  justifyContent: 'center' , width:"802px", height:"42px",borderRadius: "0px"}}
       options={options}
       onSelect={handleSelect}
       onSearch={handleSearch}
+      className="autocomplete-custom"
     >
       <Search
         placeholder="Tìm kiếm sản phẩm"
         enterButton
-        className="search-input"
+        className="search-input-custom"
+        style={{borderRadius: "0px",}}
       />
     </AutoComplete>
+    <Button 
+      style={{borderRadius: "0px", background:'black',color:'white', marginTop:20,height:'47px',width:'150px'}}
+    >Tim kiem</Button>
     </Box>
   );
 };
