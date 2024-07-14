@@ -18,6 +18,12 @@ export class CartRepository {
     return this.cartModel.create(data);
   }
 
+  async getById(id: ObjectId) {
+    return await this.cartModel.findById(id);
+  }
+  async getByProductIdAndUserId(userId: ObjectId, productId: ObjectId) {
+    return this.cartModel.find({ userId: userId, productId: productId });
+  }
   async getByUserId(userId: ObjectId) {
     return this.cartModel.aggregate([
       {
@@ -42,6 +48,10 @@ export class CartRepository {
 
   async deleteCartByProductIdAndUserId(productId: ObjectId, userId: ObjectId) {
     return await this.cartModel.deleteOne({ productId, userId });
+  }
+
+  async deleteCartById(cartId: ObjectId) {
+    return await this.cartModel.findByIdAndDelete(cartId);
   }
 
   async updateCartQuantity(
