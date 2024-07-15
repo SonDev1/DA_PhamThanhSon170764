@@ -10,11 +10,15 @@ import {
 // import { addToCart, showMiniCart } from 'features/Cart/cartSlice';
 import { enqueueSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, Routes, Route, Outlet } from 'react-router-dom';
 // import AddToCart from '../components/AddToCart';
 import ProductInfo from '../components/ProductInfo';
 import useProductDetail from '../hooks/useProductDetail';
 import ProductThumnail from '../components/ProductThumnail';
+import ProductDescription from '../components/ProductDescription';
+import ProductAdditional from '../components/ProductAdditional';
+import ProductReviews from '../components/ProductReviews';
+import ProductMenu from '../components/ProductMenu';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,9 +76,9 @@ function DetailPage() {
   const classes = useStyles();
   const { productId } = useParams();
   // console.log("productId :",productId);
-  // const location = useLocation();
-  // const url = location.pathname;
-  // console.log("url :",url);
+  const location = useLocation();
+  const url = location.pathname;
+  console.log("url :",url);
 
   const { product, loading } = useProductDetail(productId);
   // console.log("product",product);
@@ -118,8 +122,14 @@ function DetailPage() {
         </Paper>
 
         <Box className={classes.productMenu}>
-          {/* <ProductMenu /> */}
+          <ProductMenu />
         </Box>
+        <Routes>
+          <Route path={url} element={<ProductDescription  />} product={product} />
+          <Route path={`${url}/additional`} element={<ProductAdditional  />} />
+          <Route path={`${url}/reviews`} element={<ProductReviews  />} />
+        </Routes>
+        <Outlet />
       </Container>
     </Box>
   );
