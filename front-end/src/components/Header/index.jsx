@@ -143,12 +143,21 @@ import PropTypes from 'prop-types';
 import 'boxicons';
 import '../Header/style.scss';
 import logo from '../../assets/logo/logo.svg';
-import { Box } from '@material-ui/core';
+import { Badge, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import SearchComponent from '../../pages/Product/components/Search';
+import { useNavigate } from 'react-router-dom';
+import { AccountCircle, Search, ShoppingCart } from '@material-ui/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../pages/Auth/userSlice';
+
 
 function Header(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State để điều khiển dropdown
+    const navigate = useNavigate()
+    const [anchorEl, setAnchorEl] = useState(null);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
@@ -161,6 +170,29 @@ function Header(props) {
     const handleSearchClick = () => {
         setIsDropdownOpen(!isDropdownOpen); // Đảo ngược trạng thái hiển thị dropdown
     };
+
+    const handleCartClick = () => {
+        navigate('/cart');
+    };
+
+    const handleUserClick = (e) => {
+        setAnchorEl(e.currentTarget);
+    };
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+
+    const handleLogoutClick = () => {
+        const action = logout();
+        dispatch(action);
+        handleCloseMenu();
+        navigate('/');
+    };
+
+    const handleUserInfo = () => {
+        navigate('/account');
+    }
 
     return (
         <div className='wrapper__header'>
@@ -188,16 +220,43 @@ function Header(props) {
 
             <div className='wrapper__header__social-media'>
                 {isLoggedIn ? (
+                    // <Box>
+                    //     <a style={{ '--i': 1, marginRight: '18px' }} href='/cart'>
+                    //         <box-icon type='solid' name='cart' color='#000'></box-icon>
+                    //     </a>
+                    //     <a style={{ '--i': 2, marginRight: '18px' }} href='/account'>
+                    //         <box-icon type='solid' name='user-circle' color='#000'></box-icon>
+                    //     </a>
+                    //     <a style={{ '--i': 3, marginRight: '18px' }} href='#' onClick={handleSearchClick}>
+                    //         <box-icon type='solid' name='search-alt-2'></box-icon>
+                    //     </a>
+                    // </Box>
                     <Box>
-                        <a style={{ '--i': 1, marginRight: '18px' }} href='/cart'>
-                            <box-icon type='solid' name='cart' color='#000'></box-icon>
-                        </a>
-                        <a style={{ '--i': 2, marginRight: '18px' }} href='/account'>
-                            <box-icon type='solid' name='user-circle' color='#000'></box-icon>
-                        </a>
-                        <a style={{ '--i': 3, marginRight: '18px' }} href='#' onClick={handleSearchClick}>
-                            <box-icon type='solid' name='search-alt-2'></box-icon>
-                        </a>
+                        {/* <a style={{ '--i': 3, marginRight: '18px' }} href='#' onClick={handleSearchClick}>
+                            <box-icon name='search-alt-2'></box-icon>
+                        </a> */}
+                        <IconButton
+                                size='large'
+                                color='inherit'
+                                onClick={handleSearchClick}
+                        >
+                                <Search/>
+                        </IconButton>
+                        <IconButton
+                                size='large'
+                                color='inherit'
+                                onClick={handleCartClick}
+                            >
+                                <Badge badgeContent={1} color='error'>
+                                    <ShoppingCart style={{ color: 'black' }}/>
+                                </Badge>
+                        </IconButton>
+                        <IconButton
+                                color='inherit'
+                                onClick={handleUserClick}
+                            >
+                                <AccountCircle />
+                        </IconButton>
                     </Box>
                 ) : (
                     <>
@@ -214,10 +273,29 @@ function Header(props) {
                 )}
             </div>
 
-            {/* Dropdown SearchComponent */}
+
             <div className={`search-dropdown ${isDropdownOpen ? 'active' : ''}`}>
                 <SearchComponent />
             </div>
+            <Menu
+                keepMounted
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMenu}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                getContentAnchorEl={null}
+            >
+                {/* <MenuItem onClick={handleCloseMenu}>Profile</MenuItem> */}
+                <MenuItem onClick={handleUserInfo}>My account</MenuItem>
+                <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+            </Menu>
         </div>
     );
 }
