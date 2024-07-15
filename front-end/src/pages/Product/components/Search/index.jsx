@@ -86,7 +86,7 @@ const SearchComponent = () => {
       />
     </AutoComplete>
     <Button 
-      style={{borderRadius: "0px", background:'black',color:'white', marginTop:20,height:'47px',width:'150px'}}
+      style={{borderRadius: "0px", background:'black',color:'white', marginTop:20,height:'47px',width:'150px',fontFamily: 'monospace',}}
     >Tim kiem</Button>
     </Box>
   );

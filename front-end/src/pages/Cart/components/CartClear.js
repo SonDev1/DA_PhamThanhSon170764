@@ -31,7 +31,7 @@ const CartClear = () => {
                     variant="contained" 
                     color="primary" 
                     href="/products"
-                    style={{ background : 'black', color : 'white' , borderRadius : '0px' , marginTop:'10px'}}
+                    style={{ background : 'black', color : 'white' , borderRadius : '0px' , marginTop:'10px',fontFamily: 'monospace',}}
                 >
                     Tiếp tục mua sắm
                 </Button>

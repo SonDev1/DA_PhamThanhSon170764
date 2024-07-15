@@ -22,23 +22,23 @@ const useStyles = makeStyles((theme) => ({
     },
     name: {
         fontWeight: '700',
-        fontFamily: 'Alumni Sans',
+        fontFamily: 'monospace',
     },
     descriptionBox:{
-        fontFamily: 'Montserrat !important',
+        fontFamily: 'monospace',
 
 
     },
     descriptionTitle:{
         fontWeight: "800",
-        fontFamily: 'Montserrat !important',
+        fontFamily: 'monospace',
         fontSize: '20px',
         // borderBottom: `1px solid ${theme.palette.grey[300]}`,
         borderTop: `1px solid ${theme.palette.grey[300]}`,
         marginTop:'10px'
     },
     description: {
-        fontFamily: 'Montserrat !important',
+        fontFamily: 'monospace',
         fontSize: '20px',
     },
     priceBox: {
@@ -48,20 +48,20 @@ const useStyles = makeStyles((theme) => ({
     salePrice: {
         marginRight: theme.spacing(1),
         fontSize: '18px',
-        fontFamily: 'Montserrat',
+        fontFamily: 'monospace',
         fontWeight: '600',
     },
     originalPrice: {
         marginRight: theme.spacing(1),
         fontSize: '18px',
-        fontFamily: 'Montserrat',
+        fontFamily: 'monospace',
         textDecoration: 'line-through',
         color: '#807D7C',
     },
     promotionPercent: {
         color: '#dc4136',
         fontSize: '18px',
-        fontFamily: 'Montserrat',
+        fontFamily: 'monospace',
         fontWeight: '500',
     },
     dialSize: {
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     },
     sizeName: {
         justifyContent: 'conter',
-        fontFamily: 'Montserrat',
+        fontFamily: 'monospace',
         fontSize: '24px',
     },
     payment: {
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 
         '& > span': {
             color: '#807D7C',
-            fontFamily: 'Montserrat',
+            fontFamily: 'monospace',
             fontSize: '20px',
         },
     },
@@ -238,6 +238,7 @@ function ProductInfo({ product = {} }) {
                         marginRight: '10px', 
                         background: 'black' ,
                         borderRadius: '0px' ,
+                        fontFamily: 'monospace',
                     }}
                 >
                     Buy Now
@@ -252,6 +253,7 @@ function ProductInfo({ product = {} }) {
                         border: '1px solid black',
                         fontWeight: 'bold',
                         borderRadius: '0px' ,
+                        fontFamily: 'monospace',
                     }}
                 >
                     Add to Cart
@@ -297,12 +299,12 @@ function ProductInfo({ product = {} }) {
                 aria-describedby='modal-description'
             >
                 <div className={classes.modal}>
-                    <Typography variant='h5' id='modal-title' style={{fontFamily :'Montserrat'}}>
+                    <Typography variant='h5' id='modal-title' style={{fontFamily: 'monospace',}}>
                         Vui lòng đăng nhập để tiếp tục 
                     </Typography>
                     <Box style={{display: "flex",justifyContent: "space-between" , marginTop:'10px'}}>
-                        <Button style={{ borderRadius: '0px' ,height:'32px',width:'100px'}} onClick={handleCloseModal}>Đóng</Button>
-                        <Button style={{ borderRadius: '0px' ,height:'32px',width:'100px' , background:'black',color:'#fff'}} onClick={handleNavigate}>Đăng nhập</Button>
+                        <Button style={{ borderRadius: '0px' ,height:'32px',width:'100px',fontFamily: 'monospace',}} onClick={handleCloseModal}>Đóng</Button>
+                        <Button style={{ borderRadius: '0px' ,height:'32px',width:'100px' , background:'black',color:'#fff',fontFamily: 'monospace',}} onClick={handleNavigate}>Đăng nhập</Button>
                     </Box>
                 </div>
             </Modal>

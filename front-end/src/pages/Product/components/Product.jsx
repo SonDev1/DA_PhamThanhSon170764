@@ -71,7 +71,7 @@ function Product({ product }) {
                         whiteSpace: 'nowrap',
                         fontWeight: 'bold',
                         color: '#333',
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'monospace',
 
                     }}
                 >
@@ -96,7 +96,7 @@ function Product({ product }) {
                                 marginRight: '12px',
                                 fontWeight: 'bold',
                                 color: '#333',
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'monospace',
                                 fontSize: '1rem',
                             }}
                         >
@@ -111,7 +111,7 @@ function Product({ product }) {
                                 color: '#808089',
                                 textDecoration: 'line-through',
                                 fontSize: '0.875rem',
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'monospace',
                             }}
                         >
                             {formatPrice(product.originalPrice)}
