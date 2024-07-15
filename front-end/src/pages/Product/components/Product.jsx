@@ -11,8 +11,11 @@ function Product({ product }) {
         navigate(`/products/${product._id}`);
     };
 
-    // Tính phần trăm giảm giá
-    // const discountPercent = ((product.originalPrice - product.salePrice) / product.originalPrice) * 100;
+    const thumbnailUrl = product.images[0] 
+    // ? `http://localhost:5000/${product?.images[0]}`
+    ? `${product?.images[0]}`
+    : 'https://via.placeholder.com/444'
+
     const promotionPercent = discountPercentage(product.originalPrice, product.salePrice);
 
     return (
@@ -25,6 +28,7 @@ function Product({ product }) {
                 border: 'none',
                 width: '100%',
                 height: '498px',
+                borderRadius:'0px',
                 position: 'relative', // Đảm bảo Card có vị trí tương đối
             }}
             onClick={handleClick}
@@ -48,7 +52,8 @@ function Product({ product }) {
                 component='img'
                 alt={product.name}
                 image={
-                    'https://curnonwatch.com/wp-content/uploads/2024/06/NGO06970-1-e1717429748128.jpg'
+                    // 'https://curnonwatch.com/wp-content/uploads/2024/06/NGO06970-1-e1717429748128.jpg'
+                    thumbnailUrl
                 }
                 style={{
                     width: '100%',

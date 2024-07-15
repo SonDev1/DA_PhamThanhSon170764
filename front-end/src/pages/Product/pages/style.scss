@@ -42,6 +42,32 @@
     height: "100px !impotant";
     background: "red";
 }
+/* custom-pagination.css */
+.custom-pagination .ant-pagination-item a {
+    color: black; /* Màu chữ của các trang */
+  }
+  
+  .custom-pagination .ant-pagination-item-active a {
+    color: white; /* Màu chữ của trang hiện tại */
+    border: 1px solid #000;
+
+  }
+  
+  .custom-pagination .ant-pagination-item-active {
+    background-color: black; /* Màu nền của trang hiện tại */
+    border-radius: 4px;
+    border: 1px solid #000;
+  }
+  
+  .custom-pagination .ant-pagination-prev,
+  .custom-pagination .ant-pagination-next {
+    color: black; /* Màu của nút Previous và Next */
+  }
+  .custom-pagination .ant-pagination-item:hover a {
+    color: white; /* Màu chữ khi hover vào các trang */
+    // background: white;
+  }
+  
 
 @keyframes slideRight {
     0% {
