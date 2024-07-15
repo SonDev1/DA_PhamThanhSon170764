@@ -37,20 +37,22 @@
             font-size: 18px;
             color: #222;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             margin: 0 20px;
             transition: .3s;
             opacity: 0;
             animation: slideTop .5s ease forwards;
             animation-delay: calc(0.2s * var(--i));
+            font-family: monospace;
+
 
             &:hover,
             &.active {
                 color: #000; 
                 font-size: 20px;
                 font-weight: 600;
-                text-decoration:solid;
-
+                // text-decoration:solid;
+                text-decoration: underline;
             }
         }
     }
