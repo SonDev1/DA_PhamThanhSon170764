@@ -270,6 +270,11 @@ const useStyles = makeStyles((theme) => ({
   },
   input:{
     fontFamily: 'monospace',
+  },
+  img:{
+    height: '120px',
+    width: '120px',
+    marginRight:'15px'
   }
 }));
 
@@ -416,8 +421,8 @@ function CartPages(props) {
           <Box key={cartItem._id}>
             {cartItem.product.map((productItem, index) => (
               <Box key={index} className={classes.cartItem}>
-                <Box className="cart__img">
-                  <img src={productItem.imageUrl} alt={productItem.name} className={classes.cartImage} />
+                <Box className={classes.img}>
+                  <img src={productItem.images ? `${productItem.images}` : 'https://via.placeholder.com/444'} alt={productItem.name} className={classes.cartImage} />
                 </Box>
                 <Box className={classes.cartDetails}>
                   <Typography component="h1" variant="h5" className={classes.name}>

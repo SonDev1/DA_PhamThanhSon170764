@@ -7,6 +7,8 @@ import cartsApi from '../../../api/cartApi';
 import { enqueueSnackbar } from 'notistack';
 import orderApi from '../../../api/ordersApi';
 import { useNavigate } from 'react-router-dom';
+import { addToCart } from '../../Cart/cartSlice';
+import { useDispatch } from 'react-redux';
 
 
 ProductInfo.propTypes = {
@@ -108,6 +110,8 @@ function ProductInfo({ product = {} }) {
     const promotionPercent = discountPercentage(originalPrice, salePrice);
     const [openModal, setOpenModal] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
 
     // Fake data for test pay now
     // ============================================================================================================================
@@ -135,12 +139,12 @@ function ProductInfo({ product = {} }) {
         }
         try {
             const req = await cartsApi.add(payload);
-            // const action = addToCart({
-            //     id: product._id,
-            //     product,
-            //     quantity: quantity,
-            //   });
-            //   dispatch(action);
+            const action = addToCart({
+                id: product._id,
+                product,
+                quantity: 1,
+              });
+              dispatch(action);
             enqueueSnackbar('Đã thêm vào giỏ hàng  ', { variant: 'success' });
         } catch (error) {
             console.error('Add to cart failed:', error);

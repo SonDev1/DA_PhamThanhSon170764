@@ -149,6 +149,7 @@ import { useNavigate } from 'react-router-dom';
 import { AccountCircle, Search, ShoppingCart } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../pages/Auth/userSlice';
+import { cartItemsCountSelector } from '../../pages/Cart/selectors';
 
 
 function Header(props) {
@@ -165,6 +166,9 @@ function Header(props) {
             setIsLoggedIn(true);
         }
     }, []);
+
+    const cartItemsCount = useSelector(cartItemsCountSelector);
+
 
     // Handler để xử lý khi ấn vào icon search
     const handleSearchClick = () => {
@@ -247,7 +251,7 @@ function Header(props) {
                                 color='inherit'
                                 onClick={handleCartClick}
                             >
-                                <Badge badgeContent={1} color='error'>
+                                <Badge badgeContent={cartItemsCount} color='error'>
                                     <ShoppingCart style={{ color: 'black' }}/>
                                 </Badge>
                         </IconButton>

@@ -365,11 +365,13 @@ function ListPage(props) {
                     <div className='wrapper__product__productList__products'>
                         <ProductList data={productList} />
                         <Pagination
+                            className="custom-pagination"
                             align='center'
                             current={Number.parseInt(queryParams._page)}
                             total={totalProducts}
                             pageSize={queryParams._limit}
-                            onChange={(page) => handleFiltersChange({ _page: page })}
+                            onChange={(page) => handleFiltersChange({ _page: page })
+                        }
                         />
                     </div>
                 </div>
