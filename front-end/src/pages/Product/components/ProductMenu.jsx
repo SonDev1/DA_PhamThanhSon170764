@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.secondary,
         textDecoration: 'none',
         '&.active': {
-          color: theme.palette.primary.main,
+          color: 'black',
           textDecoration: 'underline',
           fontWeight: 'bold',
         },

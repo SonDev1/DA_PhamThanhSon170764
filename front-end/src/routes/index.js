@@ -2,6 +2,7 @@ import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
 import AccountInfo from "../pages/AccountInfo";
 import { SocialRedirect } from "../pages/Auth/SocialMediaRedirect";
 import CartPages from "../pages/Cart";
+import CartClear from "../pages/Cart/components/CartClear";
 import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import Product from "../pages/Product";
@@ -74,7 +75,7 @@ export const routes = [
     },
     { 
         path:'/test',
-        page : SearchComponent,
+        page : CartClear,
         isShowHeader : true,
         isShowFooter : true,
     },

@@ -285,7 +285,7 @@ import ProductFilter from '../components/ProductFilter';
 import ProductList from '../components/ProductList';
 import ProductSort from '../components/ProductSort';
 import './style.scss';
-import slideImage from '../../../assets/images/Slide3.png'
+import slideImage from '../../../assets/images/Slide3.png';
 import Slideshow from '../../../components/Slideshow';
 
 function ListPage(props) {
@@ -309,7 +309,7 @@ function ListPage(props) {
             try {
                 const data = await productsApi.getAll(queryParams);
                 setProductList(data.rows);
-                console.log('data :', data);
+                // console.log('data :', data);
                 setTotalProducts(data.totalProducts); // Setting the total products count
             } catch (error) {
                 console.log('Failed to get all products:', error);
@@ -343,7 +343,7 @@ function ListPage(props) {
     };
 
     return (
-        <div style={{display:"flex",flexDirection:'column'}}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div className='wrapper__product'>
                 <div className='wrapper__product__filter'>
                     <ProductFilter
@@ -365,21 +365,27 @@ function ListPage(props) {
                     <div className='wrapper__product__productList__products'>
                         <ProductList data={productList} />
                         <Pagination
-                            className="custom-pagination"
+                            className='custom-pagination'
                             align='center'
                             current={Number.parseInt(queryParams._page)}
                             total={totalProducts}
                             pageSize={queryParams._limit}
-                            onChange={(page) => handleFiltersChange({ _page: page })
-                        }
+                            onChange={(page) => handleFiltersChange({ _page: page })}
                         />
                     </div>
                 </div>
             </div>
-            <div className="wrapper__slide" style={{height:'100px', borderBottom:'1px solid black'}}>
-              <img src={slideImage} alt="Slide" style={{ width: '100%', height: '100%' }} />
+            <div
+                className='wrapper__slide'
+                style={{ height: '100px', borderBottom: '1px solid black' }}
+            >
+                <img
+                    src={slideImage}
+                    alt='Slide'
+                    style={{ width: '100%', height: '100%' }}
+                />
             </div>
-              <Slideshow/>
+            <Slideshow />
         </div>
     );
 }

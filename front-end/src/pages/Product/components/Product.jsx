@@ -28,6 +28,7 @@ function Product({ product }) {
                 border: 'none',
                 width: '100%',
                 height: '498px',
+                borderRadius:'0px',
                 position: 'relative', // Đảm bảo Card có vị trí tương đối
             }}
             onClick={handleClick}
