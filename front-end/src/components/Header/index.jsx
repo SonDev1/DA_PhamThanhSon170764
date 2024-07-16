@@ -232,10 +232,10 @@ const cartItemsCount = cartList.length
                 <a style={{ '--i': 3 }} href='/reviews'>
                     NỮ GIỚI
                 </a>
-                <a style={{ '--i': 4 }} href='/featured'>
+                <a style={{ '--i': 4 }} href='/about'>
                     VỀ CHÚNG TÔI
                 </a>
-                <a style={{ '--i': 5 }} href='/contact'>
+                <a style={{ '--i': 5 }} href='/blog'>
                     BLOG
                 </a>
             </nav>

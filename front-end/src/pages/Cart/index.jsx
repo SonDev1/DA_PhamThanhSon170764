@@ -345,8 +345,8 @@ function CartPages(props) {
                                         <Box className={classes.img}>
                                             <img
                                                 src={
-                                                    productItem.images
-                                                        ? `${productItem.images}`
+                                                    productItem.images[0]
+                                                        ? `${productItem.images[0]}`
                                                         : 'https://via.placeholder.com/444'
                                                 }
                                                 alt={productItem.name}

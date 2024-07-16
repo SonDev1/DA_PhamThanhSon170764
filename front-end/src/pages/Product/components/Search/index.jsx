@@ -35,7 +35,8 @@ const SearchComponent = () => {
             key: product._id,
             label: (
               <div>
-                <img src={product.images[0]} alt={product.name} style={{ width: 50, marginRight: 10 }} />
+                <img src={product.images[0] ? `${product?.images[0]}`
+    : 'https://via.placeholder.com/444'} alt={product.name} style={{ width: 50, marginRight: 10 }} />
                 {product.name}
               </div>
             ),
@@ -69,6 +70,10 @@ const SearchComponent = () => {
     navigate(`/products/${option.key}`);
   };
 
+  const handleClose = () => {
+
+  };
+
   return (
     <Box className="wrapper__search">
       <AutoComplete
@@ -88,6 +93,7 @@ const SearchComponent = () => {
     <Button 
       style={{borderRadius: "0px", background:'black',color:'white', marginTop:20,height:'47px',width:'150px',fontFamily: 'monospace',}}
     >Tim kiem</Button>
+      <a className="close-btn" onClick={handleClose}>X</a>
     </Box>
   );
 };
