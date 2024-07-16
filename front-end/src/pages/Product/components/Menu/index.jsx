@@ -2,78 +2,15 @@ import React, { useEffect, useState } from "react";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import categoryApi from '../../../../api/categoryApi'
-
-const data = [
-  {
-    menuId: "2462",
-    name: "Nam",
-    categories: [
-      {
-        categoryId: "category 23323",
-        name: "Dong ho nam",
-        types: [
-          {
-            typeId: "type 8822",
-            name: "Weimar",
-          },
-          {
-            typeId: "type 9781",
-            name: "Weimar",
-          },
-        ],
-      },
-      {
-        categoryId: "category 23393",
-        name: "Trang suc nam",
-        types: [
-          {
-            typeId: "type 8824",
-            name: "Weimar",
-          },
-          {
-            typeId: "type 9785",
-            name: "Weimar",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    menuId: "2464",
-    name: "Nu",
-    categories: [
-      {
-        categoryId: "category 23353",
-        name: "Dong ho nu",
-        types: [
-          {
-            typeId: "type 845622",
-            name: "Weimar",
-          },
-        ],
-      },
-      {
-        categoryId: "category 2334593",
-        name: "Trang suc nu",
-        types: [
-          {
-            typeId: "type 88724",
-            name: "Weimar",
-          },
-        ],
-      },
-    ],
-  },
-];
+import menuApi from "../../../../api/menuApi";
 
 function MenuItemLeft() {
-  const [menuItem1, setMenuItem1]= useState([])
+  const [data, setData]= useState([])
   useEffect(() => {
     (async () => {
       try {
-        const menuItem1 = await categoryApi.getAll();
-        console.log("menuItem1 :" , menuItem1);
-        setMenuItem1(menuItem1);
+        const data = await menuApi.getAll();
+        setData(data);
       } catch (error) {
         console.log('Failed to fetch carts list', error);
       }
@@ -82,7 +19,8 @@ function MenuItemLeft() {
   const handleOnClick = (e) => {
     console.log("Clicked item:", e);
   };
-
+  console.log("data :" , data);
+// debugger
   const menuItem = data.map((menu) => {
     return {
       key: menu.menuId,
