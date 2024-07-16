@@ -72,12 +72,12 @@ export class CartService {
     return await this.cartRepository.deleteCartById(cartIdObjectId);
   }
   async deleteCartByProductIdAndUserId(productId: ObjectId, userId: ObjectId) {
-    const cartExists = await this.cartRepository.getByProductIdAndUserId(
+    const cartExists = await this.cartRepository.getCartByProductIdAndUserId(
       productId,
       userId,
     );
 
-    if (!cartExists || cartExists.length === 0) {
+    if (!cartExists) {
       throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
     }
 
@@ -88,6 +88,7 @@ export class CartService {
   }
   async deleteCartByProductIdsAndUserId(userId: string, productIds: string[]) {
     const userIdObjectId = new ObjectId(userId);
+
     const productIdsObjectId = productIds.map(
       (productId) => new ObjectId(productId),
     );
@@ -97,7 +98,6 @@ export class CartService {
         try {
           await this.deleteCartByProductIdAndUserId(productId, userIdObjectId);
         } catch (err) {
-          // Ném ra ngoại lệ để xử lý bởi catch ở order module
           throw new Error(
             `Error deleting cart for productId ${productId}: ${err.message}`,
           );
@@ -105,8 +105,10 @@ export class CartService {
       });
 
       await Promise.all(deletePromises);
+      return {
+        message: 'Delete carts successfully',
+      };
     } catch (err) {
-      console.log('Delete carts error:', err.message);
       throw new HttpException('Delete carts error', HttpStatus.BAD_REQUEST);
     }
   }

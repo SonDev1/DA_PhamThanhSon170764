@@ -22,6 +22,9 @@ export class CartRepository {
     return await this.cartModel.findById(id);
   }
   async getByProductIdAndUserId(userId: ObjectId, productId: ObjectId) {
+    console.log('productId :', productId);
+    console.log('userId :', userId);
+
     return this.cartModel.find({ userId: userId, productId: productId });
   }
   async getByUserId(userId: ObjectId) {
