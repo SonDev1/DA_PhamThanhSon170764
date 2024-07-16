@@ -10,6 +10,7 @@ function AboutCompany(props) {
                 <div className='aban__wrap'>
                     <div className='aban__bg'>
                         <img
+                            style={{height:"fitContent"}}
                             src='https://curnonwatch.com/wp-content/uploads/2024/04/ANN_8524-Edit.jpg'
                             alt='About Company'
                         />
@@ -58,11 +59,12 @@ function AboutCompany(props) {
                         </div>
                     </div>
                 </div>
-                <div className='aban2__flex'>
-                    <div className='aban2__left2'>
-                        <div className='aban2__img' data-aos='zoom-in'>
-                            <div className='aban2__box'>
+                <div className='aban2__flex' style={{height:"500px"}}>
+                    <div className='aban2__left2' style={{height:"500px"}}>
+                        <div className='aban2__img' data-aos='zoom-in' style={{height:"500px"}}>
+                            <div className='aban2__box' style={{height:"500px"}}>
                                 <img
+                                    style={{height:"fitContent"}}
                                     src='https://curnonwatch.com/wp-content/uploads/2024/04/8_310076-Edit.jpeg'
                                     alt=''
                                 />

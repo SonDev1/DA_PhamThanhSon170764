@@ -2,6 +2,7 @@ import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
 import AboutCompany from "../pages/AboutCompany";
 import AccountInfo from "../pages/AccountInfo";
 import { SocialRedirect } from "../pages/Auth/SocialMediaRedirect";
+import Blog from "../pages/Blog";
 import CartPages from "../pages/Cart";
 import CartClear from "../pages/Cart/components/CartClear";
 import HomePage from "../pages/HomePage";
@@ -76,6 +77,13 @@ export const routes = [
     { 
         path:'/about',
         page : AboutCompany,
+        exact: true,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/blog',
+        page : Blog,
         exact: true,
         isShowHeader : true,
         isShowFooter : true,
