@@ -1,14 +1,23 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { Types } from 'mongoose';
 import { OrderRepository } from '../repository/order.repository';
 import { ObjectId } from 'mongodb';
 import { CreateOrderDto } from '../dto/CreateOrder.dto';
 import { CartService } from './../../cart/service/cart.service';
 import { log } from 'console';
+import { PaymentService } from './../../payment/payment.service';
 
 @Injectable()
 export class OrderService {
   constructor(
+    @Inject(forwardRef(() => PaymentService))
+    private readonly paymentService: PaymentService,
     private orderRepository: OrderRepository,
     private cartService: CartService,
   ) {}
@@ -40,5 +49,26 @@ export class OrderService {
     } catch (err) {
       throw new HttpException('Create order error', HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async paymentOrder(orderId: string) {
+    const orderExist = await this.orderRepository.findById(orderId);
+    const urlPayment = await this.paymentService.createZaloPayment(
+      orderExist.totalAmount,
+      orderId,
+    );
+    return {
+      message: 'create url payment order successfully',
+      urlPayment,
+    };
+  }
+
+  async updateStatus(orderId: string) {
+    const orderExist = await this.orderRepository.findById(orderId);
+    if (!orderExist) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+    }
+    const paymentStatus = 'Success';
+    await this.orderRepository.updateStatus(orderId, paymentStatus);
   }
 }

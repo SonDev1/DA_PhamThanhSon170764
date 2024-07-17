@@ -19,6 +19,10 @@ export class MenuService {
 
   async getAllMenus() {
     const menus = await this.menuRepository.findAll();
-    return menus;
+
+    return menus.map((menu) => {
+      menu.categories.sort((a, b) => a.order - b.order);
+      return menu;
+    });
   }
 }

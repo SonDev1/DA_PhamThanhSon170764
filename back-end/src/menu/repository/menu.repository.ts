@@ -56,6 +56,9 @@ export class MenuRepository {
             categories: { $push: '$categories' },
           },
         },
+        {
+          $sort: { order: 1 },
+        },
       ])
       .exec();
   }
