@@ -206,7 +206,7 @@ function CartPages(props) {
                 setError('Failed to fetch data');
             }
         })();
-    }, [userId]);
+    }, [cartItems]);
 
     // Button Buy Now
     // =========================================================
@@ -325,7 +325,8 @@ function CartPages(props) {
                                                         fullWidth={true}
                                                     />
                                                 </Box>
-                                                <Box sx={{ padding: 2 }}>
+                                            </Form>
+                                            <Box sx={{ padding: 2 }}>
                                                 <FormControl component='fieldset'>
                                                     <FormLabel component='legend'>
                                                         <Typography
@@ -404,86 +405,6 @@ function CartPages(props) {
                                                     </RadioGroup>
                                                 </FormControl>
                                             </Box>
-                                            </Form>
-                                            {/* <Box sx={{ padding: 2 }}>
-                                                <FormControl component='fieldset'>
-                                                    <FormLabel component='legend'>
-                                                        <Typography
-                                                            component='h1'
-                                                            variant='h5'
-                                                            style={{
-                                                                fontFamily: 'monospace',
-                                                                marginBottom: '20px',
-                                                                color:'black'
-                                                            }}
-                                                        >
-                                                            Hình thức thanh toán
-                                                        </Typography>
-                                                    </FormLabel>
-                                                    <RadioGroup
-                                                        aria-label='payment-method'
-                                                        name='payment-method'
-                                                        value={value}
-                                                        onChange={handleChangePay}
-                                                    >
-                                                        <FormControlLabel
-                                                            value='bank-transfer'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <AccountBalanceIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Chuyển khoản ngân hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Thực hiện thanh toán vào
-                                                                            ngay tài khoản ngân hàng
-                                                                            của chúng tôi. Vui lòng
-                                                                            sử dụng Mã đơn hàng của
-                                                                            bạn trong phần Nội dung
-                                                                            thanh toán. Đơn hàng sẽ
-                                                                            được giao sau khi tiền
-                                                                            đã chuyển.
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                        <FormControlLabel
-                                                            value='cod'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <LocalShippingIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Trả tiền mặt khi nhận
-                                                                            hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Trả tiền mặt khi giao
-                                                                            hàng
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                    </RadioGroup>
-                                                </FormControl>
-                                            </Box> */}
                                             <Box
                                                 style={{
                                                     justifyContent: 'center',

@@ -1,6 +1,8 @@
 import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
 import AboutCompany from "../pages/AboutCompany";
 import AccountInfo from "../pages/AccountInfo";
+import Account from "../pages/AccountInfo/components/Account";
+import AccountAdditional from "../pages/AccountInfo/components/AccountAdditional";
 import { SocialRedirect } from "../pages/Auth/SocialMediaRedirect";
 import Blog from "../pages/Blog";
 import CartPages from "../pages/Cart";
@@ -73,6 +75,16 @@ export const routes = [
         page : AccountInfo,
         isShowHeader : true,
         isShowFooter : true,
+        children: [
+            {
+              path: '',
+              page: Account,
+            },
+            {
+              path: 'additional',
+              page: AccountAdditional,
+            },
+          ],
     },
     { 
         path:'/about',
