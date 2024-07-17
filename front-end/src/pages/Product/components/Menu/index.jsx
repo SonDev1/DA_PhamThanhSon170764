@@ -11,6 +11,7 @@ function MenuItemLeft() {
       try {
         const data = await menuApi.getAll();
         setData(data);
+        console.log("data :",data);
       } catch (error) {
         console.log('Failed to fetch carts list', error);
       }
@@ -21,17 +22,17 @@ function MenuItemLeft() {
   };
   const menuItem = data.map((menu) => {
     return {
-      key: menu.menuId,
+      key: menu._id.toString(),
       icon: <AppstoreOutlined />,
       label: menu.name,
       children: menu.categories.map((category) => {
         return {
-          key: category.categoryId,
+          key: `categoryId ${category._id.toString()} `,
           label: category.name,
           onTitleClick: handleOnClick,
           children: category.types.map((type) => {
             return {
-              key: type.typeId,
+              key:`typeId ${type._id.toString()}`,
               label: type.name,
             };
           }),

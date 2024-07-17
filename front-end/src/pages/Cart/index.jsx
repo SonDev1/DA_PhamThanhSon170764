@@ -1,17 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import cartsApi from '../../api/cartApi';
-import { formatPrice } from '../../../src/utils/common';
 import { Box, Button, IconButton, makeStyles, TextField, Typography } from '@material-ui/core';
-import { Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { useSnackbar } from 'notistack';
-import userApi from '../../api/userApi';
-import { removeFromCart } from './cartSlice';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Field, Form, Formik } from 'formik';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import { formatPrice } from '../../../src/utils/common';
+import cartsApi from '../../api/cartApi';
 import orderApi from '../../api/ordersApi';
+import userApi from '../../api/userApi';
+import SearchAddressField from '../../components/form-controls/SearchAddressField';
+import { removeFromCart } from './cartSlice';
 import CartClear from './components/CartClear';
+import { styled } from '@mui/material/styles';
+
+const CustomRadio = styled(Radio)({
+  '&.Mui-checked': {
+    color: 'black',
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -116,6 +126,7 @@ const useStyles = makeStyles((theme) => ({
     },
     rightPanel: {
         width: '50%',
+        marginTop: '20px',
     },
     input: {
         fontFamily: 'monospace',
@@ -136,8 +147,14 @@ const validationSchema = Yup.object().shape({
     // contactPhone: Yup.string().required('Required'),
 });
 function CartPages(props) {
-    const classes = useStyles();
+    const [value, setValue] = React.useState('cod');
 
+    const handleChangePay = (event) => {
+        setValue(event.target.value);
+    };
+    const classes = useStyles();
+    const cartItems = useSelector((state) => state.cart.cartItems);
+    console.log('cartItems :', cartItems);
     const [cartList, setCartList] = useState([]);
 
     const userId = localStorage.getItem('userId');
@@ -157,11 +174,12 @@ function CartPages(props) {
     const handleRemoveItem = async (id) => {
         try {
             const userId = localStorage.getItem('userId');
-            const productIds = [id]; // Wrap the product ID in an array
+            console.log('id :', id);
+            const productIds = [id];
             console.log('productIds :', productIds);
-            await cartsApi.delete(userId, productIds);
-            // dispatch(removeFromCart(id));
-            // enqueueSnackbar('Đã xóa khỏi giỏ hàng!', { variant: 'error' });
+            const req = await cartsApi.delete(userId, productIds);
+            dispatch(removeFromCart(id));
+            enqueueSnackbar('Đã xóa khỏi giỏ hàng!', { variant: 'error' });
         } catch (error) {
             enqueueSnackbar('Xóa sản phẩm khỏi giỏ hàng thất bại!', { variant: 'error' });
         }
@@ -226,115 +244,282 @@ function CartPages(props) {
 
     return (
         <Box>
-            {cartList.length === 0 ? (
+            {cartItems.length === 0 ? (
                 <CartClear />
             ) : (
                 <Box className={classes.cartContainer}>
                     <Box className={classes.leftPanel}>
-                        <Box className={classes.address}>
-                            <Typography
-                                component='h1'
-                                variant='h5'
-                                style={{ fontFamily: 'monospace', marginBottom: '20px' }}
-                            >
-                                Thông tin vận chuyển
-                            </Typography>
-                            <Formik
-                                initialValues={formData}
-                                enableReinitialize
-                                validationSchema={validationSchema}
-                                onSubmit={handleBuyNow}
-                            >
-                                {({ handleChange, handleBlur }) => (
-                                    <Form className={classes.wrapper}>
+                        <Box className={classes.leftPanelUp}>
+                            <Box className={classes.address}>
+                                <Typography
+                                    component='h1'
+                                    variant='h5'
+                                    style={{ fontFamily: 'monospace', marginBottom: '20px' }}
+                                >
+                                    Thông tin vận chuyển
+                                </Typography>
+                                <Formik
+                                    initialValues={formData}
+                                    enableReinitialize
+                                    validationSchema={validationSchema}
+                                    onSubmit={handleBuyNow}
+                                >
+                                    {({ handleChange, handleBlur }) => (
                                         <Form className={classes.wrapper}>
-                                            <Box className={classes.item}>
-                                                <Typography className={classes.name}>
-                                                    Tên người đặt
-                                                </Typography>
-                                                <Field
-                                                    as={TextField}
-                                                    name='displayName'
-                                                    className={classes.input}
-                                                    variant='outlined'
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    fullWidth={true}
-                                                    fontFamily='monospace'
-                                                />
-                                            </Box>
-                                            <Box className={classes.item}>
-                                                <Typography className={classes.name}>
-                                                    Địa chỉ ( quận , thành phố )
-                                                </Typography>
-                                                <Field
-                                                    as={TextField}
-                                                    name='address'
-                                                    className={classes.input}
-                                                    variant='outlined'
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    fullWidth={true}
-                                                />
-                                            </Box>
-                                            <Box className={classes.item}>
-                                                <Typography className={classes.name}>
-                                                    Số nhà{' '}
-                                                </Typography>
-                                                <Field
-                                                    as={TextField}
-                                                    name='adressDetail'
-                                                    className={classes.input}
-                                                    variant='outlined'
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    fullWidth={true}
-                                                />
-                                            </Box>
+                                            <Form className={classes.wrapper}>
+                                                <Box className={classes.item}>
+                                                    <Typography className={classes.name}>
+                                                        Tên người đặt
+                                                    </Typography>
+                                                    <Field
+                                                        as={TextField}
+                                                        name='displayName'
+                                                        className={classes.input}
+                                                        variant='outlined'
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        fullWidth={true}
+                                                        fontFamily='monospace'
+                                                    />
+                                                </Box>
+                                                <Box className={classes.item}>
+                                                    <Typography className={classes.name}>
+                                                        Địa chỉ ( quận , thành phố )
+                                                    </Typography>
+                                                    <Field
+                                                        as={SearchAddressField}
+                                                        name='address'
+                                                        className={classes.input}
+                                                        variant='outlined'
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        fullWidth={true}
+                                                    />
+                                                </Box>
+                                                <Box className={classes.item}>
+                                                    <Typography className={classes.name}>
+                                                        Số nhà{' '}
+                                                    </Typography>
+                                                    <Field
+                                                        as={TextField}
+                                                        name='adressDetail'
+                                                        className={classes.input}
+                                                        variant='outlined'
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        fullWidth={true}
+                                                    />
+                                                </Box>
 
-                                            <Box className={classes.item}>
-                                                <Typography className={classes.name}>
-                                                    Số điện thoại
-                                                </Typography>
-                                                <Field
-                                                    as={TextField}
-                                                    name='contactPhone'
-                                                    className={classes.input}
-                                                    variant='outlined'
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    fullWidth={true}
-                                                />
+                                                <Box className={classes.item}>
+                                                    <Typography className={classes.name}>
+                                                        Số điện thoại
+                                                    </Typography>
+                                                    <Field
+                                                        as={TextField}
+                                                        name='contactPhone'
+                                                        className={classes.input}
+                                                        variant='outlined'
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        fullWidth={true}
+                                                    />
+                                                </Box>
+                                                <Box sx={{ padding: 2 }}>
+                                                <FormControl component='fieldset'>
+                                                    <FormLabel component='legend'>
+                                                        <Typography
+                                                            component='h1'
+                                                            variant='h5'
+                                                            style={{
+                                                                fontFamily: 'monospace',
+                                                                marginBottom: '20px',
+                                                                color:'black'
+                                                            }}
+                                                        >
+                                                            Hình thức thanh toán
+                                                        </Typography>
+                                                    </FormLabel>
+                                                    <RadioGroup
+                                                        aria-label='payment-method'
+                                                        name='payment-method'
+                                                        value={value}
+                                                        onChange={handleChangePay}
+                                                    >
+                                                        <FormControlLabel
+                                                            value='bank-transfer'
+                                                            control={<CustomRadio />}
+                                                            label={
+                                                                <Box
+                                                                    display='flex'
+                                                                    alignItems='center'
+                                                                >
+                                                                    <AccountBalanceIcon
+                                                                        color='black'
+                                                                        sx={{ marginRight: 1 }}
+                                                                    />
+                                                                    <Box>
+                                                                        <Typography variant='body1'>
+                                                                            Chuyển khoản ngân hàng
+                                                                        </Typography>
+                                                                        <Typography variant='body2'>
+                                                                            Thực hiện thanh toán vào
+                                                                            ngay tài khoản ngân hàng
+                                                                            của chúng tôi. Vui lòng
+                                                                            sử dụng Mã đơn hàng của
+                                                                            bạn trong phần Nội dung
+                                                                            thanh toán. Đơn hàng sẽ
+                                                                            được giao sau khi tiền
+                                                                            đã chuyển.
+                                                                        </Typography>
+                                                                    </Box>
+                                                                </Box>
+                                                            }
+                                                        />
+                                                        <FormControlLabel
+                                                            value='cod'
+                                                            control={<CustomRadio />}
+                                                            label={
+                                                                <Box
+                                                                    display='flex'
+                                                                    alignItems='center'
+                                                                >
+                                                                    <LocalShippingIcon
+                                                                        color='black'
+                                                                        sx={{ marginRight: 1 }}
+                                                                    />
+                                                                    <Box>
+                                                                        <Typography variant='body1'>
+                                                                            Trả tiền mặt khi nhận
+                                                                            hàng
+                                                                        </Typography>
+                                                                        <Typography variant='body2'>
+                                                                            Trả tiền mặt khi giao
+                                                                            hàng
+                                                                        </Typography>
+                                                                    </Box>
+                                                                </Box>
+                                                            }
+                                                        />
+                                                    </RadioGroup>
+                                                </FormControl>
                                             </Box>
-                                        </Form>
-                                        <Box
-                                            style={{
-                                                justifyContent: 'center',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                            }}
-                                        >
-                                            <Button
-                                                className={classes.button}
-                                                variant='contained'
-                                                color='primary'
-                                                type='submit'
+                                            </Form>
+                                            {/* <Box sx={{ padding: 2 }}>
+                                                <FormControl component='fieldset'>
+                                                    <FormLabel component='legend'>
+                                                        <Typography
+                                                            component='h1'
+                                                            variant='h5'
+                                                            style={{
+                                                                fontFamily: 'monospace',
+                                                                marginBottom: '20px',
+                                                                color:'black'
+                                                            }}
+                                                        >
+                                                            Hình thức thanh toán
+                                                        </Typography>
+                                                    </FormLabel>
+                                                    <RadioGroup
+                                                        aria-label='payment-method'
+                                                        name='payment-method'
+                                                        value={value}
+                                                        onChange={handleChangePay}
+                                                    >
+                                                        <FormControlLabel
+                                                            value='bank-transfer'
+                                                            control={<CustomRadio />}
+                                                            label={
+                                                                <Box
+                                                                    display='flex'
+                                                                    alignItems='center'
+                                                                >
+                                                                    <AccountBalanceIcon
+                                                                        color='black'
+                                                                        sx={{ marginRight: 1 }}
+                                                                    />
+                                                                    <Box>
+                                                                        <Typography variant='body1'>
+                                                                            Chuyển khoản ngân hàng
+                                                                        </Typography>
+                                                                        <Typography variant='body2'>
+                                                                            Thực hiện thanh toán vào
+                                                                            ngay tài khoản ngân hàng
+                                                                            của chúng tôi. Vui lòng
+                                                                            sử dụng Mã đơn hàng của
+                                                                            bạn trong phần Nội dung
+                                                                            thanh toán. Đơn hàng sẽ
+                                                                            được giao sau khi tiền
+                                                                            đã chuyển.
+                                                                        </Typography>
+                                                                    </Box>
+                                                                </Box>
+                                                            }
+                                                        />
+                                                        <FormControlLabel
+                                                            value='cod'
+                                                            control={<CustomRadio />}
+                                                            label={
+                                                                <Box
+                                                                    display='flex'
+                                                                    alignItems='center'
+                                                                >
+                                                                    <LocalShippingIcon
+                                                                        color='black'
+                                                                        sx={{ marginRight: 1 }}
+                                                                    />
+                                                                    <Box>
+                                                                        <Typography variant='body1'>
+                                                                            Trả tiền mặt khi nhận
+                                                                            hàng
+                                                                        </Typography>
+                                                                        <Typography variant='body2'>
+                                                                            Trả tiền mặt khi giao
+                                                                            hàng
+                                                                        </Typography>
+                                                                    </Box>
+                                                                </Box>
+                                                            }
+                                                        />
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            </Box> */}
+                                            <Box
                                                 style={{
-                                                    marginTop: '20px',
-                                                    background: 'black',
-                                                    borderRadius: '0px',
-                                                    fontFamily: 'monospace',
+                                                    justifyContent: 'center',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
                                                 }}
                                             >
-                                                Đặt hàng
-                                            </Button>
-                                        </Box>
-                                    </Form>
-                                )}
-                            </Formik>
+                                                <Button
+                                                    className={classes.button}
+                                                    variant='contained'
+                                                    color='primary'
+                                                    type='submit'
+                                                    style={{
+                                                        marginTop: '20px',
+                                                        background: 'black',
+                                                        borderRadius: '0px',
+                                                        fontFamily: 'monospace',
+                                                    }}
+                                                >
+                                                    Đặt hàng
+                                                </Button>
+                                            </Box>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </Box>
                         </Box>
                     </Box>
                     <Box className={classes.rightPanel}>
+                        <Typography
+                            component='h1'
+                            variant='h5'
+                            style={{ fontFamily: 'monospace', marginBottom: '20px' }}
+                        >
+                            Giỏ hàng
+                        </Typography>
                         {cartList.map((cartItem) => (
                             <Box key={cartItem._id}>
                                 {cartItem.product.map((productItem, index) => (

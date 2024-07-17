@@ -28,10 +28,10 @@ const cartsApi = {
         return axiosClient.patch(url, data);
     },
 
-    delete(userId,productIds) {
+    delete(userId, productIds) {
         const url = `api/carts/user/${userId}`;
-        return axiosClient.delete(url,{ data: { productIds } });
-    },
+        return axiosClient.put(url,{productIds});
+    }
 };
 
 export default cartsApi;
