@@ -159,9 +159,9 @@ function CartPages(props) {
             const userId = localStorage.getItem('userId');
             const productIds = [id]; // Wrap the product ID in an array
             console.log('productIds :', productIds);
-            await orderApi.remove(userId, productIds);
-            dispatch(removeFromCart(id));
-            enqueueSnackbar('Đã xóa khỏi giỏ hàng!', { variant: 'error' });
+            await cartsApi.delete(userId, productIds);
+            // dispatch(removeFromCart(id));
+            // enqueueSnackbar('Đã xóa khỏi giỏ hàng!', { variant: 'error' });
         } catch (error) {
             enqueueSnackbar('Xóa sản phẩm khỏi giỏ hàng thất bại!', { variant: 'error' });
         }

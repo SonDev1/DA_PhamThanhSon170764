@@ -19,8 +19,6 @@ function MenuItemLeft() {
   const handleOnClick = (e) => {
     console.log("Clicked item:", e);
   };
-  console.log("data :" , data);
-// debugger
   const menuItem = data.map((menu) => {
     return {
       key: menu.menuId,
