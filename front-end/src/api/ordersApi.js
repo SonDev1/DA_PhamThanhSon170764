@@ -10,8 +10,6 @@ const orderApi = {
         console.log( "productIds :" , productIds);
         const encodedProductIds = encodeURIComponent(JSON.stringify(productIds));
         const url = `api/carts/user?userId=${userId}&productIds=${encodedProductIds}`;
-        // const url = `api/carts/user?userId=${userId}&productIds=["${productIds}"]`;
-        // const url = `api/carts/user?userId=${userId}&productIds=["${productIds}"]`;
         return axiosClient.put(url);
     },
 }

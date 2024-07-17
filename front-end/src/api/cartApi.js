@@ -24,14 +24,14 @@ const cartsApi = {
     },
 
     update(data) {
-        const url = `api/cart/${data.id}`;
+        const url = `api/cars/${data.id}`;
         return axiosClient.patch(url, data);
     },
 
-    remove(id) {
-        const url = `api/cart/${id}`;
-        return axiosClient.delete(url);
-    },
+    delete(userId, productIds) {
+        const url = `api/carts/user/${userId}`;
+        return axiosClient.put(url,{productIds});
+    }
 };
 
 export default cartsApi;

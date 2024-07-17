@@ -8,6 +8,15 @@
     width: 100%;
     background-color: #eaeaea;
     border-top: 1px solid black;
+    position: relative;
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+    }
 }
 
 // .ant-input-affix-wrapper {

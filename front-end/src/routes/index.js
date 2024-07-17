@@ -1,6 +1,8 @@
 import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
+import AboutCompany from "../pages/AboutCompany";
 import AccountInfo from "../pages/AccountInfo";
 import { SocialRedirect } from "../pages/Auth/SocialMediaRedirect";
+import Blog from "../pages/Blog";
 import CartPages from "../pages/Cart";
 import CartClear from "../pages/Cart/components/CartClear";
 import HomePage from "../pages/HomePage";
@@ -9,7 +11,6 @@ import Product from "../pages/Product";
 import ProductAdditional from "../pages/Product/components/ProductAdditional";
 import ProductDescription from "../pages/Product/components/ProductDescription";
 import ProductReviews from "../pages/Product/components/ProductReviews";
-import SearchComponent from "../pages/Product/components/Search";
 import DetailPage from "../pages/Product/pages/DetailPage";
 
 export const routes = [
@@ -70,6 +71,20 @@ export const routes = [
     { 
         path:'/account',
         page : AccountInfo,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/about',
+        page : AboutCompany,
+        exact: true,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/blog',
+        page : Blog,
+        exact: true,
         isShowHeader : true,
         isShowFooter : true,
     },
