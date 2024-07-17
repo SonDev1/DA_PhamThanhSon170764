@@ -13,4 +13,16 @@ export class OrderRepository {
   async create(newOrder: any) {
     return this.orderModel.create(newOrder);
   }
+
+  async findById(id: string) {
+    return await this.orderModel.findById(id);
+  }
+
+  async updateStatus(orderId: string, paymentStatus: string) {
+    return await this.orderModel.findByIdAndUpdate(
+      orderId,
+      { paymentStatus },
+      { new: true },
+    );
+  }
 }

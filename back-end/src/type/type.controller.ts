@@ -16,7 +16,7 @@ export class TypeController {
     return this.typeService.getAllType();
   }
 
-  @Get(':categoryId')
+  @Get('/category/:categoryId')
   getTypeBycategoryId(@Param('categoryId') categoryId: string) {
     return this.typeService.getTypesByCategoryId(categoryId);
   }
