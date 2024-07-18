@@ -16,6 +16,9 @@ import SearchAddressField from '../../components/form-controls/SearchAddressFiel
 import { removeFromCart } from './cartSlice';
 import CartClear from './components/CartClear';
 import { styled } from '@mui/material/styles';
+import { cartItemsCountSelector, cartTotalSelector } from './selectors';
+import paymentApi from '../../api/paymentApi';
+import { useNavigate } from 'react-router-dom';
 
 const CustomRadio = styled(Radio)({
   '&.Mui-checked': {
@@ -147,14 +150,19 @@ const validationSchema = Yup.object().shape({
     // contactPhone: Yup.string().required('Required'),
 });
 function CartPages(props) {
-    const [value, setValue] = React.useState('cod');
+    const [paymentMethod, setPaymentMethod] = React.useState('');
+    const navigate = useNavigate()
 
     const handleChangePay = (event) => {
-        setValue(event.target.value);
+        setPaymentMethod(event.target.value);
+        console.log("paymentMethod :", paymentMethod);
     };
     const classes = useStyles();
     const cartItems = useSelector((state) => state.cart.cartItems);
-    console.log('cartItems :', cartItems);
+    // console.log('cartItems :', cartItems);
+    const cartItemsCount = useSelector(cartItemsCountSelector);
+    const cartItemsTotal = useSelector(cartTotalSelector);
+    // console.log("cartItemsCount :" ,cartItemsCount);
     const [cartList, setCartList] = useState([]);
 
     const userId = localStorage.getItem('userId');
@@ -234,14 +242,54 @@ function CartPages(props) {
             return;
         }
         try {
-            console.log('payloadPay :', payloadPay);
+            // console.log('payloadPay :', payloadPay);
             const req = await orderApi.add(payloadPay);
             enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+            navigate('/orders')
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
         }
     };
 
+    // const handleBuyNow = async (values) => {
+    //     const shippingInfo = {
+    //         receiver: values.displayName,
+    //         phone: values.contactPhone,
+    //         address: values.address,
+    //         adressDetail: values.adressDetail,
+    //     };
+    
+    //     const payloadPay = { userId, products, shippingInfo };
+    
+    //     if (!userId) {
+    //         return;
+    //     }
+    
+    //     try {
+    //         // Gọi API order để tạo đơn hàng
+    //         const orderResponse = await orderApi.add(payloadPay);
+    //         const orderId = orderResponse.data.orderId; // Giả sử orderId được trả về từ API
+    
+    //         // Chuẩn bị payload cho API thanh toán
+    //         const payloadPayment = {
+    //             orderId,
+    //             paymentmethod: paymentMethod, // Lấy từ form hoặc state của bạn
+    //         };
+
+    //         console.log("orderId :" ,orderId);
+    //         console.log("payloadPayment :" ,payloadPayment);
+    //         debugger
+    
+    //         // Gọi API thanh toán
+    //         const paymentResponse = await paymentApi.pay(payloadPayment);
+    
+    //         // Hiển thị thông báo thành công
+    //         enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+    //     } catch (error) {
+    //         enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
+    //     }
+    // };
+    
     return (
         <Box>
             {cartItems.length === 0 ? (
@@ -344,11 +392,11 @@ function CartPages(props) {
                                                     <RadioGroup
                                                         aria-label='payment-method'
                                                         name='payment-method'
-                                                        value={value}
+                                                        value={paymentMethod}
                                                         onChange={handleChangePay}
                                                     >
                                                         <FormControlLabel
-                                                            value='bank-transfer'
+                                                            value='cash'
                                                             control={<CustomRadio />}
                                                             label={
                                                                 <Box
@@ -378,7 +426,7 @@ function CartPages(props) {
                                                             }
                                                         />
                                                         <FormControlLabel
-                                                            value='cod'
+                                                            value='payment'
                                                             control={<CustomRadio />}
                                                             label={
                                                                 <Box
@@ -439,7 +487,7 @@ function CartPages(props) {
                             variant='h5'
                             style={{ fontFamily: 'monospace', marginBottom: '20px' }}
                         >
-                            Giỏ hàng
+                            Giỏ hàng({cartItemsCount})
                         </Typography>
                         {cartList.map((cartItem) => (
                             <Box key={cartItem._id}>
@@ -491,6 +539,22 @@ function CartPages(props) {
                                 ))}
                             </Box>
                         ))}
+                        <Box style={{display:'flex'}}>
+                            <Typography
+                                component='h1'
+                                variant='h5'
+                                style={{ fontFamily: 'monospace', marginBottom: '20px', marginRight: '300px' }}
+                            >
+                                Tổng tiền 
+                            </Typography>
+                            <Typography
+                                component='h1'
+                                variant='h5'
+                                style={{ fontFamily: 'monospace', marginBottom: '20px',fontWeight: 'bold'  }}
+                            >
+                               {formatPrice(cartItemsTotal)}
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             )}

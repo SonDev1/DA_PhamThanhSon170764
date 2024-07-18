@@ -241,7 +241,7 @@ function ProductInfo({ product = {} }) {
                         fontFamily: 'monospace',
                     }}
                 >
-                    Buy Now
+                    Mua ngay
                 </Button>
                 <Button
                     type='primary'
@@ -256,7 +256,7 @@ function ProductInfo({ product = {} }) {
                         fontFamily: 'monospace',
                     }}
                 >
-                    Add to Cart
+                    Thêm vào giỏ hàng
                 </Button>
             </Box>
             {/* Box chính sách mua hàng  */}

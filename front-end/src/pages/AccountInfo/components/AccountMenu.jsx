@@ -37,7 +37,7 @@ function AccountMenu() {
     <Box component="ul" className={classes.root}>
       <li>
         <NavLink to={basePath} end>
-          MY PROFILE
+          THÔNG TIN CÁ NHÂN 
         </NavLink>
       </li>
       <li>

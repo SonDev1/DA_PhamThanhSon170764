@@ -223,8 +223,8 @@ function Header(props) {
                 getContentAnchorEl={null}
             >
                 {/* <MenuItem onClick={handleCloseMenu}>Profile</MenuItem> */}
-                <MenuItem onClick={handleUserInfo}>My account</MenuItem>
-                <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+                <MenuItem onClick={handleUserInfo}>Thông tin cá nhân</MenuItem>
+                <MenuItem onClick={handleLogoutClick}>Đăng xuất</MenuItem>
             </Menu>
         </div>
     );

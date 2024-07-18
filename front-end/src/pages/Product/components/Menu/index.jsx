@@ -4,7 +4,7 @@ import { Menu } from "antd";
 import categoryApi from '../../../../api/categoryApi'
 import menuApi from "../../../../api/menuApi";
 
-function MenuItemLeft() {
+function MenuItemLeft({onChange}) {
   const [data, setData]= useState([])
   useEffect(() => {
     (async () => {
@@ -17,8 +17,22 @@ function MenuItemLeft() {
       }
     })();
   }, [])
+  // const handleOnClick = (e) => {
+  //   // console.log("Clicked item:", e.key);
+  //   const str = e.key
+  //   const result = str.split(' ')
+  //   console.log("result :", result);
+  //   if (onChange) {
+  //     onChange(result)
+  // }
+  // };
   const handleOnClick = (e) => {
-    console.log("Clicked item:", e);
+    const str = e.key;
+    const result = str.split(' ');
+    console.log("result :", result);
+    if (onChange) {
+      onChange(result);
+    }
   };
   const menuItem = data.map((menu) => {
     return {
