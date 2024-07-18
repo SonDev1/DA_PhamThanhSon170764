@@ -21,9 +21,9 @@ import paymentApi from '../../api/paymentApi';
 import { useNavigate } from 'react-router-dom';
 
 const CustomRadio = styled(Radio)({
-  '&.Mui-checked': {
-    color: 'black',
-  },
+    '&.Mui-checked': {
+        color: 'black',
+    },
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -121,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         marginBottom: theme.spacing(2),
         justifyContent: ' space-between',
+        marginLeft:'20px'
     },
     leftPanel: {
         width: '50%',
@@ -150,16 +151,32 @@ const validationSchema = Yup.object().shape({
     // contactPhone: Yup.string().required('Required'),
 });
 function CartPages(props) {
+    //=================================================================================================================================
+    const [selectedProducts, setSelectedProducts] = useState([]);
+
+    const handleCheckboxChange = (product) => {
+        if (selectedProducts.some((item) => item._id === product._id)) {
+            setSelectedProducts(selectedProducts.filter((item) => item._id !== product._id));
+        } else {
+            setSelectedProducts([...selectedProducts, product]);
+        }
+        console.log('setSelectedProducts :', setSelectedProducts);
+    };
+    //=================================================================================================================================
+
     const [paymentMethod, setPaymentMethod] = React.useState('');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleChangePay = (event) => {
         setPaymentMethod(event.target.value);
-        console.log("paymentMethod :", paymentMethod);
+        console.log('paymentMethod :', paymentMethod);
     };
     const classes = useStyles();
+    // Lấy danh sách sản phẩm từ Redux
     const cartItems = useSelector((state) => state.cart.cartItems);
     // console.log('cartItems :', cartItems);
+
+    // Tính tổngg sản phẩm , giá trong giỏ hàng từ Redux
     const cartItemsCount = useSelector(cartItemsCountSelector);
     const cartItemsTotal = useSelector(cartTotalSelector);
     // console.log("cartItemsCount :" ,cartItemsCount);
@@ -219,12 +236,24 @@ function CartPages(props) {
     // Button Buy Now
     // =========================================================
 
+    // const products = [];
+    // cartList.map((product) => {
+    //     products.push({
+    //         productId: product.productId,
+    //         price: product.product[0].salePrice,
+    //         quantity: product.quantity,
+    //     });
+    // });
     const products = [];
-    cartList.map((product) => {
-        products.push({
-            productId: product.productId,
-            price: product.product[0].salePrice,
-            quantity: product.quantity,
+    cartList.forEach((cartItem) => {
+        cartItem.product.forEach((productItem) => {
+            if (selectedProducts.some((item) => item._id === productItem._id)) {
+                products.push({
+                    productId: productItem._id, // Sử dụng _id hoặc productId tùy vào cấu trúc dữ liệu của bạn
+                    price: productItem.salePrice,
+                    quantity: cartItem.quantity,
+                });
+            }
         });
     });
     // =========================================================
@@ -245,7 +274,7 @@ function CartPages(props) {
             // console.log('payloadPay :', payloadPay);
             const req = await orderApi.add(payloadPay);
             enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
-            navigate('/orders')
+            navigate('/orders');
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
         }
@@ -258,18 +287,18 @@ function CartPages(props) {
     //         address: values.address,
     //         adressDetail: values.adressDetail,
     //     };
-    
+
     //     const payloadPay = { userId, products, shippingInfo };
-    
+
     //     if (!userId) {
     //         return;
     //     }
-    
+
     //     try {
     //         // Gọi API order để tạo đơn hàng
     //         const orderResponse = await orderApi.add(payloadPay);
     //         const orderId = orderResponse.data.orderId; // Giả sử orderId được trả về từ API
-    
+
     //         // Chuẩn bị payload cho API thanh toán
     //         const payloadPayment = {
     //             orderId,
@@ -279,17 +308,17 @@ function CartPages(props) {
     //         console.log("orderId :" ,orderId);
     //         console.log("payloadPayment :" ,payloadPayment);
     //         debugger
-    
+
     //         // Gọi API thanh toán
     //         const paymentResponse = await paymentApi.pay(payloadPayment);
-    
+
     //         // Hiển thị thông báo thành công
     //         enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
     //     } catch (error) {
     //         enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
     //     }
     // };
-    
+
     return (
         <Box>
             {cartItems.length === 0 ? (
@@ -374,7 +403,7 @@ function CartPages(props) {
                                                     />
                                                 </Box>
                                             </Form>
-                                            <Box sx={{ padding: 2 }}>
+                                            {/* <Box sx={{ padding: 2 }}>
                                                 <FormControl component='fieldset'>
                                                     <FormLabel component='legend'>
                                                         <Typography
@@ -452,7 +481,7 @@ function CartPages(props) {
                                                         />
                                                     </RadioGroup>
                                                 </FormControl>
-                                            </Box>
+                                            </Box> */}
                                             <Box
                                                 style={{
                                                     justifyContent: 'center',
@@ -482,7 +511,7 @@ function CartPages(props) {
                         </Box>
                     </Box>
                     <Box className={classes.rightPanel}>
-                        <Typography
+                        {/* <Typography
                             component='h1'
                             variant='h5'
                             style={{ fontFamily: 'monospace', marginBottom: '20px' }}
@@ -554,7 +583,104 @@ function CartPages(props) {
                             >
                                {formatPrice(cartItemsTotal)}
                             </Typography>
-                        </Box>
+                        </Box> */}
+                        <div>
+                            <Typography
+                                component='h1'
+                                variant='h5'
+                                style={{ fontFamily: 'monospace', marginBottom: '20px' }}
+                            >
+                                Giỏ hàng({cartItemsCount})
+                            </Typography>
+                            {cartList.map((cartItem) => (
+                                <Box key={cartItem._id}>
+                                    {cartItem.product.map((productItem, index) => (
+                                        <Box style={{display:'flex'}}>
+                                            <Box style={{display:'flex',justifyContent:'center',}}>
+                                                <input
+                                                    style={{width:'20px',height:'20px',backgroundColor:'black',alignSelf: 'center'}}
+                                                    type='checkbox'
+                                                    checked={selectedProducts.some(
+                                                        (item) => item._id === productItem._id,
+                                                    )}
+                                                    onChange={() => handleCheckboxChange(productItem)}
+                                                />
+                                            </Box>
+                                            <Box
+                                                key={index}
+                                                className={classes.cartItem}
+                                            >
+                                                <Box className={classes.img}>
+                                                    <img
+                                                        src={
+                                                            productItem.images[0]
+                                                                ? `${productItem.images[0]}`
+                                                                : 'https://via.placeholder.com/444'
+                                                        }
+                                                        alt={productItem.name}
+                                                        className={classes.cartImage}
+                                                    />
+                                                </Box>
+                                                <Box className={classes.cartDetails}>
+                                                    <Typography
+                                                        component='h1'
+                                                        variant='h5'
+                                                        className={classes.name}
+                                                    >
+                                                        {productItem.name}
+                                                    </Typography>
+                                                    <Typography
+                                                        component='p'
+                                                        className={classes.description}
+                                                    >
+                                                        Quantity: {cartItem.quantity}
+                                                    </Typography>
+                                                    <Typography
+                                                        component='p'
+                                                        className={classes.salePrice}
+                                                    >
+                                                        {formatPrice(productItem.salePrice)}
+                                                    </Typography>
+                                                </Box>
+                                                <Box>
+                                                    <IconButton
+                                                        onClick={() =>
+                                                            handleRemoveItem(productItem._id)
+                                                        }
+                                                    >
+                                                        <DeleteOutlineIcon />
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    ))}
+                                </Box>
+                            ))}
+                            <Box style={{ display: 'flex' }}>
+                                <Typography
+                                    component='h1'
+                                    variant='h5'
+                                    style={{
+                                        fontFamily: 'monospace',
+                                        marginBottom: '20px',
+                                        marginRight: '300px',
+                                    }}
+                                >
+                                    Tổng tiền
+                                </Typography>
+                                <Typography
+                                    component='h1'
+                                    variant='h5'
+                                    style={{
+                                        fontFamily: 'monospace',
+                                        marginBottom: '20px',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    {formatPrice(cartItemsTotal)}
+                                </Typography>
+                            </Box>
+                        </div>
                     </Box>
                 </Box>
             )}
