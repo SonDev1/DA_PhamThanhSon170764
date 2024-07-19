@@ -75,6 +75,9 @@ function Header(props) {
     const handleUserInfo = () => {
         navigate('/account');
     };
+    const handleShop = () => {
+        navigate('/orders');
+    };
 
     return (
         <div className='wrapper__header'>
@@ -94,7 +97,7 @@ function Header(props) {
                     href='/products'
                     className='active'
                 >
-                    HOME
+                    SẢN PHẨM
                 </a>
                 <a
                     style={{ '--i': 2 }}
@@ -224,6 +227,7 @@ function Header(props) {
             >
                 {/* <MenuItem onClick={handleCloseMenu}>Profile</MenuItem> */}
                 <MenuItem onClick={handleUserInfo}>Thông tin cá nhân</MenuItem>
+                <MenuItem onClick={handleShop}>Đơn mua</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Đăng xuất</MenuItem>
             </Menu>
         </div>

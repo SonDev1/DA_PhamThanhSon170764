@@ -5,6 +5,9 @@ const orderApi = {
         const url = 'api/orders';
         return axiosClient.post(url,payloadPay);
     },
+    get(userId) {
+
+    },
     remove(userId, productIds) {
         console.log( "userId :" , userId);
         console.log( "productIds :" , productIds);
