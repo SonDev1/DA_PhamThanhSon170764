@@ -10,6 +10,7 @@ export class PaymentController {
 
   @Post('/zalopayCallback')
   async handleCallbackZaloPayment(@Req() req, @Res() res) {
+    console.log('handle zalopay callback');
     const result = await this.paymentService.handleCallbackZaloPayment(
       req,
       res,
