@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 import { Order } from '../schema/order.shema';
+import { ShippingInfo } from './../schema/order.shema';
 @Injectable()
 export class OrderRepository {
   constructor(
@@ -18,6 +19,13 @@ export class OrderRepository {
     return await this.orderModel.findById(id);
   }
 
+  async updateShippingInfo(orderId: string, shippingInfo: any) {
+    return await this.orderModel.findByIdAndUpdate(
+      orderId,
+      { shippingInfo },
+      { new: true },
+    );
+  }
   async updateStatus(orderId: string, paymentStatus: string) {
     return await this.orderModel.findByIdAndUpdate(
       orderId,

@@ -1,3 +1,4 @@
+import { Optional } from '@nestjs/common';
 import {
   IsNotEmpty,
   IsNumber,
@@ -16,7 +17,7 @@ export class CreateOrderDto {
   @IsNotEmpty()
   products: ProductOrder[];
 
-  @IsNotEmpty()
+  @Optional()
   shippingInfo: ShippingInfo;
 
   @IsOptional()
