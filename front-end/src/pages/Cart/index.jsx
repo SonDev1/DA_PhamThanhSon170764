@@ -134,6 +134,7 @@ const useStyles = makeStyles((theme) => ({
     },
     input: {
         fontFamily: 'monospace',
+        height:'60px'
     },
     img: {
         height: '120px',
@@ -161,7 +162,6 @@ function CartPages(props) {
         } else {
             setSelectedProducts([...selectedProducts, product]);
         }
-        console.log('setSelectedProducts :', setSelectedProducts);
     };
     //=================================================================================================================================
 
@@ -170,7 +170,7 @@ function CartPages(props) {
 
     const handleChangePay = (event) => {
         setPaymentMethod(event.target.value);
-        console.log('paymentMethod :', paymentMethod);
+        // console.log('paymentMethod :', paymentMethod);
     };
     const classes = useStyles();
     // Lấy danh sách sản phẩm từ Redux
@@ -236,7 +236,7 @@ function CartPages(props) {
                 ]);
 
                 setCartList(cartList);
-                // console.log('cartList : ', cartList);
+                console.log('cartList : ', cartList);
                 setFormData(userData);
             } catch (error) {
                 console.log('Failed to fetch data', error);
@@ -270,18 +270,26 @@ function CartPages(props) {
             isInCart: true,
         };
         const payloadPay = { userId, products, shippingInfo };
-        console.log("shippingInfo :",shippingInfo);
+        // console.log("shippingInfo :",shippingInfo);
         if (!userId) {
             return;
+        }
+        if (selectedProducts.length === 0) {
+            enqueueSnackbar('Vui lòng chọn ít nhất một sản phẩm để mua hàng!', {
+                variant: 'warning',
+            });
+            return; // Nếu không có sản phẩm nào được chọn, không thực hiện hành động
         }
         try {
             console.log('payloadPay :', payloadPay);
             const req = await orderApi.add(payloadPay);
+            // console.log("id :",req.orderExist._id);
 //==================================================================================================================
             // dispatch(removeFromCart(id));
 //==================================================================================================================         
-            enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
-            navigate('/orders');
+            // enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+            // navigate('/orders');
+            navigate(`/orders?id=${req.orderExist._id}`);
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
         }
@@ -388,7 +396,9 @@ function CartPages(props) {
                                                         background: 'black',
                                                         borderRadius: '0px',
                                                         fontFamily: 'monospace',
+                                                        color:'white',
                                                     }}
+                                                    // disabled={selectedProducts.length === 0}
                                                 >
                                                     Đặt hàng
                                                 </Button>

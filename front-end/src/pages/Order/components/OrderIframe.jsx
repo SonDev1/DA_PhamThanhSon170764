@@ -3,8 +3,7 @@ import { Modal } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const OrderIframe = ({ isVisible, handleClose }) => {
-    const paymentUrl = 'https://www.youtube.com/watch?v=uxBXWTTy2cI';
+const OrderIframe = ({ isVisible, handleClose,url  }) => {
     const navigate = useNavigate()
   const checkOrderStatus = async () => {
     try {
@@ -37,9 +36,9 @@ const OrderIframe = ({ isVisible, handleClose }) => {
       style={{ top: 20 }}
     >
       <iframe
-        src={paymentUrl} 
+        src={url } 
         title="Popup Content"
-        style={{ width: '100%', height: '450px', border: 'none' }}
+        style={{ width: '100%', height: '700px', border: 'none' }}
       ></iframe>
     </Modal>
   );

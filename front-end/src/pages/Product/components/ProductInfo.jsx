@@ -166,7 +166,8 @@ function ProductInfo({ product = {} }) {
         }
         try {
             const req = await orderApi.add(payloadPay);
-            enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+            navigate(`/orders?id=${req.orderExist._id}`);
+            // enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
     
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
