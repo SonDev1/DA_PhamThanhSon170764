@@ -44,6 +44,6 @@ function MenuItemLeft({onChange}) {
     };
   });
 
-  return <Menu mode="inline" style={{ width: '100%' , background:'#eaeaea' }} items={menuItem} onClick={handleOnClick} />;
+  return <Menu mode="inline" style={{ width: '100%' , background:'white' }} items={menuItem} onClick={handleOnClick} />;
 };
 export default MenuItemLeft

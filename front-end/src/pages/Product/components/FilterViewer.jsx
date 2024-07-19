@@ -165,7 +165,7 @@ const FilterViewer = ({ filters = {}, onChange = null }) => {
   };
 
   const filterMenu = (
-    <Menu className="filter-menu" style={{backgroundColor:'eaeaea' ,borderRadius:'0px' ,border:'1px solid black'}}>
+    <Menu className="filter-menu" style={{backgroundColor:'white' ,borderRadius:'0px' ,border:'1px solid black'}}>
       <div className="filter-section">
         <Menu.ItemGroup title="MÀU SẮC">
           {colors.map((color, index) => (
@@ -233,11 +233,11 @@ const FilterViewer = ({ filters = {}, onChange = null }) => {
   );
 
   return (
-    <div className="filter-container" style={{background:'eaeaea' ,borderRadius:'0px'}}>
-      <Dropdown overlay={filterMenu} trigger={['click']} style={{background:'eaeaea' ,borderRadius:'0px'}}>
+    <div className="filter-container" style={{background:'white' ,borderRadius:'0px'}}>
+      <Dropdown overlay={filterMenu} trigger={['click']} style={{background:'#eaeaea' ,borderRadius:'0px'}}>
         <Button
           className="filter-button"
-          style={{ background: '#eaeaea', borderRadius: 'none' }}
+          style={{ background: 'white', borderRadius: 'none' }}
           onMouseEnter={() => setIsHovered(true)} 
           onMouseLeave={() => setIsHovered(false)} 
         >
