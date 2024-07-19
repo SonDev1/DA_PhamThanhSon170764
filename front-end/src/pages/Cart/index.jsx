@@ -151,6 +151,7 @@ const validationSchema = Yup.object().shape({
     // contactPhone: Yup.string().required('Required'),
 });
 function CartPages(props) {
+
     //=================================================================================================================================
     const [selectedProducts, setSelectedProducts] = useState([]);
 
@@ -174,7 +175,18 @@ function CartPages(props) {
     const classes = useStyles();
     // Lấy danh sách sản phẩm từ Redux
     const cartItems = useSelector((state) => state.cart.cartItems);
+
+
+
+    // Test Thay đổi số lượng
+    //=================================================================================================================================
+    // const result = useState(cartItems.quantity)
+    // result.map(()=>{
+
+    // })
+    // console.log("quantity :",quantity);
     // console.log('cartItems :', cartItems);
+    //=================================================================================================================================
 
     // Tính tổngg sản phẩm , giá trong giỏ hàng từ Redux
     const cartItemsCount = useSelector(cartItemsCountSelector);
@@ -224,7 +236,7 @@ function CartPages(props) {
                 ]);
 
                 setCartList(cartList);
-                console.log('cartList : ', cartList);
+                // console.log('cartList : ', cartList);
                 setFormData(userData);
             } catch (error) {
                 console.log('Failed to fetch data', error);
@@ -235,15 +247,6 @@ function CartPages(props) {
 
     // Button Buy Now
     // =========================================================
-
-    // const products = [];
-    // cartList.map((product) => {
-    //     products.push({
-    //         productId: product.productId,
-    //         price: product.product[0].salePrice,
-    //         quantity: product.quantity,
-    //     });
-    // });
     const products = [];
     cartList.forEach((cartItem) => {
         cartItem.product.forEach((productItem) => {
@@ -264,60 +267,25 @@ function CartPages(props) {
             phone: values.contactPhone,
             address: values.address,
             adressDetail: values.adressDetail,
+            isInCart: true,
         };
         const payloadPay = { userId, products, shippingInfo };
-
+        console.log("shippingInfo :",shippingInfo);
         if (!userId) {
             return;
         }
         try {
-            // console.log('payloadPay :', payloadPay);
+            console.log('payloadPay :', payloadPay);
             const req = await orderApi.add(payloadPay);
+//==================================================================================================================
+            // dispatch(removeFromCart(id));
+//==================================================================================================================         
             enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
             navigate('/orders');
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
         }
     };
-
-    // const handleBuyNow = async (values) => {
-    //     const shippingInfo = {
-    //         receiver: values.displayName,
-    //         phone: values.contactPhone,
-    //         address: values.address,
-    //         adressDetail: values.adressDetail,
-    //     };
-
-    //     const payloadPay = { userId, products, shippingInfo };
-
-    //     if (!userId) {
-    //         return;
-    //     }
-
-    //     try {
-    //         // Gọi API order để tạo đơn hàng
-    //         const orderResponse = await orderApi.add(payloadPay);
-    //         const orderId = orderResponse.data.orderId; // Giả sử orderId được trả về từ API
-
-    //         // Chuẩn bị payload cho API thanh toán
-    //         const payloadPayment = {
-    //             orderId,
-    //             paymentmethod: paymentMethod, // Lấy từ form hoặc state của bạn
-    //         };
-
-    //         console.log("orderId :" ,orderId);
-    //         console.log("payloadPayment :" ,payloadPayment);
-    //         debugger
-
-    //         // Gọi API thanh toán
-    //         const paymentResponse = await paymentApi.pay(payloadPayment);
-
-    //         // Hiển thị thông báo thành công
-    //         enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
-    //     } catch (error) {
-    //         enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
-    //     }
-    // };
 
     return (
         <Box>
@@ -403,85 +371,6 @@ function CartPages(props) {
                                                     />
                                                 </Box>
                                             </Form>
-                                            {/* <Box sx={{ padding: 2 }}>
-                                                <FormControl component='fieldset'>
-                                                    <FormLabel component='legend'>
-                                                        <Typography
-                                                            component='h1'
-                                                            variant='h5'
-                                                            style={{
-                                                                fontFamily: 'monospace',
-                                                                marginBottom: '20px',
-                                                                color:'black'
-                                                            }}
-                                                        >
-                                                            Hình thức thanh toán
-                                                        </Typography>
-                                                    </FormLabel>
-                                                    <RadioGroup
-                                                        aria-label='payment-method'
-                                                        name='payment-method'
-                                                        value={paymentMethod}
-                                                        onChange={handleChangePay}
-                                                    >
-                                                        <FormControlLabel
-                                                            value='cash'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <AccountBalanceIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Chuyển khoản ngân hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Thực hiện thanh toán vào
-                                                                            ngay tài khoản ngân hàng
-                                                                            của chúng tôi. Vui lòng
-                                                                            sử dụng Mã đơn hàng của
-                                                                            bạn trong phần Nội dung
-                                                                            thanh toán. Đơn hàng sẽ
-                                                                            được giao sau khi tiền
-                                                                            đã chuyển.
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                        <FormControlLabel
-                                                            value='payment'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <LocalShippingIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Trả tiền mặt khi nhận
-                                                                            hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Trả tiền mặt khi giao
-                                                                            hàng
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                    </RadioGroup>
-                                                </FormControl>
-                                            </Box> */}
                                             <Box
                                                 style={{
                                                     justifyContent: 'center',
@@ -511,79 +400,6 @@ function CartPages(props) {
                         </Box>
                     </Box>
                     <Box className={classes.rightPanel}>
-                        {/* <Typography
-                            component='h1'
-                            variant='h5'
-                            style={{ fontFamily: 'monospace', marginBottom: '20px' }}
-                        >
-                            Giỏ hàng({cartItemsCount})
-                        </Typography>
-                        {cartList.map((cartItem) => (
-                            <Box key={cartItem._id}>
-                                {cartItem.product.map((productItem, index) => (
-                                    <Box
-                                        key={index}
-                                        className={classes.cartItem}
-                                    >
-                                        <Box className={classes.img}>
-                                            <img
-                                                src={
-                                                    productItem.images[0]
-                                                        ? `${productItem.images[0]}`
-                                                        : 'https://via.placeholder.com/444'
-                                                }
-                                                alt={productItem.name}
-                                                className={classes.cartImage}
-                                            />
-                                        </Box>
-                                        <Box className={classes.cartDetails}>
-                                            <Typography
-                                                component='h1'
-                                                variant='h5'
-                                                className={classes.name}
-                                            >
-                                                {productItem.name}
-                                            </Typography>
-                                            <Typography
-                                                component='p'
-                                                className={classes.description}
-                                            >
-                                                Quantity: {cartItem.quantity}
-                                            </Typography>
-                                            <Typography
-                                                component='p'
-                                                className={classes.salePrice}
-                                            >
-                                                {formatPrice(productItem.salePrice)}
-                                            </Typography>
-                                        </Box>
-                                        <Box>
-                                            <IconButton
-                                                onClick={() => handleRemoveItem(productItem._id)}
-                                            >
-                                                <DeleteOutlineIcon />
-                                            </IconButton>
-                                        </Box>
-                                    </Box>
-                                ))}
-                            </Box>
-                        ))}
-                        <Box style={{display:'flex'}}>
-                            <Typography
-                                component='h1'
-                                variant='h5'
-                                style={{ fontFamily: 'monospace', marginBottom: '20px', marginRight: '300px' }}
-                            >
-                                Tổng tiền 
-                            </Typography>
-                            <Typography
-                                component='h1'
-                                variant='h5'
-                                style={{ fontFamily: 'monospace', marginBottom: '20px',fontWeight: 'bold'  }}
-                            >
-                               {formatPrice(cartItemsTotal)}
-                            </Typography>
-                        </Box> */}
                         <div>
                             <Typography
                                 component='h1'
@@ -633,7 +449,7 @@ function CartPages(props) {
                                                         component='p'
                                                         className={classes.description}
                                                     >
-                                                        Quantity: {cartItem.quantity}
+                                                        Số lượng: {cartItem.quantity}
                                                     </Typography>
                                                     <Typography
                                                         component='p'

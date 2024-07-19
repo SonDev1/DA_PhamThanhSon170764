@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
-import categoryApi from '../../../../api/categoryApi'
+import React, { useEffect, useState } from "react";
 import menuApi from "../../../../api/menuApi";
 
 function MenuItemLeft({onChange}) {
@@ -11,25 +10,15 @@ function MenuItemLeft({onChange}) {
       try {
         const data = await menuApi.getAll();
         setData(data);
-        console.log("data :",data);
       } catch (error) {
         console.log('Failed to fetch carts list', error);
       }
     })();
   }, [])
-  // const handleOnClick = (e) => {
-  //   // console.log("Clicked item:", e.key);
-  //   const str = e.key
-  //   const result = str.split(' ')
-  //   console.log("result :", result);
-  //   if (onChange) {
-  //     onChange(result)
-  // }
-  // };
+
   const handleOnClick = (e) => {
     const str = e.key;
     const result = str.split(' ');
-    console.log("result :", result);
     if (onChange) {
       onChange(result);
     }
