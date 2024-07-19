@@ -20,6 +20,7 @@ export class PaymentService {
   ) {}
   async createZaloPayment(price: number, orderId: string) {
     const embed_data = { orderId: orderId };
+    console.log('embed_data in create zalo payment:', embed_data);
 
     const items = [{}];
     const transID = Math.floor(Math.random() * 1000000);
@@ -86,7 +87,9 @@ export class PaymentService {
         console.log('dataJson :', dataJson);
         const embed_data = JSON.parse(dataJson.embed_data);
 
-        // this.bookingService.updateBookingById(embed_data.bookingId);
+        console.log('embed_data :', embed_data);
+
+        await this.orderService.updateStatus(embed_data.orderId, '');
 
         result.return_code = 1;
         result.return_message = 'success';

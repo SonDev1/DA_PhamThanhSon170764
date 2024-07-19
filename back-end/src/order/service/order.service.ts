@@ -10,7 +10,6 @@ import { OrderRepository } from '../repository/order.repository';
 import { ObjectId } from 'mongodb';
 import { CreateOrderDto } from '../dto/CreateOrder.dto';
 import { CartService } from './../../cart/service/cart.service';
-import { log } from 'console';
 import { PaymentService } from './../../payment/payment.service';
 
 @Injectable()
@@ -51,24 +50,69 @@ export class OrderService {
     }
   }
 
-  async paymentOrder(orderId: string) {
-    const orderExist = await this.orderRepository.findById(orderId);
-    const urlPayment = await this.paymentService.createZaloPayment(
-      orderExist.totalAmount,
-      orderId,
-    );
+  async getOrderById(orderId: string) {
+    return this.orderRepository.findById(orderId);
+  }
+
+  async getUrlPaymentOrder(orderId: string) {
+    try {
+      const orderExist = await this.orderRepository.findById(orderId);
+      if (!orderExist) {
+        throw new Error('Order not found');
+      }
+
+      const paymentInf = await this.paymentService.createZaloPayment(
+        orderExist.totalAmount,
+        orderId,
+      );
+
+      if (paymentInf) {
+        return { success: true, paymentInf };
+      } else {
+        throw new Error('Failed to create payment URL');
+      }
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  }
+
+  async updateShippingInfo(data: any) {
+    const orderExist = await this.orderRepository.findById(data.orderId);
+    if (!orderExist) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+    }
+    try {
+      await this.orderRepository.updateShippingInfo(
+        data.orderId,
+        data.shippingInfo,
+      );
+    } catch (error) {
+      console.log(error);
+    }
     return {
-      message: 'create url payment order successfully',
-      urlPayment,
+      mesage: 'update Shipping information successfully',
     };
   }
 
-  async updateStatus(orderId: string) {
+  async updateStatus(orderId: string, paymentMethod: string) {
+    if (paymentMethod === 'payment') {
+      const paymentUrl = await this.getUrlPaymentOrder(orderId);
+      return {
+        message: paymentUrl.success,
+        paymentUrl,
+      };
+    }
+
+    console.log('Payment: ' + orderId);
+
     const orderExist = await this.orderRepository.findById(orderId);
     if (!orderExist) {
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
     const paymentStatus = 'Success';
     await this.orderRepository.updateStatus(orderId, paymentStatus);
+    return {
+      mesage: 'Update status success',
+    };
   }
 }
