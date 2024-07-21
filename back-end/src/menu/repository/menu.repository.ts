@@ -23,6 +23,10 @@ export class MenuRepository {
     return await this.menuModel.create(createMenuDto);
   }
 
+  async deleteMenuById(menuId: string) {
+    return await this.menuModel.findByIdAndDelete(menuId);
+  }
+
   async findAll() {
     return this.menuModel
       .aggregate([
@@ -61,5 +65,15 @@ export class MenuRepository {
         },
       ])
       .exec();
+  }
+
+  async findById(menuId: string) {
+    return await this.menuModel.findById(menuId);
+  }
+
+  async updateMenu(menuId: string, updateMenuDto: CreateMenuDto) {
+    return await this.menuModel.findByIdAndUpdate(menuId, updateMenuDto, {
+      new: true,
+    });
   }
 }
