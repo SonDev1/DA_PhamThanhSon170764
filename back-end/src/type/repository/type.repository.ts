@@ -20,6 +20,20 @@ export class TypeRepository {
     return await this.typeModel.find({ categoryId: categoryIdObject });
   }
 
+  async findById(typeId: string) {
+    return await this.typeModel.findById(typeId);
+  }
+
+  async delete(typeId: string) {
+    return await this.typeModel.findByIdAndDelete(typeId);
+  }
+
+  async update(typeId: string, createTypeDto: CreateTypeDto) {
+    return await this.typeModel.findByIdAndUpdate(typeId, createTypeDto, {
+      new: true,
+    });
+  }
+
   async create(data: any) {
     return this.typeModel.create(data);
   }

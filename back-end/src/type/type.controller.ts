@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { TypeService } from './service/type.service';
 import { CreateTypeDto } from './dto/CreateType.dto';
 
@@ -9,6 +17,19 @@ export class TypeController {
   @Post('')
   createType(@Body() createTypeDto: CreateTypeDto) {
     return this.typeService.createType(createTypeDto);
+  }
+
+  @Put(':typeId')
+  updateType(
+    @Param('typeId') typeId: string,
+    @Body() updateTypeDto: CreateTypeDto,
+  ) {
+    return this.typeService.updateType(typeId, updateTypeDto);
+  }
+
+  @Delete(':typeId')
+  deleteType(@Param('typeId') typeId: string) {
+    return this.typeService.deleteType(typeId);
   }
 
   @Get('')

@@ -14,6 +14,26 @@ export class TypeService {
     return await this.typeRepository.getTypesByCategoryId(categoryId);
   }
 
+  async deleteType(typeId: string) {
+    const type = await this.typeRepository.findById(typeId);
+    if (!type) {
+      throw new HttpException('Type not found', HttpStatus.NOT_FOUND);
+    }
+    await this.typeRepository.delete(typeId);
+    return {
+      message: 'Delete type success',
+    };
+  }
+  async updateType(typeId: string, createTypeDto: CreateTypeDto) {
+    const typeExists = await this.typeRepository.findById(typeId);
+    if (!typeExists) {
+      throw new HttpException('Type not found', HttpStatus.NOT_FOUND);
+    }
+    await this.typeRepository.update(typeId, createTypeDto);
+    return {
+      message: 'Update type success',
+    };
+  }
   async createType(createTypeDto: CreateTypeDto) {
     try {
       const categoryIdObject = new Types.ObjectId(createTypeDto.categoryId);

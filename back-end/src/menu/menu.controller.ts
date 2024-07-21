@@ -26,4 +26,17 @@ export class MenuController {
   getAllMenu() {
     return this.menuService.getAllMenus();
   }
+
+  @Delete(':menuId')
+  deleteMenuById(@Param('menuId') menuId: string) {
+    return this.menuService.deleteMenuById(menuId);
+  }
+
+  @Put(':menuId')
+  updateMenu(
+    @Param('menuId') menuId: string,
+    @Body() updateMenuDto: CreateMenuDto,
+  ) {
+    return this.menuService.updateMenu(menuId, updateMenuDto);
+  }
 }

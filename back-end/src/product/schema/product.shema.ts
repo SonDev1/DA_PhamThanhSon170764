@@ -14,6 +14,9 @@ export class Product extends Document {
   description: string;
 
   @Prop()
+  descriptionFull: string;
+
+  @Prop()
   originalPrice: number;
 
   @Prop()

@@ -14,6 +14,16 @@ export class CategoryService {
     return await this.categoryRepository.findByGender(gender);
   }
 
+  async deleteCategory(categoryId: string) {
+    return await this.categoryRepository.delete(categoryId);
+  }
+
+  async updateCategory(
+    categoryId: string,
+    createCategoryDto: CreateCategoryDto,
+  ) {
+    const categoryExist = await this.categoryRepository.findById(categoryId);
+  }
   async createCategory(createCategoryDto: CreateCategoryDto) {
     try {
       const menuIdObjectId = new ObjectId(createCategoryDto.menuId);

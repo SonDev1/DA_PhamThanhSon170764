@@ -27,11 +27,26 @@ export class CategoryRepository {
     ]);
   }
 
+  async findById(categoryId: string) {
+    return await this.categoryModel.findById(categoryId);
+  }
   async getAll() {
     return await this.categoryModel.find();
   }
 
   async create(data: any) {
     return this.categoryModel.create(data);
+  }
+
+  async delete(categoryId: string) {
+    return await this.categoryModel.findByIdAndDelete(categoryId);
+  }
+
+  async update(categoryId: string, createCategoryDto: CreateCategoryDto) {
+    return await this.categoryModel.findByIdAndUpdate(
+      categoryId,
+      createCategoryDto,
+      { new: true },
+    );
   }
 }

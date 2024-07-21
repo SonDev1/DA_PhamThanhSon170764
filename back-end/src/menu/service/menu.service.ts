@@ -25,4 +25,16 @@ export class MenuService {
       return menu;
     });
   }
+
+  async deleteMenuById(menuId: string) {
+    return await this.menuRepository.deleteMenuById(menuId);
+  }
+
+  async updateMenu(menuId: string, updateMenuDto: CreateMenuDto) {
+    const menu = await this.menuRepository.findById(menuId);
+    if (!menu) {
+      throw new HttpException('Menu not found', HttpStatus.NOT_FOUND);
+    }
+    await this.menuRepository.updateMenu(menuId, updateMenuDto);
+  }
 }
