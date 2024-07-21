@@ -7,9 +7,9 @@ const OrderIframe = ({ isVisible, handleClose,url ,orderId  }) => {
     const navigate = useNavigate()
   const checkOrderStatus = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/orders/${orderId}`);
-      const status = response.data.status;
-      console.log('response :',status);
+      const response = await axios.get(`http://localhost:5000/api/orders/${orderId}`);
+      const status = response.data.paymentStatus;
+      console.log('response :',response);
 
       if (status === 'success') {
         // Chuyển trang
