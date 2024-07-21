@@ -71,9 +71,7 @@ const OrderPage = () => {
 
         try {
             const res = await orderApi.payment(orderId, paymentMethod);
-            console.log("res",res);
             const paymentUrl = res.paymentUrl.paymentInf.order_url;
-            console.log("paymentUrl:", paymentUrl);
 
             setPaymentUrl(paymentUrl);
             
@@ -373,6 +371,7 @@ const OrderPage = () => {
                 isVisible={isIframeVisible}
                 handleClose={handleCloseIframe}
                 url={paymentUrl}
+                orderId={orderId}
             />
         </Box>
     );

@@ -3,12 +3,13 @@ import { Modal } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const OrderIframe = ({ isVisible, handleClose,url  }) => {
+const OrderIframe = ({ isVisible, handleClose,url ,orderId  }) => {
     const navigate = useNavigate()
   const checkOrderStatus = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/get-order-status');
-      const { status } = response.data;
+      const response = await axios.put(`http://localhost:5000/api/orders/${orderId}`);
+      const status = response.data.status;
+      console.log('response :',status);
 
       if (status === 'success') {
         // Chuyển trang
