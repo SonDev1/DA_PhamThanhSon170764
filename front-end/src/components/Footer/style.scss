@@ -158,12 +158,14 @@
             animation-delay: calc(0.2s * var(--i));
 
             &:hover{
-                border-color: #eaeaea;
+                // border-color: #eaeaea;
+                border-color: white;
             }
 
             &  box-icon {
                 font-size: 24px;
-                color: #eaeaea;
+                // color: #eaeaea;
+                color: white;
                 transform: rotate(-45deg);
 
         }
@@ -172,7 +174,8 @@
 
 .footer {
     padding: 20px;
-    background-color: #eaeaea;
+    // background-color: #eaeaea;
+    background-color: white;
     color: #333;
     display: flex;
     flex-wrap: wrap;

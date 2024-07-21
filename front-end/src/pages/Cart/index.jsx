@@ -16,11 +16,14 @@ import SearchAddressField from '../../components/form-controls/SearchAddressFiel
 import { removeFromCart } from './cartSlice';
 import CartClear from './components/CartClear';
 import { styled } from '@mui/material/styles';
+import { cartItemsCountSelector, cartTotalSelector } from './selectors';
+import paymentApi from '../../api/paymentApi';
+import { useNavigate } from 'react-router-dom';
 
 const CustomRadio = styled(Radio)({
-  '&.Mui-checked': {
-    color: 'black',
-  },
+    '&.Mui-checked': {
+        color: 'black',
+    },
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -118,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         marginBottom: theme.spacing(2),
         justifyContent: ' space-between',
+        marginLeft:'20px'
     },
     leftPanel: {
         width: '50%',
@@ -130,6 +134,7 @@ const useStyles = makeStyles((theme) => ({
     },
     input: {
         fontFamily: 'monospace',
+        height:'60px'
     },
     img: {
         height: '120px',
@@ -147,14 +152,46 @@ const validationSchema = Yup.object().shape({
     // contactPhone: Yup.string().required('Required'),
 });
 function CartPages(props) {
-    const [value, setValue] = React.useState('cod');
+
+    //=================================================================================================================================
+    const [selectedProducts, setSelectedProducts] = useState([]);
+
+    const handleCheckboxChange = (product) => {
+        if (selectedProducts.some((item) => item._id === product._id)) {
+            setSelectedProducts(selectedProducts.filter((item) => item._id !== product._id));
+        } else {
+            setSelectedProducts([...selectedProducts, product]);
+        }
+    };
+    //=================================================================================================================================
+
+    const [paymentMethod, setPaymentMethod] = React.useState('');
+    const navigate = useNavigate();
 
     const handleChangePay = (event) => {
-        setValue(event.target.value);
+        setPaymentMethod(event.target.value);
+        // console.log('paymentMethod :', paymentMethod);
     };
     const classes = useStyles();
+    // Lấy danh sách sản phẩm từ Redux
     const cartItems = useSelector((state) => state.cart.cartItems);
-    console.log('cartItems :', cartItems);
+
+
+
+    // Test Thay đổi số lượng
+    //=================================================================================================================================
+    // const result = useState(cartItems.quantity)
+    // result.map(()=>{
+
+    // })
+    // console.log("quantity :",quantity);
+    // console.log('cartItems :', cartItems);
+    //=================================================================================================================================
+
+    // Tính tổngg sản phẩm , giá trong giỏ hàng từ Redux
+    const cartItemsCount = useSelector(cartItemsCountSelector);
+    const cartItemsTotal = useSelector(cartTotalSelector);
+    // console.log("cartItemsCount :" ,cartItemsCount);
     const [cartList, setCartList] = useState([]);
 
     const userId = localStorage.getItem('userId');
@@ -206,17 +243,20 @@ function CartPages(props) {
                 setError('Failed to fetch data');
             }
         })();
-    }, [userId]);
+    }, [cartItems]);
 
     // Button Buy Now
     // =========================================================
-
     const products = [];
-    cartList.map((product) => {
-        products.push({
-            productId: product.productId,
-            price: product.product[0].salePrice,
-            quantity: product.quantity,
+    cartList.forEach((cartItem) => {
+        cartItem.product.forEach((productItem) => {
+            if (selectedProducts.some((item) => item._id === productItem._id)) {
+                products.push({
+                    productId: productItem._id, // Sử dụng _id hoặc productId tùy vào cấu trúc dữ liệu của bạn
+                    price: productItem.salePrice,
+                    quantity: cartItem.quantity,
+                });
+            }
         });
     });
     // =========================================================
@@ -227,16 +267,29 @@ function CartPages(props) {
             phone: values.contactPhone,
             address: values.address,
             adressDetail: values.adressDetail,
+            isInCart: true,
         };
         const payloadPay = { userId, products, shippingInfo };
-
+        // console.log("shippingInfo :",shippingInfo);
         if (!userId) {
             return;
+        }
+        if (selectedProducts.length === 0) {
+            enqueueSnackbar('Vui lòng chọn ít nhất một sản phẩm để mua hàng!', {
+                variant: 'warning',
+            });
+            return; // Nếu không có sản phẩm nào được chọn, không thực hiện hành động
         }
         try {
             console.log('payloadPay :', payloadPay);
             const req = await orderApi.add(payloadPay);
-            enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+            // console.log("id :",req.orderExist._id);
+//==================================================================================================================
+            // dispatch(removeFromCart(id));
+//==================================================================================================================         
+            // enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+            // navigate('/orders');
+            navigate(`/orders?id=${req.orderExist._id}`);
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
         }
@@ -325,165 +378,7 @@ function CartPages(props) {
                                                         fullWidth={true}
                                                     />
                                                 </Box>
-                                                <Box sx={{ padding: 2 }}>
-                                                <FormControl component='fieldset'>
-                                                    <FormLabel component='legend'>
-                                                        <Typography
-                                                            component='h1'
-                                                            variant='h5'
-                                                            style={{
-                                                                fontFamily: 'monospace',
-                                                                marginBottom: '20px',
-                                                                color:'black'
-                                                            }}
-                                                        >
-                                                            Hình thức thanh toán
-                                                        </Typography>
-                                                    </FormLabel>
-                                                    <RadioGroup
-                                                        aria-label='payment-method'
-                                                        name='payment-method'
-                                                        value={value}
-                                                        onChange={handleChangePay}
-                                                    >
-                                                        <FormControlLabel
-                                                            value='bank-transfer'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <AccountBalanceIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Chuyển khoản ngân hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Thực hiện thanh toán vào
-                                                                            ngay tài khoản ngân hàng
-                                                                            của chúng tôi. Vui lòng
-                                                                            sử dụng Mã đơn hàng của
-                                                                            bạn trong phần Nội dung
-                                                                            thanh toán. Đơn hàng sẽ
-                                                                            được giao sau khi tiền
-                                                                            đã chuyển.
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                        <FormControlLabel
-                                                            value='cod'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <LocalShippingIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Trả tiền mặt khi nhận
-                                                                            hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Trả tiền mặt khi giao
-                                                                            hàng
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                    </RadioGroup>
-                                                </FormControl>
-                                            </Box>
                                             </Form>
-                                            {/* <Box sx={{ padding: 2 }}>
-                                                <FormControl component='fieldset'>
-                                                    <FormLabel component='legend'>
-                                                        <Typography
-                                                            component='h1'
-                                                            variant='h5'
-                                                            style={{
-                                                                fontFamily: 'monospace',
-                                                                marginBottom: '20px',
-                                                                color:'black'
-                                                            }}
-                                                        >
-                                                            Hình thức thanh toán
-                                                        </Typography>
-                                                    </FormLabel>
-                                                    <RadioGroup
-                                                        aria-label='payment-method'
-                                                        name='payment-method'
-                                                        value={value}
-                                                        onChange={handleChangePay}
-                                                    >
-                                                        <FormControlLabel
-                                                            value='bank-transfer'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <AccountBalanceIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Chuyển khoản ngân hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Thực hiện thanh toán vào
-                                                                            ngay tài khoản ngân hàng
-                                                                            của chúng tôi. Vui lòng
-                                                                            sử dụng Mã đơn hàng của
-                                                                            bạn trong phần Nội dung
-                                                                            thanh toán. Đơn hàng sẽ
-                                                                            được giao sau khi tiền
-                                                                            đã chuyển.
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                        <FormControlLabel
-                                                            value='cod'
-                                                            control={<CustomRadio />}
-                                                            label={
-                                                                <Box
-                                                                    display='flex'
-                                                                    alignItems='center'
-                                                                >
-                                                                    <LocalShippingIcon
-                                                                        color='black'
-                                                                        sx={{ marginRight: 1 }}
-                                                                    />
-                                                                    <Box>
-                                                                        <Typography variant='body1'>
-                                                                            Trả tiền mặt khi nhận
-                                                                            hàng
-                                                                        </Typography>
-                                                                        <Typography variant='body2'>
-                                                                            Trả tiền mặt khi giao
-                                                                            hàng
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-                                                        />
-                                                    </RadioGroup>
-                                                </FormControl>
-                                            </Box> */}
                                             <Box
                                                 style={{
                                                     justifyContent: 'center',
@@ -501,7 +396,9 @@ function CartPages(props) {
                                                         background: 'black',
                                                         borderRadius: '0px',
                                                         fontFamily: 'monospace',
+                                                        color:'white',
                                                     }}
+                                                    // disabled={selectedProducts.length === 0}
                                                 >
                                                     Đặt hàng
                                                 </Button>
@@ -513,63 +410,103 @@ function CartPages(props) {
                         </Box>
                     </Box>
                     <Box className={classes.rightPanel}>
-                        <Typography
-                            component='h1'
-                            variant='h5'
-                            style={{ fontFamily: 'monospace', marginBottom: '20px' }}
-                        >
-                            Giỏ hàng
-                        </Typography>
-                        {cartList.map((cartItem) => (
-                            <Box key={cartItem._id}>
-                                {cartItem.product.map((productItem, index) => (
-                                    <Box
-                                        key={index}
-                                        className={classes.cartItem}
-                                    >
-                                        <Box className={classes.img}>
-                                            <img
-                                                src={
-                                                    productItem.images[0]
-                                                        ? `${productItem.images[0]}`
-                                                        : 'https://via.placeholder.com/444'
-                                                }
-                                                alt={productItem.name}
-                                                className={classes.cartImage}
-                                            />
+                        <div>
+                            <Typography
+                                component='h1'
+                                variant='h5'
+                                style={{ fontFamily: 'monospace', marginBottom: '20px' }}
+                            >
+                                Giỏ hàng({cartItemsCount})
+                            </Typography>
+                            {cartList.map((cartItem) => (
+                                <Box key={cartItem._id}>
+                                    {cartItem.product.map((productItem, index) => (
+                                        <Box style={{display:'flex'}}>
+                                            <Box style={{display:'flex',justifyContent:'center',}}>
+                                                <input
+                                                    style={{width:'20px',height:'20px',backgroundColor:'black',alignSelf: 'center'}}
+                                                    type='checkbox'
+                                                    checked={selectedProducts.some(
+                                                        (item) => item._id === productItem._id,
+                                                    )}
+                                                    onChange={() => handleCheckboxChange(productItem)}
+                                                />
+                                            </Box>
+                                            <Box
+                                                key={index}
+                                                className={classes.cartItem}
+                                            >
+                                                <Box className={classes.img}>
+                                                    <img
+                                                        src={
+                                                            productItem.images[0]
+                                                                ? `${productItem.images[0]}`
+                                                                : 'https://via.placeholder.com/444'
+                                                        }
+                                                        alt={productItem.name}
+                                                        className={classes.cartImage}
+                                                    />
+                                                </Box>
+                                                <Box className={classes.cartDetails}>
+                                                    <Typography
+                                                        component='h1'
+                                                        variant='h5'
+                                                        className={classes.name}
+                                                    >
+                                                        {productItem.name}
+                                                    </Typography>
+                                                    <Typography
+                                                        component='p'
+                                                        className={classes.description}
+                                                    >
+                                                        Số lượng: {cartItem.quantity}
+                                                    </Typography>
+                                                    <Typography
+                                                        component='p'
+                                                        className={classes.salePrice}
+                                                    >
+                                                        {formatPrice(productItem.salePrice)}
+                                                    </Typography>
+                                                </Box>
+                                                <Box>
+                                                    <IconButton
+                                                        onClick={() =>
+                                                            handleRemoveItem(productItem._id)
+                                                        }
+                                                    >
+                                                        <DeleteOutlineIcon />
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
                                         </Box>
-                                        <Box className={classes.cartDetails}>
-                                            <Typography
-                                                component='h1'
-                                                variant='h5'
-                                                className={classes.name}
-                                            >
-                                                {productItem.name}
-                                            </Typography>
-                                            <Typography
-                                                component='p'
-                                                className={classes.description}
-                                            >
-                                                Quantity: {cartItem.quantity}
-                                            </Typography>
-                                            <Typography
-                                                component='p'
-                                                className={classes.salePrice}
-                                            >
-                                                {formatPrice(productItem.salePrice)}
-                                            </Typography>
-                                        </Box>
-                                        <Box>
-                                            <IconButton
-                                                onClick={() => handleRemoveItem(productItem._id)}
-                                            >
-                                                <DeleteOutlineIcon />
-                                            </IconButton>
-                                        </Box>
-                                    </Box>
-                                ))}
+                                    ))}
+                                </Box>
+                            ))}
+                            <Box style={{ display: 'flex' }}>
+                                <Typography
+                                    component='h1'
+                                    variant='h5'
+                                    style={{
+                                        fontFamily: 'monospace',
+                                        marginBottom: '20px',
+                                        marginRight: '300px',
+                                    }}
+                                >
+                                    Tổng tiền
+                                </Typography>
+                                <Typography
+                                    component='h1'
+                                    variant='h5'
+                                    style={{
+                                        fontFamily: 'monospace',
+                                        marginBottom: '20px',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    {formatPrice(cartItemsTotal)}
+                                </Typography>
                             </Box>
-                        ))}
+                        </div>
                     </Box>
                 </Box>
             )}

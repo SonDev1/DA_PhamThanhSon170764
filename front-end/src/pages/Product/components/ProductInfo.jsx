@@ -166,7 +166,8 @@ function ProductInfo({ product = {} }) {
         }
         try {
             const req = await orderApi.add(payloadPay);
-            enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+            navigate(`/orders?id=${req.orderExist._id}`);
+            // enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
     
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
@@ -241,7 +242,7 @@ function ProductInfo({ product = {} }) {
                         fontFamily: 'monospace',
                     }}
                 >
-                    Buy Now
+                    Mua ngay
                 </Button>
                 <Button
                     type='primary'
@@ -256,7 +257,7 @@ function ProductInfo({ product = {} }) {
                         fontFamily: 'monospace',
                     }}
                 >
-                    Add to Cart
+                    Thêm vào giỏ hàng
                 </Button>
             </Box>
             {/* Box chính sách mua hàng  */}

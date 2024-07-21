@@ -11,7 +11,8 @@
     left: 0;
     width: 100%;
     padding: 30px 8%;
-    background: #eaeaea;
+    // background: #eaeaea;
+    background: white;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -84,7 +85,8 @@
 
             &  box-icon {
                 font-size: 24px;
-                color: #eaeaea;
+                // color: #eaeaea;
+                color: white;
                 transform: rotate(-45deg);
 
             }
@@ -96,7 +98,8 @@
     top: 100%; /* Đặt vị trí bên dưới thanh header */
     left: 0;
     width: 100%; /* Chiều rộng bằng header */
-    background-color: #eaeaea;
+    // background-color: #eaeaea;
+    background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 1000; /* Đảm bảo nằm trên header */
     display: none; /* Mặc định ẩn đi */

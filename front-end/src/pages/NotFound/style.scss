@@ -1,5 +1,6 @@
 .not-found-container {
-  background-color: #eaeaea;
+  // background-color: #eaeaea;
+  background-color: white;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -54,7 +55,8 @@
   background-color: #626262;
   display: inline-block;
   padding: 8px; /* Giảm padding */
-  background: #eaeaea;
+  // background: #eaeaea;
+  background: white;
   border: 2px solid #626262;
   box-shadow: 0 0 10px rgba(0,0,0,.1);
   color: #626262;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import {
     Box,
     Button,
@@ -19,6 +19,12 @@ import { useSnackbar } from 'notistack';
 // import { update, logout } from '../redux/userSlice';
 import userApi from '../../api/userApi';
 import { logout, update } from '../Auth/userSlice';
+import ProductMenu from '../Product/components/ProductMenu';
+import ProductAdditional from '../Product/components/ProductAdditional';
+import ProductReviews from '../Product/components/ProductReviews';
+import AccountMenu from './components/AccountMenu';
+import AccountAdditional from './components/AccountAdditional';
+import Account from './components/Account';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'bold',
         marginBottom: theme.spacing(3),
         // fontFamily: 'Alumni Sans',
-        fontFamily: 'monospace'
+        fontFamily: 'monospace',
     },
     profileImage: {
         display: 'block',
@@ -71,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     name: {
         width: '250px',
         fontWeight: 'bold',
-        fontFamily: 'monospace'
+        fontFamily: 'monospace',
     },
     input: {
         flex: 1,
@@ -82,11 +88,11 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         width: '200px',
     },
-    wrapperButton:{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: theme.spacing(1),
+    wrapperButton: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: theme.spacing(1),
     },
     paper: {
         padding: theme.spacing(3),
@@ -94,16 +100,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#fdfdfd',
     },
 }));
-
-const validationSchema = Yup.object().shape({
-    // displayName: Yup.string().required('Required'),
-    // email: Yup.string().email('Invalid email').required('Required'),
-    // birthday: Yup.date().required('Required'),
-    // gender: Yup.string().required('Required'),
-    // password: Yup.string().required('Required'),
-    // profileImage: Yup.string().url('Invalid URL'),
-    // contactPhone: Yup.string().required('Required'),
-});
 
 function AccountInfo() {
     const userId = localStorage.getItem('userId');
@@ -124,6 +120,9 @@ function AccountInfo() {
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
     const currentUser = useSelector((state) => state.user);
+
+    const location = useLocation();
+    const url = location.pathname;
     // console.log("currentUser :",currentUser);
 
     // Lấy thông tin user
@@ -165,155 +164,26 @@ function AccountInfo() {
 
     return (
         <Box className={classes.root}>
-            <Container style={{ marginTop: '120px',width:'1072px' }}>
+            <Container style={{ marginTop: '120px', width: '1072px' }}>
                 <Paper
                     elevation={0}
                     className={classes.paper}
                 >
                     <Grid className={classes.container}>
-                        <Typography className={classes.title}>MY PROFILE</Typography>
-                        {error && <Typography color='error'>{error}</Typography>}
-                        {formData.profileImage && (
-                            <img
-                                src={formData.profileImage}
-                                alt='Profile'
-                                className={classes.profileImage}
+                        <Box className={classes.productMenu}>
+                            <AccountMenu />
+                        </Box>
+                        <Routes>
+                            <Route
+                                path={url}
+                                element={<Account />}
                             />
-                        )}
-                        <Formik
-                            initialValues={formData}
-                            enableReinitialize
-                            validationSchema={validationSchema}
-                            onSubmit={handleUpdateUser}
-                        >
-                            {({ handleChange, handleBlur }) => (
-                                <Form className={classes.wrapper}>
-                                    <Form className={classes.wrapper}>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>
-                                                Display Name
-                                            </Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='displayName'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>Email</Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='email'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>
-                                                Birthday
-                                            </Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='birthday'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>Gender</Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='gender'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>
-                                                Password
-                                            </Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='password'
-                                                type='password'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>
-                                                Profile Image
-                                            </Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='profileImage'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>
-                                                Contact Phone
-                                            </Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='contactPhone'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                    </Form>
-                                    <Box className={classes.wrapperButton}>
-                                    <Button
-                                        className={classes.button}
-                                        variant='contained'
-                                        color='primary'
-                                        type='submit'
-                                        style={{ 
-                                          marginRight: '10px', 
-                                          background: 'black' ,
-                                          borderRadius: '0px' ,
-                                          fontFamily: 'monospace',
-                                      }}
-                                    >
-                                        Update
-                                    </Button>
-                                    <Button
-                                        className={classes.button}
-                                        variant='contained'
-                                        color='secondary'
-                                        onClick={handleLogout}
-                                        style={{
-                                          marginRight: '10px',
-                                          background: 'white',
-                                          color: 'black',
-                                          border: '1px solid black',
-                                          fontWeight: 'bold',
-                                          borderRadius: '0px' ,
-                                          fontFamily: 'monospace',
-                                      }}
-                                    >
-                                        Logout
-                                    </Button>
-                                    </Box>
-                                </Form>
-                            )}
-                        </Formik>
+                            <Route
+                                path={`${url}/additional`}
+                                element={<AccountAdditional />}
+                            />
+                        </Routes>
+                        <Outlet />
                     </Grid>
                 </Paper>
             </Container>
