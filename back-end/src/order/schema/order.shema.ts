@@ -36,7 +36,7 @@ export class Order {
   @Prop({ default: 'pending' })
   status: string;
 
-  @Prop()
+  @Prop({ default: 'pending' })
   paymentStatus: string;
 
   @Prop()
