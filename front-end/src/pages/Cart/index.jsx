@@ -252,9 +252,10 @@ function CartPages(props) {
         cartItem.product.forEach((productItem) => {
             if (selectedProducts.some((item) => item._id === productItem._id)) {
                 products.push({
-                    productId: productItem._id, // Sử dụng _id hoặc productId tùy vào cấu trúc dữ liệu của bạn
+                    productId: productItem._id, 
                     price: productItem.salePrice,
                     quantity: cartItem.quantity,
+                    urlImage: productItem.images[0]
                 });
             }
         });
@@ -283,6 +284,7 @@ function CartPages(props) {
         try {
             console.log('payloadPay :', payloadPay);
             const req = await orderApi.add(payloadPay);
+            console.log("created orderApi :", req);
             // console.log("id :",req.orderExist._id);
 //==================================================================================================================
             // dispatch(removeFromCart(id));

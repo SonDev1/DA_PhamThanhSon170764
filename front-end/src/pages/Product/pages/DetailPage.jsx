@@ -80,18 +80,6 @@ function DetailPage() {
         );
     }
 
-    // const handleAddToCartSubmit = (formValue) => {
-    //   const action = addToCart({
-    //     id: product.id,
-    //     product,
-    //     quantity: formValue.quantity,
-    //   });
-    //   const actionShowMiniCart = showMiniCart();
-    //   dispatch(action);
-    //   dispatch(actionShowMiniCart);
-    //   enqueueSnackbar('Đã thêm vào giỏ hàng !!!', { variant: 'success' });
-    // };
-
     return (
         <Box className={classes.root}>
             <Container>
@@ -99,9 +87,6 @@ function DetailPage() {
                     elevation={0}
                     className={classes.paper}
                 >
-                    {/* <Typography variant="h5" className={classes.productTitle}>
-            {product.name}
-          </Typography> */}
                     <Grid
                         container
                         spacing={3}
@@ -118,7 +103,6 @@ function DetailPage() {
                             className={classes.info}
                         >
                             <ProductInfo product={product} />
-                            {/* <AddToCart onSubmit={handleAddToCartSubmit} /> */}
                         </Grid>
                     </Grid>
                 </Paper>
