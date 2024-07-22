@@ -32,6 +32,6 @@ export class OrderController {
   }
   @Put('/:orderId/shipping-info')
   updateShippingInfo(@Param('orderId') orderId: string, @Body() data: any) {
-    return this.orderService.updateShippingInfo(data);
+    return this.orderService.updateShippingInfo(orderId, data);
   }
 }

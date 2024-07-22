@@ -41,6 +41,9 @@ export class Order {
 
   @Prop()
   paymentMethod: string;
+
+  @Prop()
+  isInCart: boolean;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
