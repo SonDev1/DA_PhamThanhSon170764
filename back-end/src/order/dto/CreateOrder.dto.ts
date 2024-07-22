@@ -1,11 +1,5 @@
 import { Optional } from '@nestjs/common';
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  isString,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ProductOrder } from 'src/interface/product-order.interface';
 import { ShippingInfo } from 'src/interface/shipping-infor.interface';
 
@@ -18,6 +12,7 @@ export class CreateOrderDto {
   products: ProductOrder[];
 
   @Optional()
+  @IsNotEmpty()
   shippingInfo: ShippingInfo;
 
   @IsOptional()

@@ -32,7 +32,6 @@ export class OrderService {
     const newOrder = { ...createOrderDto, userId: userIdObject, totalAmount };
 
     try {
-      console.log('createOrderDto.isInCart :', createOrderDto.isInCart);
       if (createOrderDto.isInCart) {
         await this.cartService.deleteCartByProductIdsAndUserId(
           createOrderDto.userId,
