@@ -75,16 +75,13 @@ export class OrderService {
     }
   }
 
-  async updateShippingInfo(data: any) {
-    const orderExist = await this.orderRepository.findById(data.orderId);
+  async updateShippingInfo(orderId: string, data: any) {
+    const orderExist = await this.orderRepository.findById(orderId);
     if (!orderExist) {
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
     try {
-      await this.orderRepository.updateShippingInfo(
-        data.orderId,
-        data.shippingInfo,
-      );
+      await this.orderRepository.updateShippingInfo(orderId, data.shippingInfo);
     } catch (error) {
       console.log(error);
     }

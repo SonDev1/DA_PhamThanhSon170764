@@ -20,6 +20,9 @@ export class OrderRepository {
   }
 
   async updateShippingInfo(orderId: string, shippingInfo: any) {
+    console.log('shippingInfo :', shippingInfo);
+    console.log('orderId :', orderId);
+
     return await this.orderModel.findByIdAndUpdate(
       orderId,
       { shippingInfo },
