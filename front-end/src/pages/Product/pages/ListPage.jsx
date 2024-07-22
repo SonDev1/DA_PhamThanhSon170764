@@ -9,8 +9,9 @@ import ProductFilter from '../components/ProductFilter';
 import ProductList from '../components/ProductList';
 import ProductSort from '../components/ProductSort';
 import './style.scss';
-import slideImage from '../../../assets/images/Slide3.png';
+import slideImage from '../../../assets/images/Slide4.png';
 import Slideshow from '../../../components/Slideshow';
+import { Typography } from '@material-ui/core';
 
 function ListPage(props) {
     const [productList, setProductList] = useState([]);
@@ -33,8 +34,7 @@ function ListPage(props) {
             try {
                 const data = await productsApi.getAll(queryParams);
                 setProductList(data.rows);
-                // console.log('data :', data);
-                setTotalProducts(data.totalProducts); // Setting the total products count
+                setTotalProducts(data.totalProducts);
             } catch (error) {
                 console.log('Failed to get all products:', error);
             }
@@ -110,6 +110,10 @@ function ListPage(props) {
                     alt='Slide'
                     style={{ width: '100%', height: '100%' }}
                 />
+            </div>
+            <div className='wrapper__middle'>
+                <Typography variant='h5' style={{fontFamily:"monospace" ,fontWeight:'bold'}}>BE PART OF CURNON</Typography>
+                <Typography style= {{fontFamily:"monospace" ,fontWeight:'bold'}}>Ai nói bạn không thể lựa chọn gia đình?</Typography>
             </div>
             <Slideshow />
         </div>

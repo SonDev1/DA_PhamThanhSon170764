@@ -126,7 +126,7 @@ const OrderPage = () => {
                             <Box style={{ display: 'flex' }}>
                                 <Typography
                                     variant='body2'
-                                    style={{ marginRight: '15px' }}
+                                    style={{ marginRight: '15px', fontWeight: 'bold' }}
                                 >
                                     {shippingInfo.receiver}
                                 </Typography>

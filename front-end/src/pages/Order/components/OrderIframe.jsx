@@ -12,7 +12,7 @@ const OrderIframe = ({ isVisible, handleClose,url ,orderId  }) => {
       console.log('response :',response);
       console.log('status :',status);
 
-      if (status === 'success') {
+      if (status === 'Success') {
         // Chuyển trang
         navigate('/success-page')
       } else if (status === 'pending') {
