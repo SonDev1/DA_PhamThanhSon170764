@@ -53,20 +53,24 @@ const OrderPage = () => {
     const queryParams = new URLSearchParams(location.search);
     const orderId = queryParams.get('id');
     const [itemsList, setItemsList] = useState([]);
-    const [paymentUrl,setPaymentUrl] =useState('');
-    const shippingInfo = {
-        receiver: 'Pham Thanh Son',
-        phone: '0982201057',
-        address: 'Thanh Tri , Ha Noi',
-        adressDetail: 'so 6 , day D , Ngu Hiep',
-    };
+    const [paymentUrl, setPaymentUrl] = useState('');
+
+    const totalAmount = itemsList.reduce((total, item) => {
+        return total + item.quantity * item.price;
+    }, 0);
+    const [shippingInfo, setShippingInfo] = useState({
+        receiver: ' ',
+        phone: ' ',
+        address: ' ',
+        adressDetail: ' ',
+    });
 
     const validationSchema = Yup.object().shape({
         paymentMethod: Yup.string().required('Vui lòng chọn phương thức thanh toán'),
     });
 
     const handleBuyNow = async (values) => {
-        const { paymentMethod } = values; 
+        const { paymentMethod } = values;
         console.log(paymentMethod);
 
         try {
@@ -74,14 +78,14 @@ const OrderPage = () => {
             const paymentUrl = res.paymentUrl.paymentInf.order_url;
 
             setPaymentUrl(paymentUrl);
-            
+
             // Hiển thị iframe sau khi gọi API
             setIsIframeVisible(true);
         } catch (error) {
             console.error('Error fetching order:', error);
         }
     };
-    
+
     const handleCloseIframe = () => {
         setIsIframeVisible(false);
     };
@@ -91,6 +95,8 @@ const OrderPage = () => {
             try {
                 const res = await orderApi.get(orderId);
                 const itemsList = res.products;
+                const shippingInfo = res.shippingInfo;
+                setShippingInfo(shippingInfo);
                 setItemsList(itemsList);
             } catch (error) {
                 console.error('Error fetching order:', error);
@@ -118,12 +124,30 @@ const OrderPage = () => {
                                 Địa chỉ nhận hàng
                             </Typography>
                             <Box style={{ display: 'flex' }}>
-                                <Typography variant='body2'>{shippingInfo.receiver}</Typography>
-                                <Typography variant='body2'>({shippingInfo.phone})</Typography>
-                                <Typography variant='body2'>
+                                <Typography
+                                    variant='body2'
+                                    style={{ marginRight: '15px' }}
+                                >
+                                    {shippingInfo.receiver}
+                                </Typography>
+                                <Typography
+                                    variant='body2'
+                                    style={{ marginRight: '15px' }}
+                                >
+                                    ({shippingInfo.phone})
+                                </Typography>
+                                <Typography
+                                    variant='body2'
+                                    style={{ marginRight: '15px' }}
+                                >
                                     {shippingInfo.adressDetail}.
                                 </Typography>
-                                <Typography variant='body2'>{shippingInfo.address}</Typography>
+                                <Typography
+                                    variant='body2'
+                                    style={{ marginRight: '15px' }}
+                                >
+                                    {shippingInfo.address}
+                                </Typography>
                             </Box>
                         </Box>
                     </Grid>
@@ -215,7 +239,19 @@ const OrderPage = () => {
                                                 width: '20%',
                                             }}
                                         >
-                                            <Typography variant='body2'>Ảnh</Typography>
+                                            <img
+                                                src={
+                                                    item.urlImage
+                                                        ? `${item.urlImage}`
+                                                        : 'https://via.placeholder.com/444'
+                                                }
+                                                alt={item.name}
+                                                style={{
+                                                    width: '100px',
+                                                    height: '100px',
+                                                    objectFit: 'cover',
+                                                }}
+                                            />
                                         </Box>
                                         <Box
                                             style={{
@@ -250,12 +286,31 @@ const OrderPage = () => {
                                                 width: '20%',
                                             }}
                                         >
-                                            <Typography variant='body2'>
+                                            <Typography
+                                                variant='body2'
+                                                style={{ fontWeight: '600' }}
+                                            >
                                                 {formatPrice(item.quantity * item.price)}
                                             </Typography>
                                         </Box>
                                     </Box>
                                 ))}
+                                <Box
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        width: '100%',
+                                        marginTop: '10px',
+                                        padding: '10px',
+                                    }}
+                                >
+                                    <Typography
+                                        variant='h6'
+                                        style={{ fontWeight: '600' }}
+                                    >
+                                        Tổng tiền: {formatPrice(totalAmount)}
+                                    </Typography>
+                                </Box>
                             </Box>
                         </Box>
                     </Grid>
@@ -351,9 +406,12 @@ const OrderPage = () => {
                                             <Button
                                                 type='submit'
                                                 style={{
+                                                    right: '0',
+                                                    top: '0',
                                                     border: '1px solid black',
                                                     margin: '15px',
                                                     borderRadius: '0px',
+                                                    padding:'5px 15px'
                                                 }}
                                             >
                                                 Đặt hàng

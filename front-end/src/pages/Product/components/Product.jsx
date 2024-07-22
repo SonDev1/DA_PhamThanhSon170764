@@ -12,7 +12,6 @@ function Product({ product }) {
     };
 
     const thumbnailUrl = product.images[0] 
-    // ? `http://localhost:5000/${product?.images[0]}`
     ? `${product?.images[0]}`
     : 'https://via.placeholder.com/444'
 

@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ProductInfo({ product = {} }) {
     const classes = useStyles();
-    const { name, description, salePrice, originalPrice, dialSize, _id } = product;
+    const { name, description, salePrice, originalPrice, dialSize, _id , images } = product;
     const userId = localStorage.getItem('userId');
     const promotionPercent = discountPercentage(originalPrice, salePrice);
     const [openModal, setOpenModal] = useState(false);
@@ -156,7 +156,8 @@ function ProductInfo({ product = {} }) {
     // Payload pay now
     // ============================================================================================================================
     const price = salePrice
-    const products  = [{ productId , price , quantity }]
+    const urlImage = images[0]
+    const products  = [{ productId , price , quantity ,urlImage}]
     const payloadPay = {userId , products , shippingInfo}
     // ============================================================================================================================
     const handleBuyNow = async () => {
@@ -167,7 +168,6 @@ function ProductInfo({ product = {} }) {
         try {
             const req = await orderApi.add(payloadPay);
             navigate(`/orders?id=${req.orderExist._id}`);
-            // enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
     
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
