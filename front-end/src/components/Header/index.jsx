@@ -127,21 +127,7 @@ function Header(props) {
 
             <div className='wrapper__header__social-media'>
                 {isLoggedIn ? (
-                    // <Box>
-                    //     <a style={{ '--i': 1, marginRight: '18px' }} href='/cart'>
-                    //         <box-icon type='solid' name='cart' color='#000'></box-icon>
-                    //     </a>
-                    //     <a style={{ '--i': 2, marginRight: '18px' }} href='/account'>
-                    //         <box-icon type='solid' name='user-circle' color='#000'></box-icon>
-                    //     </a>
-                    //     <a style={{ '--i': 3, marginRight: '18px' }} href='#' onClick={handleSearchClick}>
-                    //         <box-icon type='solid' name='search-alt-2'></box-icon>
-                    //     </a>
-                    // </Box>
                     <Box>
-                        {/* <a style={{ '--i': 3, marginRight: '18px' }} href='#' onClick={handleSearchClick}>
-                            <box-icon name='search-alt-2'></box-icon>
-                        </a> */}
                         <IconButton
                             size='large'
                             color='inherit'
@@ -170,9 +156,6 @@ function Header(props) {
                     </Box>
                 ) : (
                     <>
-                        {/* <a style={{ '--i': 1 }} href='https://www.youtube.com/@CurnonWatch'>
-                            <box-icon type='logo' name='youtube' color='#000'></box-icon>
-                        </a> */}
                         <a
                             style={{ '--i': 2 }}
                             href='https://www.facebook.com/curnonwatch'
@@ -225,7 +208,6 @@ function Header(props) {
                 }}
                 getContentAnchorEl={null}
             >
-                {/* <MenuItem onClick={handleCloseMenu}>Profile</MenuItem> */}
                 <MenuItem onClick={handleUserInfo}>Thông tin cá nhân</MenuItem>
                 <MenuItem onClick={handleShop}>Đơn mua</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Đăng xuất</MenuItem>

@@ -224,7 +224,7 @@ function Account() {
                                                 onBlur={handleBlur}
                                             />
                                         </Box>
-                                        <Box className={classes.item}>
+                                        {/* <Box className={classes.item}>
                                             <Typography className={classes.name}>Gender</Typography>
                                             <Field
                                                 as={TextField}
@@ -234,8 +234,8 @@ function Account() {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                        </Box>
-                                        <Box className={classes.item}>
+                                        </Box> */}
+                                        {/* <Box className={classes.item}>
                                             <Typography className={classes.name}>
                                                 Password
                                             </Typography>
@@ -248,8 +248,8 @@ function Account() {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                        </Box>
-                                        <Box className={classes.item}>
+                                        </Box> */}
+                                        {/* <Box className={classes.item}>
                                             <Typography className={classes.name}>
                                                 Profile Image
                                             </Typography>
@@ -261,7 +261,7 @@ function Account() {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                        </Box>
+                                        </Box> */}
                                         <Box className={classes.item}>
                                             <Typography className={classes.name}>
                                                 Contact Phone

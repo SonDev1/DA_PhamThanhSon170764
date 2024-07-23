@@ -147,9 +147,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = Yup.object().shape({
-    // displayName: Yup.string().required('Required'),
-    // email: Yup.string().email('Invalid email').required('Required'),
-    // contactPhone: Yup.string().required('Required'),
+    // receiver: Yup.string().required('Required'),
+    // address: Yup.string().required('Required'),
+    // adressDetail: Yup.string().required('Required'),
+    // phone: Yup.number().required('Required'),
 });
 function CartPages(props) {
 

@@ -263,17 +263,17 @@ function ProductInfo({ product = {} }) {
             {/* Box chính sách mua hàng  */}
             <Box>
                 <Box className={classes.policy}>
-                    <Box>icon</Box>
+                    <box-icon name='refresh' ></box-icon>
                     <Box component='span'>
                         ĐỔI TRẢ MIỄN PHÍ trong 3 ngày (Với lỗi từ Nhà sản xuất)
                     </Box>
                 </Box>
                 <Box className={classes.policy}>
-                    <Box>icon</Box>
+                    <box-icon name='package' ></box-icon>
                     <Box component='span'>FREE SHIPPING đơn hàng &gt; 500K</Box>
                 </Box>
                 <Box className={classes.policy}>
-                    <Box>icon</Box>
+                    <box-icon name='check-shield' ></box-icon>
                     <Box component='span'>
                         BẢO HÀNH trong 10 năm với sản phẩm Đồng Hồ (do kĩ thuật viên kiểm định)
                     </Box>

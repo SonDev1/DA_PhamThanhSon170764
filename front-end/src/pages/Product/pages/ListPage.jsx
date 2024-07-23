@@ -12,6 +12,7 @@ import './style.scss';
 import slideImage from '../../../assets/images/Slide4.png';
 import Slideshow from '../../../components/Slideshow';
 import { Typography } from '@material-ui/core';
+import ProductClear from '../components/ProductClear';
 
 function ListPage(props) {
     const [productList, setProductList] = useState([]);
@@ -78,7 +79,7 @@ function ListPage(props) {
                 <div className='wrapper__product__productList'>
                     <div
                         className='wrapper__product__productList__filterViewer'
-                        style={{ display: 'flex'}}
+                        style={{ display: 'flex', marginBottom: '10px' }}
                     >
                          <FilterViewer
                             filters={queryParams}
@@ -90,7 +91,7 @@ function ListPage(props) {
                         />
                     </div>
                     <div className='wrapper__product__productList__products'>
-                        <ProductList data={productList} />
+                        {/* <ProductList data={productList} />
                         <Pagination
                             className='custom-pagination'
                             align='center'
@@ -98,7 +99,22 @@ function ListPage(props) {
                             total={totalProducts}
                             pageSize={queryParams._limit}
                             onChange={(page) => handleFiltersChange({ _page: page })}
-                        />
+                        /> */}
+                        {productList && productList.length > 0 ? (
+        <>
+            <ProductList data={productList} />
+            <Pagination
+                className='custom-pagination'
+                align='center'
+                current={Number.parseInt(queryParams._page)}
+                total={totalProducts}
+                pageSize={queryParams._limit}
+                onChange={(page) => handleFiltersChange({ _page: page })}
+            />
+        </>
+    ) : (
+        <ProductClear />
+    )}
                     </div>
                 </div>
             </div>
