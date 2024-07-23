@@ -54,8 +54,6 @@ export class UploadController {
     @UploadedFiles() files: Express.Multer.File[],
     @Body('typeId') typeId: string,
   ) {
-    console.log('files :', files);
-
     const urlFiles = files.map((file) => {
       const url = `http://localhost:5000/api/uploads/types/${file.filename}`;
       console.log('url :', url);
