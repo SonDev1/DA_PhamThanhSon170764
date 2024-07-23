@@ -166,8 +166,10 @@ export class AuthService {
       userName: user.username,
       displayName: user.displayName,
       avaUrl: user.avaUrl,
-      contactPhone: user.contactPhone,
       facebookId: user.facebookId,
+      contactPhone: user.contactPhone,
+      address: user.address,
+      addressDetail: user.addressDetail,
     };
   }
 

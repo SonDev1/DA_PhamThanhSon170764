@@ -8,10 +8,14 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { storageOptions } from 'helpers/config';
 import { ProductService } from 'src/product/service/product.service';
+import { TypeService } from 'src/type/service/type.service';
 
 @Controller('uploads')
 export class UploadController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly typeService: TypeService,
+  ) {}
 
   @Post('product')
   @UseInterceptors(
@@ -40,5 +44,21 @@ export class UploadController {
       status: 'done',
     }));
     return uploadedFiles;
+  }
+
+  @Post('type')
+  @UseInterceptors(
+    FilesInterceptor('files', 1, { storage: storageOptions('types') }),
+  )
+  async uploadTypeFile(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body('typeId') typeId: string,
+  ) {
+    const urlFiles = files.map((file) => {
+      const url = `http://localhost:5000/api/uploads/types/${file.filename}`;
+      console.log('url :', url);
+      return url;
+    });
+    return await this.typeService.updateImage(typeId, urlFiles[0]);
   }
 }

@@ -11,6 +11,22 @@ export class UserRepository {
     private UserModel: Model<User>,
   ) {}
 
+  async findById(userId: string) {
+    return await this.UserModel.findById(userId);
+  }
+
+  async updateShippingInfo(userId: string, data: any) {
+    return await this.UserModel.findByIdAndUpdate(
+      userId,
+      {
+        contactPhone: data.contactPhone,
+        address: data.address,
+        addressDetail: data.addressDetail,
+      },
+      { new: true },
+    );
+  }
+
   async findUserToUpdate(userId: string): Promise<User> {
     const user = await this.UserModel.findById(userId)
       .select('displayName contactPhone facebookId avaUrl')

@@ -27,7 +27,13 @@ export class TypeRepository {
   async delete(typeId: string) {
     return await this.typeModel.findByIdAndDelete(typeId);
   }
-
+  async updateImage(typeId: string, imageUrl: string) {
+    return await this.typeModel.findByIdAndUpdate(
+      typeId,
+      { image: imageUrl },
+      { new: true },
+    );
+  }
   async update(typeId: string, createTypeDto: CreateTypeDto) {
     return await this.typeModel.findByIdAndUpdate(typeId, createTypeDto, {
       new: true,
