@@ -7,6 +7,9 @@ export class Type {
 
   @Prop({ type: Types.ObjectId })
   categoryId: Types.ObjectId;
+
+  @Prop({ default: '' })
+  image: string;
 }
 
 export const TypeSchema = SchemaFactory.createForClass(Type);
