@@ -34,6 +34,17 @@ export class TypeService {
       message: 'Update type success',
     };
   }
+
+  async updateImage(typeId: string, imageUrl: string) {
+    const type = await this.typeRepository.findById(typeId);
+    if (!type) {
+      throw new HttpException('Type not found', HttpStatus.NOT_FOUND);
+    }
+    await this.typeRepository.updateImage(typeId, imageUrl);
+    return {
+      message: 'Update image success',
+    };
+  }
   async createType(createTypeDto: CreateTypeDto) {
     try {
       const categoryIdObject = new Types.ObjectId(createTypeDto.categoryId);
@@ -43,7 +54,6 @@ export class TypeService {
         message: 'Create type success',
       };
     } catch (err) {
-      console.log(err);
       throw new HttpException('Create type error', HttpStatus.BAD_REQUEST);
     }
   }

@@ -30,4 +30,23 @@ export class UserService {
       throw new HttpException('Update error', HttpStatus.BAD_REQUEST);
     }
   }
+
+  async updateShippingInfo(userId: string, data: any) {
+    const existingUser = await this.userRepository.findById(userId);
+    if (!existingUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    try {
+      await this.userRepository.updateShippingInfo(userId, data);
+      return {
+        message: 'Update shipping info successfully',
+      };
+    } catch (err) {
+      throw new HttpException(
+        'Update shipping info error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

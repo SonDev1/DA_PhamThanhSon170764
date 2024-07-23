@@ -13,4 +13,9 @@ export class UserController {
   ) {
     return this.userService.updateUser(userId, updateUserDto);
   }
+
+  @Put(':userId/shipping-infor')
+  updateShippingInfo(@Param('userId') userId: string, @Body() data: any) {
+    return this.userService.updateShippingInfo(userId, data);
+  }
 }

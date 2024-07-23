@@ -23,6 +23,12 @@ export class User {
   contactPhone: string;
 
   @Prop({ default: '' })
+  address: string;
+
+  @Prop({ default: '' })
+  addressDetail: string;
+
+  @Prop({ default: '' })
   facebookId: string;
 
   @Prop({ default: 'refresh_token' })
