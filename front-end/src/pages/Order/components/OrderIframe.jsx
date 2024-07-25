@@ -35,12 +35,13 @@ const OrderIframe = ({ isVisible, handleClose,url ,orderId  }) => {
       footer={null}
       onCancel={handleCancel}
       width="80%"
+      title="Payment"
       style={{ top: 20 }}
     >
       <iframe
-        src={url } 
+        src={ url } 
         title="Popup Content"
-        style={{ width: '100%', height: '700px', border: 'none' }}
+        style={{ width: '100%', height: '500px', border: 'none' }}
       ></iframe>
     </Modal>
   );

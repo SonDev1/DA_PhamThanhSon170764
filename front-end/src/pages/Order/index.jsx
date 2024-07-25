@@ -3,6 +3,10 @@ import {
     Box,
     Button,
     Container,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     Grid,
     makeStyles,
     Paper,
@@ -16,9 +20,11 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import OrderIframe from './components/OrderIframe';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../utils/common';
 import orderApi from '../../api/ordersApi';
+import UpdateShippingInfo from './components/UpdateShippingInfo';
+import { enqueueSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -54,6 +60,8 @@ const OrderPage = () => {
     const orderId = queryParams.get('id');
     const [itemsList, setItemsList] = useState([]);
     const [paymentUrl, setPaymentUrl] = useState('');
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const navigate = useNavigate();
 
     const totalAmount = itemsList.reduce((total, item) => {
         return total + item.quantity * item.price;
@@ -72,7 +80,10 @@ const OrderPage = () => {
     const handleBuyNow = async (values) => {
         const { paymentMethod } = values;
         console.log(paymentMethod);
-
+        if (paymentMethod==='cash') {
+            enqueueSnackbar("Đặt hàng thành công ",{variant:"success"})
+            navigate('/success-page')
+        }
         try {
             const res = await orderApi.payment(orderId, paymentMethod);
             console.log("payment res :",res );
@@ -89,6 +100,14 @@ const OrderPage = () => {
 
     const handleCloseIframe = () => {
         setIsIframeVisible(false);
+    };
+
+    const handleOpenDialog = () => {
+        setIsDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false);
     };
 
     useEffect(() => {
@@ -117,13 +136,23 @@ const OrderPage = () => {
                 >
                     <Grid className={classes.container}>
                         <Box className={classes.address}>
-                            <Typography
-                                component='h3'
-                                variant='h7'
-                                style={{ fontFamily: 'monospace', marginBottom: '20px' }}
-                            >
-                                Địa chỉ nhận hàng
-                            </Typography>
+                            <Box style={{display:'flex',justifyContent:"space-between"}}>
+                                <Typography
+                                    component='h3'
+                                    variant='h7'
+                                    style={{ fontFamily: 'monospace', marginBottom: '20px' }}
+                                >
+                                    Địa chỉ nhận hàng
+                                </Typography>
+                                <Button
+                                    variant='outlined'
+                                    color='black'
+                                    onClick={handleOpenDialog}
+                                    style={{border: 'none' ,textDecoration: 'underline',padding: '0px',margin: '0px'}}
+                                >
+                                    Thay đổi địa chỉ nhận hàng
+                                </Button>
+                            </Box>
                             <Box style={{ display: 'flex' }}>
                                 <Typography
                                     variant='body2'
@@ -150,11 +179,12 @@ const OrderPage = () => {
                                     {shippingInfo.address}
                                 </Typography>
                             </Box>
+
                         </Box>
                     </Grid>
                 </Paper>
             </Container>
-
+            {/* Thông tin sản phẩm  */}
             <Container style={{ width: '1072px' }}>
                 <Paper
                     elevation={0}
@@ -317,7 +347,7 @@ const OrderPage = () => {
                     </Grid>
                 </Paper>
             </Container>
-
+            {/* Phương thức thanh toán  */}
             <Container style={{ width: '1072px' }}>
                 <Paper
                     elevation={0}
@@ -339,7 +369,9 @@ const OrderPage = () => {
                                     onSubmit={handleBuyNow}
                                 >
                                     {({ values, handleChange, handleBlur, handleSubmit }) => (
-                                        <Form onSubmit={handleSubmit}>
+                                        <Form 
+                                            onSubmit={handleSubmit}
+                                        >
                                             <Box sx={{ padding: 2 }}>
                                                 <FormControl component='fieldset'>
                                                     <RadioGroup
@@ -432,6 +464,21 @@ const OrderPage = () => {
                 url={paymentUrl}
                 orderId={orderId}
             />
+            <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+                <DialogTitle>Thay đổi địa chỉ nhận hàng</DialogTitle>
+                <DialogContent>
+                    <UpdateShippingInfo 
+                        shippingInfo={shippingInfo} 
+                        setShippingInfo={setShippingInfo} 
+                        onClose={handleCloseDialog} 
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="black">
+                        Đóng
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

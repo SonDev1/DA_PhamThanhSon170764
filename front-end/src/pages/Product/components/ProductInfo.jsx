@@ -120,7 +120,7 @@ function ProductInfo({ product = {} }) {
         addressDetail:userInfo.addressDetail,
         isInCart: false
     };
-    console.log("shippingInfo :",shippingInfo);
+    // console.log("shippingInfo :",shippingInfo);
     const [error, setError] = useState('');
 
 
@@ -145,7 +145,7 @@ function ProductInfo({ product = {} }) {
             try {
                 const userInfo = await userApi.getInfo(userId);
                 setUserInfo(userInfo);
-                console.log("userInfo :",userInfo);
+                // console.log("userInfo :",userInfo);
             } catch (error) {
                 setError('Failed to fetch account info');
             }

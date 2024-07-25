@@ -19,6 +19,10 @@ const orderApi = {
      payment(orderId, paymentMethod) {
         const url = `api/orders/${orderId}/status`; 
         return axiosClient.put(url, { paymentMethod });
+    },
+    updateShippingInfo(userId,payload){
+        const url = `api/users/${userId}/shipping-infor`; 
+        return axiosClient.put(url, { payload });
     }
 }
 

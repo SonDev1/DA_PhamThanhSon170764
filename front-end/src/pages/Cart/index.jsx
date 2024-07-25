@@ -539,6 +539,7 @@ function CartPages(props) {
                                                             style={{
                                                                 display: 'flex',
                                                                 border: '1px solid  black',
+                                                                alignItems:'center'
                                                             }}
                                                         >
                                                             <Button
