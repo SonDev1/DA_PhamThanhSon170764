@@ -16,7 +16,6 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
-// import { update, logout } from '../redux/userSlice';
 import userApi from '../../api/userApi';
 import { logout, update } from '../Auth/userSlice';
 import ProductMenu from '../Product/components/ProductMenu';
@@ -134,6 +133,7 @@ function AccountInfo() {
         (async () => {
             try {
                 const userData = await userApi.getInfo(userId);
+                console.log("userData :", userData);
                 setFormData(userData);
             } catch (error) {
                 setError('Failed to fetch account info');

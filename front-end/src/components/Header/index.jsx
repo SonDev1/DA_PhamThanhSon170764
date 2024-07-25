@@ -101,13 +101,13 @@ function Header(props) {
                 </a>
                 <a
                     style={{ '--i': 2 }}
-                    href='/about'
+                    href='http://localhost:3000/products?_limit=16&_page=1&_sort=asc&categoryId=66968d748675a1be4a653de2'
                 >
                     NAM GIỚI
                 </a>
                 <a
                     style={{ '--i': 3 }}
-                    href='/reviews'
+                    href='http://localhost:3000/products?_limit=16&_page=1&_sort=asc&categoryId=66969dec8675a1be4a653e01'
                 >
                     NỮ GIỚI
                 </a>

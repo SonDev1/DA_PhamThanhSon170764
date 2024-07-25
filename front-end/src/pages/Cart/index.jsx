@@ -114,6 +114,8 @@ const useStyles = makeStyles((theme) => ({
     cartDetails: {
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     cartItem: {
         width: '100%',
@@ -121,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         marginBottom: theme.spacing(2),
         justifyContent: ' space-between',
-        marginLeft:'20px'
+        marginLeft: '20px',
     },
     leftPanel: {
         width: '50%',
@@ -134,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
     },
     input: {
         fontFamily: 'monospace',
-        height:'60px'
+        height: '60px',
     },
     img: {
         height: '120px',
@@ -149,11 +151,10 @@ const useStyles = makeStyles((theme) => ({
 const validationSchema = Yup.object().shape({
     // receiver: Yup.string().required('Required'),
     // address: Yup.string().required('Required'),
-    // adressDetail: Yup.string().required('Required'),
+    // addressDetail : Yup.string().required('Required'),
     // phone: Yup.number().required('Required'),
 });
 function CartPages(props) {
-
     //=================================================================================================================================
     const [selectedProducts, setSelectedProducts] = useState([]);
 
@@ -177,8 +178,6 @@ function CartPages(props) {
     // Lấy danh sách sản phẩm từ Redux
     const cartItems = useSelector((state) => state.cart.cartItems);
 
-
-
     // Test Thay đổi số lượng
     //=================================================================================================================================
     // const result = useState(cartItems.quantity)
@@ -201,7 +200,7 @@ function CartPages(props) {
         receiver: '',
         phone: '',
         address: '',
-        adressDetail: '',
+        addressDetail: '',
         isInCart: true,
     });
 
@@ -253,26 +252,74 @@ function CartPages(props) {
         cartItem.product.forEach((productItem) => {
             if (selectedProducts.some((item) => item._id === productItem._id)) {
                 products.push({
-                    productId: productItem._id, 
+                    productId: productItem._id,
                     price: productItem.salePrice,
                     quantity: cartItem.quantity,
-                    urlImage: productItem.images[0]
+                    urlImage: productItem.images[0],
                 });
             }
         });
     });
+    console.log('products : ', products);
     // =========================================================
 
+    //     const handleBuyNow = async (values) => {
+    //         const shippingInfo = {
+    //             receiver: values.displayName,
+    //             phone: values.contactPhone,
+    //             address: values.address,
+    //             addressDetail : values.addressDetail ,
+    //             isInCart: true,
+    //         };
+    //         const payloadPay = { userId, products, shippingInfo };
+    //         // console.log("shippingInfo :",shippingInfo);
+    //         if (!userId) {
+    //             return;
+    //         }
+    //         if (selectedProducts.length === 0) {
+    //             enqueueSnackbar('Vui lòng chọn ít nhất một sản phẩm để mua hàng!', {
+    //                 variant: 'warning',
+    //             });
+    //             return; // Nếu không có sản phẩm nào được chọn, không thực hiện hành động
+    //         }
+    //         try {
+    //             console.log('payloadPay :', payloadPay);
+    //             const req = await orderApi.add(payloadPay);
+    //             console.log("created orderApi :", req);
+    //             // console.log("id :",req.orderExist._id);
+    // //==================================================================================================================
+    //             // dispatch(removeFromCart(id));
+    // //==================================================================================================================
+    //             // enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
+    //             // navigate('/orders');
+    //             navigate(`/orders?id=${req.orderExist._id}`);
+    //         } catch (error) {
+    //             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
+    //         }
+    //     };
     const handleBuyNow = async (values) => {
         const shippingInfo = {
             receiver: values.displayName,
             phone: values.contactPhone,
             address: values.address,
-            adressDetail: values.adressDetail,
+            addressDetail: values.addressDetail,
             isInCart: true,
         };
-        const payloadPay = { userId, products, shippingInfo };
-        // console.log("shippingInfo :",shippingInfo);
+
+        const updatedProducts = selectedProducts.map((selectedProduct) => {
+            const cartItem = cartList.find((item) =>
+                item.product.some((product) => product._id === selectedProduct._id),
+            );
+            return {
+                productId: selectedProduct._id,
+                price: selectedProduct.salePrice,
+                quantity: cartItem.quantity, // Cập nhật số lượng từ cartList
+                urlImage: selectedProduct.images[0],
+            };
+        });
+
+        const payloadPay = { userId, products: updatedProducts, shippingInfo };
+
         if (!userId) {
             return;
         }
@@ -280,23 +327,40 @@ function CartPages(props) {
             enqueueSnackbar('Vui lòng chọn ít nhất một sản phẩm để mua hàng!', {
                 variant: 'warning',
             });
-            return; // Nếu không có sản phẩm nào được chọn, không thực hiện hành động
+            return;
         }
         try {
-            console.log('payloadPay :', payloadPay);
             const req = await orderApi.add(payloadPay);
-            console.log("created orderApi :", req);
-            // console.log("id :",req.orderExist._id);
-//==================================================================================================================
-            // dispatch(removeFromCart(id));
-//==================================================================================================================         
-            // enqueueSnackbar('Đã mua hàng thành công', { variant: 'success' });
-            // navigate('/orders');
             navigate(`/orders?id=${req.orderExist._id}`);
         } catch (error) {
             enqueueSnackbar('Đã xảy ra lỗi! Vui lòng thử lại sau.', { variant: 'error' });
         }
     };
+
+    const handleIncreaseQuantity = (id) => {
+        setCartList(
+            cartList.map((item) =>
+                item._id === id ? { ...item, quantity: item.quantity + 1 } : item,
+            ),
+        );
+    };
+
+    const handleDecreaseQuantity = (id) => {
+        setCartList(
+            cartList.map((item) =>
+                item._id === id && item.quantity > 1
+                    ? { ...item, quantity: item.quantity - 1 }
+                    : item,
+            ),
+        );
+    };
+
+    const totalAmount = selectedProducts.reduce((total, selectedProduct) => {
+        const cartItem = cartList.find(item =>
+            item.product.some(product => product._id === selectedProduct._id)
+        );
+        return total + cartItem.quantity * selectedProduct.salePrice;
+    }, 0);
 
     return (
         <Box>
@@ -358,7 +422,7 @@ function CartPages(props) {
                                                     </Typography>
                                                     <Field
                                                         as={TextField}
-                                                        name='adressDetail'
+                                                        name='addressDetail'
                                                         className={classes.input}
                                                         variant='outlined'
                                                         onChange={handleChange}
@@ -399,7 +463,7 @@ function CartPages(props) {
                                                         background: 'black',
                                                         borderRadius: '0px',
                                                         fontFamily: 'monospace',
-                                                        color:'white',
+                                                        color: 'white',
                                                     }}
                                                     // disabled={selectedProducts.length === 0}
                                                 >
@@ -424,15 +488,27 @@ function CartPages(props) {
                             {cartList.map((cartItem) => (
                                 <Box key={cartItem._id}>
                                     {cartItem.product.map((productItem, index) => (
-                                        <Box style={{display:'flex'}}>
-                                            <Box style={{display:'flex',justifyContent:'center',}}>
+                                        <Box style={{ display: 'flex' }}>
+                                            <Box
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                }}
+                                            >
                                                 <input
-                                                    style={{width:'20px',height:'20px',backgroundColor:'black',alignSelf: 'center'}}
+                                                    style={{
+                                                        width: '20px',
+                                                        height: '20px',
+                                                        backgroundColor: 'black',
+                                                        alignSelf: 'center',
+                                                    }}
                                                     type='checkbox'
                                                     checked={selectedProducts.some(
                                                         (item) => item._id === productItem._id,
                                                     )}
-                                                    onChange={() => handleCheckboxChange(productItem)}
+                                                    onChange={() =>
+                                                        handleCheckboxChange(productItem)
+                                                    }
                                                 />
                                             </Box>
                                             <Box
@@ -458,12 +534,40 @@ function CartPages(props) {
                                                     >
                                                         {productItem.name}
                                                     </Typography>
-                                                    <Typography
-                                                        component='p'
-                                                        className={classes.description}
-                                                    >
-                                                        Số lượng: {cartItem.quantity}
-                                                    </Typography>
+                                                    <Box style={{ display: '' }}>
+                                                        <Box
+                                                            style={{
+                                                                display: 'flex',
+                                                                border: '1px solid  black',
+                                                            }}
+                                                        >
+                                                            <Button
+                                                                onClick={() =>
+                                                                    handleDecreaseQuantity(
+                                                                        cartItem._id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                -
+                                                            </Button>
+                                                            <Typography
+                                                                component='p'
+                                                                className={classes.description}
+                                                            >
+                                                                {cartItem.quantity}
+                                                            </Typography>
+                                                            <Button
+                                                                onClick={() =>
+                                                                    handleIncreaseQuantity(
+                                                                        cartItem._id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                +
+                                                            </Button>
+                                                        </Box>
+                                                    </Box>
+
                                                     <Typography
                                                         component='p'
                                                         className={classes.salePrice}
@@ -471,7 +575,12 @@ function CartPages(props) {
                                                         {formatPrice(productItem.salePrice)}
                                                     </Typography>
                                                 </Box>
-                                                <Box>
+                                                <Box
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                    }}
+                                                >
                                                     <IconButton
                                                         onClick={() =>
                                                             handleRemoveItem(productItem._id)
@@ -506,7 +615,7 @@ function CartPages(props) {
                                         fontWeight: 'bold',
                                     }}
                                 >
-                                    {formatPrice(cartItemsTotal)}
+                                    {formatPrice(totalAmount)}
                                 </Typography>
                             </Box>
                         </div>

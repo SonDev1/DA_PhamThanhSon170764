@@ -13,6 +13,8 @@ import slideImage from '../../../assets/images/Slide4.png';
 import Slideshow from '../../../components/Slideshow';
 import { Typography } from '@material-ui/core';
 import ProductClear from '../components/ProductClear';
+import ProductType from '../components/Type/ProductType';
+import categoryApi from '../../../api/categoryApi';
 
 function ListPage(props) {
     const [productList, setProductList] = useState([]);
@@ -66,7 +68,17 @@ function ListPage(props) {
             search: queryString.stringify(filters),
         });
     };
+    const handleCategoryChange = (newCategoryGender) => {
+        const filters = {
+            ...queryParams,
+            typeId: newCategoryGender,
+        };
 
+        navigate({
+            pathname: location.pathname,
+            search: queryString.stringify(filters),
+        });
+    };
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div className='wrapper__product'>
@@ -77,11 +89,17 @@ function ListPage(props) {
                     />
                 </div>
                 <div className='wrapper__product__productList'>
+                    <div className='wrapper__product__productList_type'>
+                        <ProductType 
+                            filters={queryParams}
+                            onChange={handleCategoryChange}
+                        />
+                    </div>
                     <div
                         className='wrapper__product__productList__filterViewer'
                         style={{ display: 'flex', marginBottom: '10px' }}
                     >
-                         <FilterViewer
+                        <FilterViewer
                             filters={queryParams}
                             onChange={handleFiltersChange}
                         />
@@ -91,34 +109,26 @@ function ListPage(props) {
                         />
                     </div>
                     <div className='wrapper__product__productList__products'>
-                        {/* <ProductList data={productList} />
-                        <Pagination
-                            className='custom-pagination'
-                            align='center'
-                            current={Number.parseInt(queryParams._page)}
-                            total={totalProducts}
-                            pageSize={queryParams._limit}
-                            onChange={(page) => handleFiltersChange({ _page: page })}
-                        /> */}
                         {productList && productList.length > 0 ? (
-        <>
-            <ProductList data={productList} />
-            <Pagination
-                className='custom-pagination'
-                align='center'
-                current={Number.parseInt(queryParams._page)}
-                total={totalProducts}
-                pageSize={queryParams._limit}
-                onChange={(page) => handleFiltersChange({ _page: page })}
-            />
-        </>
-    ) : (
-        <ProductClear />
-    )}
+                            <>
+                                <ProductList data={productList} />
+                                <Pagination
+                                    className='custom-pagination'
+                                    align='center'
+                                    current={Number.parseInt(queryParams._page)}
+                                    total={totalProducts}
+                                    pageSize={queryParams._limit}
+                                    onChange={(page) => handleFiltersChange({ _page: page })}
+                                />
+                            </>
+                        ) : (
+                            <ProductClear />
+                        )}
                     </div>
                 </div>
             </div>
-            <div className='wrapper__slide'
+            <div
+                className='wrapper__slide'
                 style={{ height: '100px', borderBottom: '1px solid black' }}
             >
                 <img
@@ -128,8 +138,15 @@ function ListPage(props) {
                 />
             </div>
             <div className='wrapper__middle'>
-                <Typography variant='h5' style={{fontFamily:"monospace" ,fontWeight:'bold'}}>BE PART OF CURNON</Typography>
-                <Typography style= {{fontFamily:"monospace" ,fontWeight:'bold'}}>Ai nói bạn không thể lựa chọn gia đình?</Typography>
+                <Typography
+                    variant='h5'
+                    style={{ fontFamily: 'monospace', fontWeight: 'bold' }}
+                >
+                    BE PART OF CURNON
+                </Typography>
+                <Typography style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>
+                    Ai nói bạn không thể lựa chọn gia đình?
+                </Typography>
             </div>
             <Slideshow />
         </div>

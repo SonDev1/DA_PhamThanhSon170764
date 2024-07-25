@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, makeStyles ,Modal} from '@material-ui/core';
 import { discountPercentage, formatPrice } from '../../../utils/common';
@@ -9,6 +9,7 @@ import orderApi from '../../../api/ordersApi';
 import { useNavigate } from 'react-router-dom';
 import { addToCart } from '../../Cart/cartSlice';
 import { useDispatch } from 'react-redux';
+import userApi from '../../../api/userApi'
 
 
 ProductInfo.propTypes = {
@@ -111,19 +112,45 @@ function ProductInfo({ product = {} }) {
     const [openModal, setOpenModal] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [userInfo, setUserInfo] = useState([]);
+    const shippingInfo = {
+        receiver:userInfo.displayName,
+        phone:userInfo.contactPhone,
+        address:userInfo.address,
+        addressDetail:userInfo.addressDetail,
+        isInCart: false
+    };
+    console.log("shippingInfo :",shippingInfo);
+    const [error, setError] = useState('');
 
 
     // Fake data for test pay now
     // ============================================================================================================================
-    const shippingInfo = {
-        receiver:"Pham Thanh Son",
-        phone: "0982201057",
-        address: "Thanh Tri , Ha Noi",
-        adressDetail: "so 6 , day D , Ngu Hiep",
-        isInCart: false
-    }
+    // const shippingInfo = {
+    //     receiver:"Pham Thanh Son",
+    //     phone: "0982201057",
+    //     address: "Thanh Tri , Ha Noi",
+    //     addressDetail : "so 6 , day D , Ngu Hiep",
+    //     isInCart: false
+    // }
     // ============================================================================================================================
 
+
+    useEffect(()=>{
+        if (!userId) {
+            setError('No user ID found in local storage');
+            return;
+        }
+        (async () => {
+            try {
+                const userInfo = await userApi.getInfo(userId);
+                setUserInfo(userInfo);
+                console.log("userInfo :",userInfo);
+            } catch (error) {
+                setError('Failed to fetch account info');
+            }
+        })();
+    }, [userId]);
 
 
     // Payload add to cart 

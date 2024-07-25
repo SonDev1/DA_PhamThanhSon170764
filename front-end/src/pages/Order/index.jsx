@@ -62,7 +62,7 @@ const OrderPage = () => {
         receiver: ' ',
         phone: ' ',
         address: ' ',
-        adressDetail: ' ',
+        addressDetail: ' ',
     });
 
     const validationSchema = Yup.object().shape({
@@ -75,6 +75,7 @@ const OrderPage = () => {
 
         try {
             const res = await orderApi.payment(orderId, paymentMethod);
+            console.log("payment res :",res );
             const paymentUrl = res.paymentUrl.paymentInf.order_url;
 
             setPaymentUrl(paymentUrl);
@@ -140,7 +141,7 @@ const OrderPage = () => {
                                     variant='body2'
                                     style={{ marginRight: '15px' }}
                                 >
-                                    {shippingInfo.adressDetail}.
+                                    {shippingInfo.addressDetail}.
                                 </Typography>
                                 <Typography
                                     variant='body2'
