@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './SearchComponent.scss';
+import { formatPrice } from '../../../../utils/common';
 
-const SearchComponent = () => {
+function SearchComponent() {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,6 +35,10 @@ const SearchComponent = () => {
         navigate(`/products/${productId}`);
     };
 
+    const handleSearchClick = () => {
+        setIsDropdownOpen(!isDropdownOpen); // Đảo ngược trạng thái hiển thị dropdown
+    };
+
     return (
         <div className="search-component-container">
             <input
@@ -42,19 +48,20 @@ const SearchComponent = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="search-component-button">Tìm kiếm</button>
-            {searchTerm && filteredProducts.length > 0 && (
+            {searchTerm && filteredProducts.length > 0 ? (
                 <ul className="search-component-results">
                     {filteredProducts.map((product) => (
                         <li key={product._id} className="search-component-item" onClick={() => handleProductClick(product._id)}>
                             <img src={product.images[0]} alt={product.name} width="50" />
-                            <div>{product.name}</div>
+                            <div style={{ fontWeight: 'bold', fontFamily: 'monospace' }}>{product.name}</div>
                             {/* <div>{product.description}</div>
                             <div>Giá gốc: {product.originalPrice}</div> */}
-                            <div>Giá khuyến mãi: {product.salePrice}</div>
+                            <div style={{ fontWeight: 'bold', fontFamily: 'monospace' }}>Giá khuyến mãi: {formatPrice(product.salePrice)}</div>
                         </li>
                     ))}
                 </ul>
+            ) : (
+                <button className="search-component-button" onClick={handleSearchClick}>Tìm kiếm</button>
             )}
         </div>
     );

@@ -24,6 +24,7 @@ export const update = createAsyncThunk(
   'user/update',
   async (payload) => {
     const { id, ...userData } = payload;
+    console.log('update' ,payload);
     const response = await userApi.update(id, userData);
     return response.data.user; 
   }

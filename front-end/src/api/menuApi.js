@@ -5,6 +5,10 @@ const menuApi = {
         const data = await axiosClient.get('/api/menus');
         return data;
     },
+    async getType(){
+        const data = await axiosClient.get('/api/types');
+        return data;
+    },
 
 }
 

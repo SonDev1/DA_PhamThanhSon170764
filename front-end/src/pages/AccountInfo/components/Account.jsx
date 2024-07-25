@@ -108,11 +108,8 @@ function Account() {
     const userId = localStorage.getItem('userId');
     const [formData, setFormData] = useState({
         displayName: '',
-        email: '',
-        birthday: '',
-        gender: '',
-        password: '',
-        profileImage: '',
+        address:'',
+        addressDetail:'',
         contactPhone: '',
     });
     const theme = useTheme();
@@ -149,7 +146,7 @@ function Account() {
 
     const handleUpdateUser = async (values, { setSubmitting }) => {
         try {
-            const action = update({ id: userId, ...values });
+            const action = update ({ id: userId, ...values });
             const resultAction = await dispatch(action);
             unwrapResult(resultAction);
             enqueueSnackbar('Update successfully !!!', { variant: 'success' });
@@ -189,7 +186,7 @@ function Account() {
                                     <Form className={classes.wrapper}>
                                         <Box className={classes.item}>
                                             <Typography className={classes.name}>
-                                                Display Name
+                                                Tên hiển thị
                                             </Typography>
                                             <Field
                                                 as={TextField}
@@ -201,10 +198,10 @@ function Account() {
                                             />
                                         </Box>
                                         <Box className={classes.item}>
-                                            <Typography className={classes.name}>Email</Typography>
+                                            <Typography className={classes.name}>Địa chỉ (Phường/Quận/Thành Phố) </Typography>
                                             <Field
                                                 as={TextField}
-                                                name='email'
+                                                name='address'
                                                 className={classes.input}
                                                 variant='outlined'
                                                 onChange={handleChange}
@@ -213,22 +210,11 @@ function Account() {
                                         </Box>
                                         <Box className={classes.item}>
                                             <Typography className={classes.name}>
-                                                Birthday
+                                                Số nhà , tên đường
                                             </Typography>
                                             <Field
                                                 as={TextField}
-                                                name='birthday'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>Gender</Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='gender'
+                                                name='addressDetail'
                                                 className={classes.input}
                                                 variant='outlined'
                                                 onChange={handleChange}
@@ -237,34 +223,7 @@ function Account() {
                                         </Box>
                                         <Box className={classes.item}>
                                             <Typography className={classes.name}>
-                                                Password
-                                            </Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='password'
-                                                type='password'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>
-                                                Profile Image
-                                            </Typography>
-                                            <Field
-                                                as={TextField}
-                                                name='profileImage'
-                                                className={classes.input}
-                                                variant='outlined'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Box>
-                                        <Box className={classes.item}>
-                                            <Typography className={classes.name}>
-                                                Contact Phone
+                                                Số điện thoại
                                             </Typography>
                                             <Field
                                                 as={TextField}
