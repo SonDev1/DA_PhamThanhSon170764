@@ -11,6 +11,7 @@ import { UploadModule } from './upload/upload.module';
 import { CartModule } from './cart/cart.module';
 import { MenuModule } from './menu/menu.module';
 import { OrderModule } from './order/order.module';
+import { ReviewModule } from './review/type.module';
 require('dotenv').config();
 
 @Module({
@@ -37,6 +38,7 @@ require('dotenv').config();
     CartModule,
     MenuModule,
     OrderModule,
+    ReviewModule,
   ],
 })
 export class AppModule {}
