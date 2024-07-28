@@ -1,4 +1,6 @@
 import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
+import ProductManagement from "../admin/pages/ProductManagement";
+import Dashboard from "../admin/pages/Dashboard";
 import AboutCompany from "../pages/AboutCompany";
 import AccountInfo from "../pages/AccountInfo";
 import Account from "../pages/AccountInfo/components/Account";
@@ -16,6 +18,7 @@ import ProductAdditional from "../pages/Product/components/ProductAdditional";
 import ProductDescription from "../pages/Product/components/ProductDescription";
 import ProductReviews from "../pages/Product/components/ProductReviews";
 import DetailPage from "../pages/Product/pages/DetailPage";
+import Admin from "../admin/pages";
 
 export const routes = [
     { 
@@ -24,6 +27,27 @@ export const routes = [
         page : HomePage,
         isShowHeader : true,
         isShowFooter : false,
+    },
+    { 
+        path:'/admin',
+        // exact: true,
+        page : Admin,
+        // isShowHeader : true,
+        // isShowFooter : false,
+    },
+    { 
+        path:'/admin/dashboard',
+        // exact: true,
+        page : Dashboard,
+        // isShowHeader : true,
+        // isShowFooter : false,
+    },
+    { 
+        path:'/admin/products',
+        // exact: true,
+        page : ProductManagement,
+        // isShowHeader : true,
+        // isShowFooter : false,
     },
     { 
         path:'/login',
