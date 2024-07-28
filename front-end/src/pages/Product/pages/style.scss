@@ -24,13 +24,13 @@
 
         &__filterViewer{
             opacity: 0;
-            animation: slideLeft .5s ease forwards;
+            animation: slideLeft .9s ease forwards;
             animation-delay: calc(0.2s * var(--i));
         }
         
         &__products{
             opacity: 0;
-            animation: slideTop .5s ease forwards;
+            animation: slideTop .7s ease forwards;
             animation-delay: calc(0.2s * var(--i));
         }
 

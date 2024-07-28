@@ -4,10 +4,6 @@ import { useSelector } from 'react-redux';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { useLocale } from '../../../../locales';
 
-
-// import { useLocale } from '@/locales';
-// import { useLocale } from 'antd/es/locale';
-
 const data = {
     all: [
         { name: { zh_CN: '家用电器', en_US: 'appliances' }, value: 4544 },

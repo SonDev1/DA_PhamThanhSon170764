@@ -12,12 +12,6 @@ import {
     YAxis,
 } from 'recharts';
 import LocaleFormatter from '../../../../locales';
-// import { LocaleFormatter } from '../../../../locales';
-
-
-// Đảm bảo rằng đường dẫn là chính xác
-// import { LocaleFormatter } from '@/locales';
-
 const data = new Array(20).fill(null).map((_, index) => ({
     name: dayjs()
         .add(index * 30, 'minute')

@@ -7,7 +7,7 @@ import TimeLine from '../Dashboard/components/TimeLine';
 
 const Dashboard = () => {
     return (
-        <div style={{ marginTop: '100px' }}>
+        <div style={{  }}>
             <Overview />
             <SalePercent />
             <TimeLine />

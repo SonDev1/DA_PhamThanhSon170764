@@ -11,7 +11,6 @@ const ProductList = ({ onEdit, onDelete }) => {
 
   const fetchProducts = async () => {
     try {
-    //   const response = await axios.get('http://localhost:5000/api/products?_sort=asc&_page=1');
       const response = await axios.get('http://localhost:5000/api/products/get-all');
       console.log("response :",response);
       debugger

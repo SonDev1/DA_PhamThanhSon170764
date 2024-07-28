@@ -10,16 +10,9 @@ import {
     Tooltip as RTooltip,
     XAxis,
 } from 'recharts';
-
-// import { useLocale } from '@/locales';
-
-// import { ReactComponent as CaretDownIcon } from './assets/caret-down.svg';
 import { ReactComponent as CaretDownIcon } from './../assets/caret-down.svg';
 import { ReactComponent as CaretUpIcon } from './../assets/caret-up.svg';
 import { useLocale } from '../../../../locales';
-// import { ReactComponent as CaretUpIcon } from './assets/caret-up.svg';
-// import { useLocale } from '../../locales';
-
 const data = new Array(14).fill(null).map((_, index) => ({
     name: dayjs().add(index, 'day').format('YYYY-MM-DD'),
     number: Math.floor(Math.random() * 8 + 1),
