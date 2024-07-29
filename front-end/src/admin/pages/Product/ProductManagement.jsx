@@ -40,7 +40,8 @@ const ProductManagement = () => {
             dataIndex: 'images',
             key: 'images',
             render: (images) => (
-                <img src={images[0]} alt="product" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                <img src={images[0] ? images[0] : 'https://via.placeholder.com/444'} alt="product" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+
             ),
         },
         { 

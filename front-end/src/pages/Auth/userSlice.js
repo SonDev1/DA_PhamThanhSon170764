@@ -42,6 +42,7 @@ const userSlice = createSlice({
     logout(state) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('userId');
+      // localStorage.removeItem('cart');
       state.current = {};
       state.settings = {};
     },

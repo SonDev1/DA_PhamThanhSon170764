@@ -68,6 +68,7 @@ function Header(props) {
     const handleLogoutClick = () => {
         const action = logout();
         dispatch(action);
+        setIsLoggedIn(false);
         handleCloseMenu();
         navigate('/');
     };

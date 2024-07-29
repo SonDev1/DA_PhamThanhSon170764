@@ -72,7 +72,7 @@ const AdminPage = () => {
                                 : {}
                         }
                     >
-                        <Link to='/admin/orders'>Thông tin đơn hàng</Link>
+                        <Link to='/admin/menu'>Quản lý menu</Link>
                     </Menu.Item>
                     {/* Thêm các item khác nếu cần */}
                 </Menu>
