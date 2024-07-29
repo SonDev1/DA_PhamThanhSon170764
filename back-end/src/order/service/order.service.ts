@@ -30,7 +30,6 @@ export class OrderService {
     });
     const userIdObject = new Types.ObjectId(createOrderDto.userId);
     const newOrder = { ...createOrderDto, userId: userIdObject, totalAmount };
-
     try {
       if (createOrderDto.isInCart) {
         await this.cartService.deleteCartByProductIdsAndUserId(
@@ -110,5 +109,13 @@ export class OrderService {
     return {
       mesage: 'Update status success',
     };
+  }
+
+  async hasUserBoughtProduct(userId: ObjectId, productId: string) {
+    const data = { userId, productId, status: 'success' };
+
+    const orderExist = await this.orderRepository.findOrderSuccess(data);
+    console.log('orderExist in order service:', orderExist);
+    return orderExist;
   }
 }
