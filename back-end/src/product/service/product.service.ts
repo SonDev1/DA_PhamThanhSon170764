@@ -66,7 +66,6 @@ export class ProductService {
       products = await this.productRepository.getProductByTypeIds(typeIds);
     }
 
-    console.log(products);
     const totalProducts = products.length;
 
     const filteredProducts = products.filter((product) => {
@@ -110,6 +109,45 @@ export class ProductService {
     } catch (err) {
       console.log(err);
       throw new HttpException('Create product error', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async deleteProductById(productId: string) {
+    const productExist = await this.productRepository.findById(productId);
+    if (!productExist) {
+      throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+    }
+    try {
+      await this.productRepository.deleteById(productId);
+      return {
+        message: 'Delete product success',
+      };
+    } catch (err) {
+      throw new HttpException(
+        'Delete product error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async updateProductById(
+    productId: string,
+    updateProductDto: CreateProductDto,
+  ) {
+    const productExist = await this.productRepository.findById(productId);
+    if (!productExist) {
+      throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+    }
+    try {
+      await this.productRepository.updateById(productId, updateProductDto);
+      return {
+        message: 'update product success',
+      };
+    } catch (err) {
+      throw new HttpException(
+        'update product error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
