@@ -69,4 +69,18 @@ export class ProductRepository {
     const createdProduct = new this.productModel(data);
     return createdProduct.save();
   }
+
+  async deleteById(productId: string) {
+    return await this.productModel.findByIdAndDelete(productId);
+  }
+
+  async updateById(productId: string, createProductDto: CreateProductDto) {
+    return await this.productModel.findByIdAndUpdate(
+      productId,
+      createProductDto,
+      {
+        new: true,
+      },
+    );
+  }
 }
