@@ -43,7 +43,7 @@ export class ProductController {
 
   @Delete(':productId')
   deleteProductById(@Param('productId') productId: string) {
-    return this.deleteProductById(productId);
+    return this.productService.deleteProductById(productId);
   }
 
   @Put('productId')
