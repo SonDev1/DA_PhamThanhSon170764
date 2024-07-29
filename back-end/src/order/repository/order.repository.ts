@@ -15,14 +15,22 @@ export class OrderRepository {
     return this.orderModel.create(newOrder);
   }
 
+  async findOrderSuccess(data: any) {
+    console.log('data in repo:', data);
+    return await this.orderModel.find({
+      userId: data.userId,
+      status: 'success',
+      products: {
+        $elemMatch: { productId: data.productId },
+      },
+    });
+  }
+
   async findById(id: string) {
     return await this.orderModel.findById(id);
   }
 
   async updateShippingInfo(orderId: string, shippingInfo: any) {
-    console.log('shippingInfo :', shippingInfo);
-    console.log('orderId :', orderId);
-
     return await this.orderModel.findByIdAndUpdate(
       orderId,
       { shippingInfo },
