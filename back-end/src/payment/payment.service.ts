@@ -78,18 +78,14 @@ export class PaymentService {
 
       // kiểm tra callback hợp lệ (đến từ ZaloPay server)
       if (reqMac != mac) {
-        console.log('mac not equal');
         result.return_code = -1;
         result.return_message = 'mac not equal';
       } else {
         const key2 = config.key2;
         let dataJson = JSON.parse(dataStr);
-        console.log('dataJson :', dataJson);
         const embed_data = JSON.parse(dataJson.embed_data);
 
-        console.log('embed_data :', embed_data);
-
-        await this.orderService.updateStatus(embed_data.orderId, '');
+        await this.orderService.updatePaymentStatus(embed_data.orderId, '');
 
         result.return_code = 1;
         result.return_message = 'success';

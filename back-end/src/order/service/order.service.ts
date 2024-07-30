@@ -89,7 +89,7 @@ export class OrderService {
     };
   }
 
-  async updateStatus(orderId: string, paymentMethod: string) {
+  async updatePaymentStatus(orderId: string, paymentMethod: string) {
     if (paymentMethod === 'payment') {
       const paymentUrl = await this.getUrlPaymentOrder(orderId);
       return {
@@ -98,24 +98,58 @@ export class OrderService {
       };
     }
 
-    console.log('Payment: ' + orderId);
-
     const orderExist = await this.orderRepository.findById(orderId);
     if (!orderExist) {
       throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
     const paymentStatus = 'Success';
-    await this.orderRepository.updateStatus(orderId, paymentStatus);
+    await this.orderRepository.updatePaymentStatus(orderId, paymentStatus);
     return {
       mesage: 'Update status success',
     };
   }
 
+  async updateStatus(orderId: string) {
+    const orderExist = await this.orderRepository.findById(orderId);
+    if (!orderExist) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+    }
+    try {
+      await this.orderRepository.updateStatus(orderId);
+      return {
+        mesage: 'Update status success',
+      };
+    } catch (err) {
+      throw new HttpException(
+        'Update status error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+  async updateShippingStatus(orderId: string, shippingStatus: string) {
+    const orderExist = await this.orderRepository.findById(orderId);
+    if (!orderExist) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+    }
+
+    try {
+      await this.orderRepository.updateShippingStatus(orderId, shippingStatus);
+      if (shippingStatus == 'đã giao hàng') {
+        await this.updateStatus(orderId);
+      }
+      return {
+        mesage: 'Update shipping status success',
+      };
+    } catch (err) {
+      throw new HttpException(
+        'Update shipping status error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
   async hasUserBoughtProduct(userId: ObjectId, productId: string) {
     const data = { userId, productId, status: 'success' };
-
     const orderExist = await this.orderRepository.findOrderSuccess(data);
-    console.log('orderExist in order service:', orderExist);
     return orderExist;
   }
 }
