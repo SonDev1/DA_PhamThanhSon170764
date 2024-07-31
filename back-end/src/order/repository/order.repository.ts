@@ -37,10 +37,25 @@ export class OrderRepository {
       { new: true },
     );
   }
-  async updateStatus(orderId: string, paymentStatus: string) {
+  async updatePaymentStatus(orderId: string, paymentStatus: string) {
     return await this.orderModel.findByIdAndUpdate(
       orderId,
       { paymentStatus },
+      { new: true },
+    );
+  }
+
+  async updateStatus(orderId: string) {
+    return await this.orderModel.findByIdAndUpdate(
+      orderId,
+      { status: 'success' },
+      { new: true },
+    );
+  }
+  async updateShippingStatus(orderId: string, shippingStatus: string) {
+    return await this.orderModel.findByIdAndUpdate(
+      orderId,
+      { shippingStatus },
       { new: true },
     );
   }
