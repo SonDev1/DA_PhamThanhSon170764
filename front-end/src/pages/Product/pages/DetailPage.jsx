@@ -1,7 +1,5 @@
 import { Box, Container, Grid, LinearProgress, makeStyles, Paper } from '@material-ui/core';
-// import { addToCart, showMiniCart } from 'features/Cart/cartSlice';
-import { Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom';
-// import AddToCart from '../components/AddToCart';
+import { Outlet, Route, Routes, useParams } from 'react-router-dom';
 import ProductAdditional from '../components/ProductAdditional';
 import ProductDescription from '../components/ProductDescription';
 import ProductInfo from '../components/ProductInfo';
@@ -9,6 +7,8 @@ import ProductMenu from '../components/ProductMenu';
 import ProductReviews from '../components/ProductReviews';
 import ProductThumnail from '../components/ProductThumnail';
 import useProductDetail from '../hooks/useProductDetail';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,13 +65,12 @@ const useStyles = makeStyles((theme) => ({
 function DetailPage() {
     const classes = useStyles();
     const { productId } = useParams();
-    // console.log("productId :",productId);
-    const location = useLocation();
-    const url = location.pathname;
+    const [reviews, setReviews] = useState([]);
+    const userId = localStorage.getItem('userId');
 
     const { product, loading } = useProductDetail(productId);
-    // console.log("product",product);
 
+    // Hiển thị loading khi đang tải
     if (loading) {
         return (
             <Box className={classes.loading}>
@@ -79,6 +78,19 @@ function DetailPage() {
             </Box>
         );
     }
+
+    const handleAddReview = async (newReview) => {
+        try {
+            const { data } = await axios.post('http://localhost:5000/api/reviews', {
+                ...newReview,
+                userId,
+                productId,
+            });
+            setReviews([...reviews, data]);
+        } catch (error) {
+            console.error('Error adding review:', error);
+        }
+    };
 
     return (
         <Box className={classes.root}>
@@ -110,22 +122,21 @@ function DetailPage() {
                 <Box className={classes.productMenu}>
                     <ProductMenu />
                 </Box>
+
                 <Routes>
                     <Route
-                        path={url}
-                        element={<ProductDescription />}
-                        product={product}
+                        path=''
+                        element={<ProductDescription product={product} />}
                     />
                     <Route
-                        path={`${url}/additional`}
-                        element={<ProductAdditional />}
+                        path='additional'
+                        element={<ProductAdditional product={product} />}
                     />
                     <Route
-                        path={`${url}/reviews`}
-                        element={<ProductReviews />}
+                        path='reviews'
+                        element={<ProductReviews onSubmitReview={handleAddReview} />}
                     />
                 </Routes>
-                <Outlet />
             </Container>
         </Box>
     );
