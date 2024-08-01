@@ -21,7 +21,7 @@ function ListPage(props) {
     const [totalProducts, setTotalProducts] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
-
+    
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search);
         return {

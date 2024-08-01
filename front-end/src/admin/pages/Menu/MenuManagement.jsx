@@ -76,14 +76,18 @@ const MenuManagement = () => {
 
     // Handle form submission for add/edit menu
     const handleMenuFormSubmit = async (values) => {
+        const payload = {
+            ...values,
+            order: Number(values.order)
+        };
         try {
             if (editingMenu) {
                 // Edit
-                await axios.put(`http://localhost:5000/api/menus/${editingMenu._id}`, values);
+                await axios.put(`http://localhost:5000/api/menus/${editingMenu._id}`, payload);
                 message.success('Menu updated successfully');
             } else {
                 // Add
-                await axios.post('http://localhost:5000/api/menus', values);
+                await axios.post('http://localhost:5000/api/menus', payload);
                 message.success('Menu added successfully');
             }
             setIsMenuModalVisible(false);
@@ -97,55 +101,68 @@ const MenuManagement = () => {
         }
     };
 
-    // Handle form submission for add/edit category
-    const handleCategoryFormSubmit = async (values) => {
-        try {
-            if (editingCategory) {
-                // Edit
-                await axios.put(
-                    `http://localhost:5000/api/categories/${editingCategory._id}`,
-                    values,
-                );
-                message.success('Category updated successfully');
-            } else {
-                // Add
-                await axios.post('http://localhost:5000/api/categories', {
-                    ...values,
-                    menuId: selectedMenu,
-                });
-                message.success('Category added successfully');
-            }
-            setIsCategoryModalVisible(false);
-            categoryForm.resetFields();
-            setEditingCategory(null);
-            // Refresh categories list
-            if (selectedMenu) {
-                const response = await axios.get('http://localhost:5000/api/categories');
-                const filteredCategories = response.data.filter(
-                    (category) => category.menuId === selectedMenu,
-                );
-                setCategories(filteredCategories);
-            }
-        } catch (error) {
-            message.error('Failed to save category');
+// Handle form submission for add/edit category
+const handleCategoryFormSubmit = async (values) => {
+    try {
+        const payload = {
+            ...values,
+            menuId: selectedMenu, 
+            order: values.order.toString() 
+        };
+
+        if (editingCategory) {
+            // Edit
+            await axios.put(
+                `http://localhost:5000/api/categories/${editingCategory._id}`,
+                payload,
+            );
+            message.success('Category updated successfully');
+        } else {
+            // Add
+            await axios.post('http://localhost:5000/api/categories', payload);
+            message.success('Category added successfully');
         }
-    };
+
+        setIsCategoryModalVisible(false);
+        categoryForm.resetFields();
+        setEditingCategory(null);
+        // Refresh categories list
+        if (selectedMenu) {
+            const response = await axios.get('http://localhost:5000/api/categories');
+            const filteredCategories = response.data.filter(
+                (category) => category.menuId === selectedMenu,
+            );
+            setCategories(filteredCategories);
+        }
+    } catch (error) {
+        message.error('Failed to save category');
+    }
+};
+
+
 
     // Handle form submission for add/edit type
     const handleTypeFormSubmit = async (values) => {
         try {
+            // Ensure categoryId is a non-empty string
+            const payload = {
+                ...values,
+                categoryId: selectedCategory ? selectedCategory.toString() : '', // Convert to string and handle empty case
+            };
+    
             if (editingType) {
                 // Edit
-                await axios.put(`http://localhost:5000/api/types/${editingType._id}`, values);
+                await axios.put(`http://localhost:5000/api/types/${editingType._id}`, payload);
                 message.success('Type updated successfully');
             } else {
                 // Add
-                await axios.post('http://localhost:5000/api/types', {
-                    ...values,
-                    categoryId: selectedCategory,
-                });
+                if (!payload.categoryId) {
+                    throw new Error('Category ID is required');
+                }
+                await axios.post('http://localhost:5000/api/types', payload);
                 message.success('Type added successfully');
             }
+    
             setIsTypeModalVisible(false);
             typeForm.resetFields();
             setEditingType(null);
@@ -156,8 +173,10 @@ const MenuManagement = () => {
             }
         } catch (error) {
             message.error('Failed to save type');
+            console.error(error); // Log error for debugging
         }
     };
+    
 
     // Show modal for add/edit menu
     const showMenuModal = (menu) => {
@@ -286,10 +305,10 @@ const MenuManagement = () => {
                 ))}
             </Select>
 
-            <Spin spinning={loading}>
+            {/* <Spin spinning={loading}>
                 <List
                     header={
-                        <div style={{ fontFamily: 'monospace', fontWeight: '600' }}>Categories</div>
+                        <div style={{ fontFamily: 'monospace', fontWeight: '600' }}>Categories</div> 
                     }
                     bordered
                     dataSource={categories}
@@ -325,7 +344,72 @@ const MenuManagement = () => {
                         </List.Item>
                     )}
                 />
-            </Spin>
+            </Spin> */}
+            {selectedMenu && (
+    <div
+        style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginBottom: '10px',
+        }}
+    >
+        <Button
+            type='primary'
+            onClick={() => showCategoryModal(null)}
+            style={{
+                margin: '20px 0',
+                color: 'white',
+                background: 'black',
+                borderRadius: '0px',
+                marginBottom: '10px',
+                right: '20px',
+            }}
+        >
+            Thêm category
+        </Button>
+    </div>
+)}
+
+<Spin spinning={loading}>
+    <List
+        header={
+            <div style={{ fontFamily: 'monospace', fontWeight: '600' }}>Categories</div>
+        }
+        bordered
+        dataSource={categories}
+        renderItem={(item) => (
+            <List.Item
+                actions={[
+                    <Button
+                        type='link'
+                        onClick={() => showCategoryModal(item)}
+                        style={{
+                            color: 'white',
+                            background: 'black',
+                            borderRadius: '0px',
+                        }}
+                    >
+                        Sửa
+                    </Button>,
+                    <Button
+                        type='link'
+                        onClick={() => handleCategoryDelete(item._id)}
+                        style={{
+                            color: 'black',
+                            background: 'white',
+                            borderRadius: '0px',
+                        }}
+                    >
+                        Xóa
+                    </Button>,
+                ]}
+                onClick={() => setSelectedCategory(item._id)}
+            >
+                {item.name}
+            </List.Item>
+        )}
+    />
+</Spin>
 
             {selectedCategory && (
                 <>
