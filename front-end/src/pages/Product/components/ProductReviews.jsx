@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Rate, Button, Form, Input, List, Typography } from 'antd';
 import { Paper } from '@material-ui/core';
-import CustomComment from './CustomComment';  // Import đúng component CustomComment
+import CustomComment from './CustomComment'; // Import đúng component CustomComment
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -18,14 +18,21 @@ function ProductReviews({ onSubmitReview }) {
         const fetchReviews = async () => {
             if (productId) {
                 try {
-                    const response = await axios.get(`http://localhost:5000/api/reviews/product/${productId}`);
+                    const response = await axios.get(
+                        `http://localhost:5000/api/reviews/product/${productId}`,
+                    );
                     setReviews(Array.isArray(response.data) ? response.data : []);
                     // Fetch tác giả sau khi đã có đánh giá
-                    const authorPromises = response.data.map(review => 
-                        axios.get(`http://localhost:5000/api/auth/${review.userId}`).then(res => ({ [review.userId]: res.data }))
+                    const authorPromises = response.data.map((review) =>
+                        axios
+                            .get(`http://localhost:5000/api/auth/${review.userId}`)
+                            .then((res) => ({ [review.userId]: res.data })),
                     );
                     const authorsData = await Promise.all(authorPromises);
-                    const authorsMap = authorsData.reduce((acc, author) => ({ ...acc, ...author }), {});
+                    const authorsMap = authorsData.reduce(
+                        (acc, author) => ({ ...acc, ...author }),
+                        {},
+                    );
                     setAuthors(authorsMap);
                 } catch (error) {
                     console.error('Error fetching reviews:', error);
@@ -49,19 +56,58 @@ function ProductReviews({ onSubmitReview }) {
     };
 
     return (
-        <Paper elevation={0} style={{ padding: '15px' }}>
-            <Typography variant="h5">Đánh giá sản phẩm</Typography>
-            <Form form={form} onFinish={handleFinish}>
+        <Paper
+            elevation={0}
+            style={{ padding: '15px' }}
+        >
+            <Typography
+                variant='h5'
+                style={{ fontFamily: 'monospace', fontWeight: '600' }}
+            >
+                Đánh giá sản phẩm
+            </Typography>
+            <Form
+                form={form}
+                onFinish={handleFinish}
+            >
                 <Form.Item name='rating'>
-                    <Rate onChange={setRating} value={rating} />
+                    <Rate
+                        onChange={setRating}
+                        value={rating}
+                    />
                 </Form.Item>
-                <Form.Item name='comment' rules={[{ required: true, message: 'Vui lòng nhập nhận xét của bạn!' }]}>
-                    <TextArea rows={4} placeholder='Nhập nhận xét của bạn' />
+                <Form.Item
+                    name='comment'
+                    rules={[{ required: true, message: 'Vui lòng nhập nhận xét của bạn!' }]}
+                >
+                    <TextArea
+                        rows={4}
+                        placeholder='Nhập nhận xét của bạn'
+                    />
                 </Form.Item>
                 <Form.Item>
-                    <Button type='primary' htmlType='submit'>
-                        Gửi đánh giá
-                    </Button>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginBottom: '10px',
+                        }}
+                    >
+                        <Button
+                            type='primary'
+                            htmlType='submit'
+                            style={{
+                                margin: '20px 0',
+                                color: 'white',
+                                background: 'black',
+                                borderRadius: '0px',
+                                marginBottom: '10px',
+                                right: '20px',
+                            }}
+                        >
+                            Gửi đánh giá
+                        </Button>
+                    </div>
                 </Form.Item>
             </Form>
 
@@ -71,7 +117,7 @@ function ProductReviews({ onSubmitReview }) {
                 itemLayout='horizontal'
                 dataSource={reviews}
                 renderItem={(review) => (
-                    <li key={review.id}> 
+                    <li key={review.id}>
                         <CustomComment
                             author={authors[review.userId]?.displayName || 'Unknown'}
                             content={review.comment}
