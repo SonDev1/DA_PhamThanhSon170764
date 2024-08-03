@@ -11,7 +11,8 @@ import { UploadModule } from './upload/upload.module';
 import { CartModule } from './cart/cart.module';
 import { MenuModule } from './menu/menu.module';
 import { OrderModule } from './order/order.module';
-import { ReviewModule } from './review/type.module';
+import { ReviewModule } from './review/review.module';
+
 require('dotenv').config();
 
 @Module({

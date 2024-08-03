@@ -2,12 +2,29 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ReviewRepository } from '../repository/review.repository';
 import { CreateReviewDto } from '../dto/CreateReview.dto';
 import { ObjectId } from 'mongodb';
+import { OrderService } from 'src/order/service/order.service';
 @Injectable()
 export class ReviewService {
-  constructor(private reviewRepository: ReviewRepository) {}
+  constructor(
+    private reviewRepository: ReviewRepository,
+    private orderService: OrderService,
+  ) {}
   async createReview(createReviewDto: CreateReviewDto) {
     const userIdObjectId = new ObjectId(createReviewDto.userId);
     const productIdObjectId = new ObjectId(createReviewDto.productId);
+
+    const orderExists = await this.orderService.hasUserBoughtProduct(
+      userIdObjectId,
+      createReviewDto.productId,
+    );
+    console.log('orderExists :', orderExists);
+
+    if (orderExists.length < 1) {
+      throw new HttpException(
+        'You have not purchased this product before',
+        HttpStatus.FORBIDDEN,
+      );
+    }
     const data = {
       comment: createReviewDto.comment,
       rate: createReviewDto.rate,
@@ -27,7 +44,15 @@ export class ReviewService {
     const productIdObjectId = new ObjectId(productId);
     const reviews =
       await this.reviewRepository.findReviewByProductId(productIdObjectId);
-    return reviews;
+
+    if (reviews.length === 0) {
+      return { reviews, avgRate: 0 };
+    }
+
+    const totalRate = reviews.reduce((sum, review) => sum + review.rate, 0);
+    const avgRate = totalRate / reviews.length;
+
+    return { reviews, avgRate };
   }
   async deleteReview(reviewId: string) {
     const review = await this.reviewRepository.findById(reviewId);

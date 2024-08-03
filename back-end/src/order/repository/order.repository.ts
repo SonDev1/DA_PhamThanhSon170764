@@ -15,24 +15,47 @@ export class OrderRepository {
     return this.orderModel.create(newOrder);
   }
 
+  async findOrderSuccess(data: any) {
+    console.log('data in repo:', data);
+    return await this.orderModel.find({
+      userId: data.userId,
+      status: 'success',
+      products: {
+        $elemMatch: { productId: data.productId },
+      },
+    });
+  }
+
   async findById(id: string) {
     return await this.orderModel.findById(id);
   }
 
   async updateShippingInfo(orderId: string, shippingInfo: any) {
-    console.log('shippingInfo :', shippingInfo);
-    console.log('orderId :', orderId);
-
     return await this.orderModel.findByIdAndUpdate(
       orderId,
       { shippingInfo },
       { new: true },
     );
   }
-  async updateStatus(orderId: string, paymentStatus: string) {
+  async updatePaymentStatus(orderId: string, paymentStatus: string) {
     return await this.orderModel.findByIdAndUpdate(
       orderId,
       { paymentStatus },
+      { new: true },
+    );
+  }
+
+  async updateStatus(orderId: string) {
+    return await this.orderModel.findByIdAndUpdate(
+      orderId,
+      { status: 'success' },
+      { new: true },
+    );
+  }
+  async updateShippingStatus(orderId: string, shippingStatus: string) {
+    return await this.orderModel.findByIdAndUpdate(
+      orderId,
+      { shippingStatus },
       { new: true },
     );
   }

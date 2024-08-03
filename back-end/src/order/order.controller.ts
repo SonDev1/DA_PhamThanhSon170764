@@ -17,9 +17,6 @@ export class OrderController {
 
   @Post('')
   CreateOrder(@Body() createOrderDto: CreateOrderDto) {
-    console.log('Create Order');
-
-    console.log('createOrderDto :', createOrderDto);
     return this.orderService.createOrder(createOrderDto);
   }
 
@@ -28,10 +25,18 @@ export class OrderController {
     @Param('orderId') orderId: string,
     @Body('paymentMethod') paymentMethod: string,
   ) {
-    return this.orderService.updateStatus(orderId, paymentMethod);
+    return this.orderService.updatePaymentStatus(orderId, paymentMethod);
   }
   @Put('/:orderId/shipping-info')
   updateShippingInfo(@Param('orderId') orderId: string, @Body() data: any) {
     return this.orderService.updateShippingInfo(orderId, data);
+  }
+
+  @Put('/:orderId/shipping-status')
+  updateShippingStatus(
+    @Param('orderId') orderId: string,
+    @Body('shippingStatus') shippingStatus: string,
+  ) {
+    return this.orderService.updateShippingStatus(orderId, shippingStatus);
   }
 }

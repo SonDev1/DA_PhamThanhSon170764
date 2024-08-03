@@ -39,6 +39,9 @@ export class Order {
   @Prop({ default: 'pending' })
   paymentStatus: string;
 
+  @Prop({ default: 'chờ xử lý' })
+  shippingStatus: string;
+
   @Prop()
   paymentMethod: string;
 
