@@ -14,6 +14,7 @@ import { User, UserSchema } from './schemas/user.schema';
 import { AuthService } from './services/auth.service';
 import { AuthRepository } from './repository/auth.repository';
 import { VerifyTokenMiddleware } from 'src/middlewares/logging.middleware';
+import { JwtStrategy } from './strategies/jwt.strategy';
 require('dotenv').config();
 
 @Module({
@@ -25,8 +26,15 @@ require('dotenv').config();
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService, GoogleStrategy, FacebookStrategy, AuthRepository],
+  providers: [
+    AuthService,
+    GoogleStrategy,
+    FacebookStrategy,
+    AuthRepository,
+    JwtStrategy,
+  ],
   controllers: [AuthController],
+  exports: [AuthRepository],
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
