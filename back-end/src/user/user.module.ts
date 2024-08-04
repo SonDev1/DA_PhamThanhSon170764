@@ -11,6 +11,7 @@ import { User, UserSchema } from 'src/auth/schemas/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserRepository } from './repository/user.repository';
 import { JwtModule } from '@nestjs/jwt';
+import { CheckPermissionMiddleware } from 'src/middlewares/checkPermission.middleware';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
@@ -22,12 +23,6 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository],
+  exports: [MongooseModule, UserRepository],
 })
 export class UserModule {}
-// export class UserModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer
-//       .apply(VerifyTokenMiddleware)
-//       .forRoutes({ path: 'user/:username', method: RequestMethod.PUT });
-//   }
-// }

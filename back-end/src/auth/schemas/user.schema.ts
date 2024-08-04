@@ -36,6 +36,9 @@ export class User {
 
   @Prop({ default: 'access_token' })
   accessToken: string;
+
+  @Prop({ default: 'member' })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

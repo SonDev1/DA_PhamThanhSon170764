@@ -11,6 +11,9 @@ export class OrderRepository {
     private orderModel: Model<Order>,
   ) {}
 
+  async getAll() {
+    return await this.orderModel.find();
+  }
   async create(newOrder: any) {
     return this.orderModel.create(newOrder);
   }

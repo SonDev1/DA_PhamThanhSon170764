@@ -30,7 +30,7 @@ export class AuthService {
         avaUrl,
       );
     }
-    const token = await this.genarateToken(user.username);
+    const token = await this.genarateToken(user.username, user._id.toString());
     return {
       access_token: token.accessToken,
       refresh_token: token.refreshToken,
@@ -53,7 +53,7 @@ export class AuthService {
         displayName,
       );
     }
-    const token = await this.genarateToken(user.username);
+    const token = await this.genarateToken(user.username, user._id.toString());
 
     return {
       access_token: token.accessToken,
@@ -102,7 +102,7 @@ export class AuthService {
     }
 
     // update access token and refresh token
-    const token = await this.genarateToken(user.username);
+    const token = await this.genarateToken(user.username, user._id.toString());
 
     res.cookie('refreshToken', token.refreshToken, {
       httpOnly: true,
@@ -122,7 +122,7 @@ export class AuthService {
       const verify = await this.jwtService.verifyAsync(refreshToken, {
         secret: process.env.REFRESH_TOKEN_SECRET,
       });
-      return this.genarateToken(verify.username);
+      return this.genarateToken(verify.username, verify.userId);
     } catch (err) {
       throw new HttpException(
         err.message + ' -- Refresh token is not valid',
@@ -131,15 +131,21 @@ export class AuthService {
     }
   }
 
-  private async genarateToken(username: string) {
-    const accessToken = await this.jwtService.signAsync({
-      secret: process.env.ACCESS_TOKEN_SECRET,
-      expiresIn: '8h',
-    });
-    const refreshToken = await this.jwtService.signAsync({
-      secret: process.env.REFRESH_TOKEN_SECRET,
-      expiresIn: '7d',
-    });
+  private async genarateToken(username: string, userId: string) {
+    const accessToken = await this.jwtService.signAsync(
+      { userId },
+      {
+        secret: process.env.ACCESS_TOKEN_SECRET,
+        expiresIn: '8h',
+      },
+    );
+    const refreshToken = await this.jwtService.signAsync(
+      { userId },
+      {
+        secret: process.env.REFRESH_TOKEN_SECRET,
+        expiresIn: '7d',
+      },
+    );
 
     await this.authRepository.findUserAndUpdateToken(
       username,

@@ -21,6 +21,10 @@ export class OrderService {
     private cartService: CartService,
   ) {}
 
+  async getAllOrders() {
+    return await this.orderRepository.getAll();
+  }
+
   async createOrder(createOrderDto: CreateOrderDto) {
     let totalAmount = 0;
     let productIds = [];
