@@ -37,12 +37,12 @@ function ProductMenu() {
     <Box component="ul" className={classes.root}>
       <li>
         <NavLink to={basePath} end>
-          Description
+          Giới thiệu về sản phẩm
         </NavLink>
       </li>
       <li>
         <NavLink to={`${basePath}/additional`} end>
-          Additional Information
+          Thông số sản phẩm 
         </NavLink>
       </li>
       <li>

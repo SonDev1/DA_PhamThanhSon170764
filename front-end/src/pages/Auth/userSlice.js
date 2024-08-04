@@ -6,7 +6,7 @@ export const register = createAsyncThunk(
   'user/register',
   async (payload) => {
     const data = await userApi.register(payload);
-    return data.user;
+    return data.userId;
   }
 );
 
@@ -14,9 +14,10 @@ export const login = createAsyncThunk(
   'user/login',
   async (payload) => {
     const data = await userApi.login(payload);
+    console.log("data :",data);
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('userId', data.userId);
-    return data.user;
+    return data.userId;
   }
 );
 
@@ -26,7 +27,7 @@ export const update = createAsyncThunk(
     const { id, ...userData } = payload;
     console.log('update' ,payload);
     const response = await userApi.update(id, userData);
-    return response.data.user; 
+    return response.data.userId; 
   }
 );
 

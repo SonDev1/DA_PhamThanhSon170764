@@ -9,6 +9,7 @@ function MenuItemLeft({onChange}) {
     (async () => {
       try {
         const data = await menuApi.getAll();
+        console.log(data);
         setData(data);
       } catch (error) {
         console.log('Failed to fetch carts list', error);
@@ -16,13 +17,23 @@ function MenuItemLeft({onChange}) {
     })();
   }, [])
 
+  // const handleOnClick = (e) => {
+  //   const str = e.key;
+  //   const result = str.split(' ');
+  //   if (onChange) {
+  //     onChange(result);
+  //   }
+  // };
   const handleOnClick = (e) => {
     const str = e.key;
     const result = str.split(' ');
     if (onChange) {
-      onChange(result);
+      // Xử lý kết quả để chỉ lấy typeId nếu cả categoryId và typeId đều có
+      const [typeId] = result.slice(-1);
+      onChange([result[0], typeId]);
     }
   };
+  
   const menuItem = data.map((menu) => {
     return {
       key: menu._id.toString(),
