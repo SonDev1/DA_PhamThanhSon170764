@@ -8,6 +8,11 @@ import { ShippingInfo } from './schema/order.shema';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @Get('')
+  getAllOrders() {
+    return this.orderService.getAllOrders();
+  }
+
   @Get(':orderId')
   getOrderById(@Param('orderId') orderId: string) {
     return this.orderService.getOrderById(orderId);
