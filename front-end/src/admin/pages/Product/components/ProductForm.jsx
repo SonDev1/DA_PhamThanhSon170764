@@ -51,7 +51,7 @@ const ProductForm = ({ product, onClose }) => {
   return (
     <Form form={form} layout='vertical' onFinish={onFinish}>
       <Form.Item name='images' label='Ảnh sản phẩm'>
-        <UploadImage onUploadSuccess={handleUploadSuccess} />
+        <UploadImage onUploadSuccess={handleUploadSuccess} product={product} />
       </Form.Item>
       <Form.Item name='name' label='Tên sản phẩm' rules={[{ required: true }]}>
         <Input style={{ width: '100%' }} />

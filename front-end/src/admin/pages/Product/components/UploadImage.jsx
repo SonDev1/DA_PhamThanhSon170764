@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
 
@@ -10,10 +10,21 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const UploadImage = ({ onUploadSuccess }) => {
+const UploadImage = ({ onUploadSuccess, product }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState([]);
+
+  useEffect(() => {
+    if (product && product.images) {
+      // Chuyển đổi URLs thành định dạng phù hợp cho Upload component
+      const formattedFileList = product.images.map((url) => ({
+        url,
+        status: 'done',
+      }));
+      setFileList(formattedFileList);
+    }
+  }, [product]);
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
