@@ -14,6 +14,10 @@ export class OrderRepository {
   async getAll() {
     return await this.orderModel.find();
   }
+
+  async findOrderUser(userId: ObjectId) {
+    return await this.orderModel.find({ userId });
+  }
   async create(newOrder: any) {
     return this.orderModel.create(newOrder);
   }

@@ -25,6 +25,12 @@ export class OrderService {
     return await this.orderRepository.getAll();
   }
 
+  async getOrderUser(userId) {
+    const userIdObjectId = new ObjectId(userId);
+    const orderUser = await this.orderRepository.findOrderUser(userIdObjectId);
+    return orderUser;
+  }
+
   async createOrder(createOrderDto: CreateOrderDto) {
     let totalAmount = 0;
     let productIds = [];
