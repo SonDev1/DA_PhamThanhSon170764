@@ -45,12 +45,11 @@ export class ProductController {
   deleteProductById(@Param('productId') productId: string) {
     return this.productService.deleteProductById(productId);
   }
-
-  @Put('productId')
-  updateProductById(
-    @Param('productId') productId: string,
-    updateProductDto: CreateProductDto,
-  ) {
-    return this.productService.updateProductById(productId, updateProductDto);
+  @Put(':productId')
+  async updateProductById(
+  @Param('productId') productId: string,
+  @Body() updateProductDto: CreateProductDto,
+) {
+  return this.productService.updateProductById(productId, updateProductDto);
   }
 }

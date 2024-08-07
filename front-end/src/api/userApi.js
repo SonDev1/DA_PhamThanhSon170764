@@ -10,7 +10,14 @@ const userApi = {
         const url = 'api/auth/login';
         return axiosClient.post(url,data)
     },
+    getInfo(userId){
+        const url = `api/auth/${userId}`;
+        return axiosClient.get(url)
+    },
+    update(userId, data) {
+        const url = `api/users/${userId}`;
+        return axiosClient.put(url, data);
+      }
 }
-// console.log('userApi',userApi);
 
 export default userApi

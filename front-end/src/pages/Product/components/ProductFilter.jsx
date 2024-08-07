@@ -1,12 +1,26 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
+import FilterByCategory from './Filters/FilterByCategory';
+import MenuItemLeft from '../components/Menu';
 
-function ProductFilter(props) {
-  return (
-    <div>ProductFilter</div>
-  )
+function ProductFilter({ filters, onChange }) {
+    const handleCategoryChange = (newCategoryGender) => {
+        if (!onChange) return;
+        const newFilters = {
+          ...filters,
+          typeId: newCategoryGender[1] || filters.typeId,
+        };
+        onChange(newFilters);
+      };
+      
+
+    return (
+        <div>
+            <MenuItemLeft onChange={handleCategoryChange} />
+        </div>
+    );
 }
 
-ProductFilter.propTypes = {}
+ProductFilter.propTypes = {};
 
-export default ProductFilter
+export default ProductFilter;
