@@ -13,7 +13,9 @@ export class VerifyTokenMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      throw new UnauthorizedException('Token not provided');
+      throw new UnauthorizedException(
+        'Bạn cần phải đăng nhập để thực hiện hành động này!',
+      );
     }
 
     const token = authHeader.split(' ')[1];

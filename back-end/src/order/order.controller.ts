@@ -20,6 +20,11 @@ export class OrderController {
     return this.orderService.getOrderById(orderId);
   }
 
+  @Get(':userId/user')
+  getOrderUser(@Param('userId') userId: string) {
+    return this.orderService.getOrderUser(userId);
+  }
+
   @Post('')
   CreateOrder(@Body() createOrderDto: CreateOrderDto) {
     return this.orderService.createOrder(createOrderDto);
