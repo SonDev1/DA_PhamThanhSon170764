@@ -22,6 +22,8 @@ const MenuManagement = () => {
     const [categoryForm] = Form.useForm();
     const [typeForm] = Form.useForm();
 
+    const accessToken = localStorage.getItem('access_token');
+
     // Fetch menus
     useEffect(() => {
         const fetchMenus = async () => {
@@ -83,11 +85,19 @@ const MenuManagement = () => {
         try {
             if (editingMenu) {
                 // Edit
-                await axios.put(`http://localhost:5000/api/menus/${editingMenu._id}`, payload);
+                await axios.put(`http://localhost:5000/api/menus/${editingMenu._id}`, payload, {
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
                 message.success('Menu updated successfully');
             } else {
                 // Add
-                await axios.post('http://localhost:5000/api/menus', payload);
+                await axios.post('http://localhost:5000/api/menus', payload, {
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
                 message.success('Menu added successfully');
             }
             setIsMenuModalVisible(false);
@@ -101,45 +111,48 @@ const MenuManagement = () => {
         }
     };
 
-// Handle form submission for add/edit category
-const handleCategoryFormSubmit = async (values) => {
-    try {
-        const payload = {
-            ...values,
-            menuId: selectedMenu, 
-            order: values.order.toString() 
-        };
+    // Handle form submission for add/edit category
+    const handleCategoryFormSubmit = async (values) => {
+        try {
+            const payload = {
+                ...values,
+                menuId: selectedMenu, 
+                order: values.order.toString() 
+            };
 
-        if (editingCategory) {
-            // Edit
-            await axios.put(
-                `http://localhost:5000/api/categories/${editingCategory._id}`,
-                payload,
-            );
-            message.success('Category updated successfully');
-        } else {
-            // Add
-            await axios.post('http://localhost:5000/api/categories', payload);
-            message.success('Category added successfully');
+            if (editingCategory) {
+                // Edit
+                await axios.put(`http://localhost:5000/api/categories/${editingCategory._id}`, payload, {
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+                message.success('Category updated successfully');
+            } else {
+                // Add
+                await axios.post('http://localhost:5000/api/categories', payload, {
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+                message.success('Category added successfully');
+            }
+
+            setIsCategoryModalVisible(false);
+            categoryForm.resetFields();
+            setEditingCategory(null);
+            // Refresh categories list
+            if (selectedMenu) {
+                const response = await axios.get('http://localhost:5000/api/categories');
+                const filteredCategories = response.data.filter(
+                    (category) => category.menuId === selectedMenu,
+                );
+                setCategories(filteredCategories);
+            }
+        } catch (error) {
+            message.error('Failed to save category');
         }
-
-        setIsCategoryModalVisible(false);
-        categoryForm.resetFields();
-        setEditingCategory(null);
-        // Refresh categories list
-        if (selectedMenu) {
-            const response = await axios.get('http://localhost:5000/api/categories');
-            const filteredCategories = response.data.filter(
-                (category) => category.menuId === selectedMenu,
-            );
-            setCategories(filteredCategories);
-        }
-    } catch (error) {
-        message.error('Failed to save category');
-    }
-};
-
-
+    };
 
     // Handle form submission for add/edit type
     const handleTypeFormSubmit = async (values) => {
@@ -152,14 +165,22 @@ const handleCategoryFormSubmit = async (values) => {
     
             if (editingType) {
                 // Edit
-                await axios.put(`http://localhost:5000/api/types/${editingType._id}`, payload);
+                await axios.put(`http://localhost:5000/api/types/${editingType._id}`, payload, {
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
                 message.success('Type updated successfully');
             } else {
                 // Add
                 if (!payload.categoryId) {
                     throw new Error('Category ID is required');
                 }
-                await axios.post('http://localhost:5000/api/types', payload);
+                await axios.post('http://localhost:5000/api/types', payload, {
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
                 message.success('Type added successfully');
             }
     
@@ -176,7 +197,6 @@ const handleCategoryFormSubmit = async (values) => {
             console.error(error); // Log error for debugging
         }
     };
-    
 
     // Show modal for add/edit menu
     const showMenuModal = (menu) => {
@@ -217,7 +237,11 @@ const handleCategoryFormSubmit = async (values) => {
     // Handle delete menu
     const handleMenuDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/menus/${id}`);
+            await axios.delete(`http://localhost:5000/api/menus/${id}`, {
+                headers: { 
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             message.success('Menu deleted successfully');
             // Refresh menus list
             const response = await axios.get('http://localhost:5000/api/menus');
@@ -234,7 +258,11 @@ const handleCategoryFormSubmit = async (values) => {
     // Handle delete category
     const handleCategoryDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/categories/${id}`);
+            await axios.delete(`http://localhost:5000/api/categories/${id}`, {
+                headers: { 
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             message.success('Category deleted successfully');
             // Refresh categories list
             if (selectedMenu) {
@@ -254,7 +282,11 @@ const handleCategoryFormSubmit = async (values) => {
     // Handle delete type
     const handleTypeDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/types/${id}`);
+            await axios.delete(`http://localhost:5000/api/types/${id}`, {
+                headers: { 
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             message.success('Type deleted successfully');
             // Refresh types list
             if (selectedCategory) {
@@ -266,7 +298,7 @@ const handleCategoryFormSubmit = async (values) => {
         }
     };
 
-    return (
+     return (
         <div style={{ padding: '20px' }}>
             <h1 style={{ fontFamily: 'monospace', fontWeight: '600' }}>Quản lý Menu</h1>
 

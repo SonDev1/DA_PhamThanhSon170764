@@ -65,6 +65,16 @@ const AdminPage = () => {
                         <Link to='/admin/products'>Quản lý sản phẩm</Link>
                     </Menu.Item>
                     <Menu.Item
+                        key='/admin/menu'
+                        style={
+                            selectedKey === '/admin/menu'
+                                ? { background: 'black', color: 'white' }
+                                : {}
+                        }
+                    >
+                        <Link to='/admin/menu'>Quản lý menu</Link>
+                    </Menu.Item>
+                    <Menu.Item
                         key='/admin/orders'
                         style={
                             selectedKey === '/admin/orders'
@@ -72,12 +82,12 @@ const AdminPage = () => {
                                 : {}
                         }
                     >
-                        <Link to='/admin/menu'>Quản lý menu</Link>
+                        <Link to='/admin/orders'>Quản lý đơn hàng</Link>
                     </Menu.Item>
                     {/* Thêm các item khác nếu cần */}
                 </Menu>
             </Sider>
-            <Layout>
+            <Layout style={{width:''}}>
                 <Header style={{ background: '#fff', padding: 0 }}>
                     <div
                         style={{
@@ -117,7 +127,7 @@ const AdminPage = () => {
                     </div>
                 </Header>
 
-                <Content style={{ margin: '0 16px', padding: 24, minHeight: 280 }}>
+                <Content style={{ margin: '0 16px', padding: 24, minHeight: 280}}>
                     <Outlet />
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Admin Curnon ©2024</Footer>

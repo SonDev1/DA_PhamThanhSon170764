@@ -9,6 +9,8 @@ import ProductThumnail from '../components/ProductThumnail';
 import useProductDetail from '../hooks/useProductDetail';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import { Variants } from 'antd/es/config-provider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -89,6 +91,7 @@ function DetailPage() {
             setReviews([...reviews, data]);
         } catch (error) {
             console.error('Error adding review:', error);
+            enqueueSnackbar("Bạn chưa từng mua sản phẩm này trước đây",{variant:'error'});
         }
     };
 

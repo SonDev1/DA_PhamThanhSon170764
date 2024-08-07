@@ -13,7 +13,8 @@ function ProductReviews({ onSubmitReview }) {
     const { productId } = useParams();
     const [reviews, setReviews] = useState([]);
     const [authors, setAuthors] = useState({}); // Object để lưu thông tin tác giả
-
+    console.log(reviews);
+    
     useEffect(() => {
         const fetchReviews = async () => {
             if (productId) {
@@ -21,9 +22,9 @@ function ProductReviews({ onSubmitReview }) {
                     const response = await axios.get(
                         `http://localhost:5000/api/reviews/product/${productId}`,
                     );
-                    setReviews(Array.isArray(response.data) ? response.data : []);
+                    setReviews(Array.isArray(response.data.reviews) ? response.data.reviews : []);
                     // Fetch tác giả sau khi đã có đánh giá
-                    const authorPromises = response.data.map((review) =>
+                    const authorPromises = response.data.reviews.map((review) =>
                         axios
                             .get(`http://localhost:5000/api/auth/${review.userId}`)
                             .then((res) => ({ [review.userId]: res.data })),
