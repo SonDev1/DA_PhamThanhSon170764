@@ -5,7 +5,7 @@ import UploadImage from './UploadImage';
 
 const { Option } = Select;
 
-const ProductForm = ({ product, onClose }) => {
+const ProductForm = ({ product, onClose, accessToken }) => {
   const [form] = Form.useForm();
   const [imageUrls, setImageUrls] = React.useState([]);
 
@@ -29,10 +29,15 @@ const ProductForm = ({ product, onClose }) => {
         ...values,
         images: imageUrls,
       };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
       if (product) {
-        await axios.put(`http://localhost:5000/api/products/${product._id}`, productData);
+        await axios.put(`http://localhost:5000/api/products/${product._id}`, productData, config);
       } else {
-        await axios.post('http://localhost:5000/api/products', productData);
+        await axios.post('http://localhost:5000/api/products', productData, config);
       }
       onClose();
     } catch (error) {

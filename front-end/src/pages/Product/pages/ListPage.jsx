@@ -50,6 +50,7 @@ function ListPage(props) {
             ...queryParams,
             _sort: newSortValue,
         };
+        
 
         navigate({
             pathname: location.pathname,

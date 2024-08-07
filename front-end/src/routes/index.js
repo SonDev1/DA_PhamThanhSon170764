@@ -2,6 +2,7 @@ import { LoginPage } from "../../src/pages/Auth/LoginPage/index";
 import AdminPage from "../admin/pages";
 import Dashboard from "../admin/pages/Dashboard";
 import MenuManagement from "../admin/pages/Menu/MenuManagement";
+import OrderManagement from "../admin/pages/Order/OrderManagement";
 import ProductManagement from "../admin/pages/Product/ProductManagement";
 import AboutCompany from "../pages/AboutCompany";
 import AccountInfo from "../pages/AccountInfo";
@@ -44,6 +45,10 @@ export const routes = [
             {
               path: 'menu',
               page: MenuManagement,
+            },
+            {
+              path: 'orders',
+              page: OrderManagement,
             },
           ],
     },

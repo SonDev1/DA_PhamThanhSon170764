@@ -8,6 +8,7 @@ const ProductManagement = () => {
     const [products, setProducts] = useState([]);
     const [visible, setVisible] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const accessToken = localStorage.getItem('access_token');
 
     useEffect(() => {
         fetchProducts();
@@ -30,9 +31,19 @@ const ProductManagement = () => {
     };
 
     const handleDelete = async (productId) => {
-        await axios.delete(`http://localhost:5000/api/products/${productId}`);
-        fetchProducts();
-    };
+        try {
+          const response = await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+            headers: { 
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          fetchProducts();
+        } catch (error) {
+          console.error('There was an error deleting the product!', error.message);
+          console.error('Error details:', error.config);
+        }
+      };
+      
 
     const columns = [
         {
@@ -92,6 +103,7 @@ const ProductManagement = () => {
                         setVisible(false);
                         fetchProducts();
                     }}
+                    accessToken={accessToken}
                 />
             </Modal>
         </div>
