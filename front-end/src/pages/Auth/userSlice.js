@@ -17,7 +17,14 @@ export const login = createAsyncThunk(
     console.log("data :",data);
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('userId', data.userId);
-    return data.userId;
+    //Demo 
+    //============================================================================================================================
+    // return data.userId
+    //============================================================================================================================
+    return {
+      userId: data.userId,
+      access_token: data.access_token,
+    };
   }
 );
 

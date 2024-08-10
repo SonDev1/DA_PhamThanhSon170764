@@ -77,7 +77,7 @@ function Header(props) {
         navigate('/account');
     };
     const handleShop = () => {
-        navigate('/orders');
+        navigate('/order-history');
     };
 
     return (

@@ -15,6 +15,7 @@ import CartClear from "../pages/Cart/components/CartClear";
 import HomePage from "../pages/HomePage";
 import NotFound from "../pages/NotFound";
 import OrderPage from "../pages/Order";
+import OrderHistory from "../pages/Order/components/OrderHistory";
 import SuccessPage from "../pages/Order/components/SuccessPage";
 import Product from "../pages/Product";
 import ProductAdditional from "../pages/Product/components/ProductAdditional";
@@ -102,6 +103,12 @@ export const routes = [
     { 
         path:'/orders',
         page : OrderPage,
+        isShowHeader : true,
+        isShowFooter : true,
+    },
+    { 
+        path:'/order-history',
+        page : OrderHistory,
         isShowHeader : true,
         isShowFooter : true,
     },

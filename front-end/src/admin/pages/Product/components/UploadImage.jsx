@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Image, Upload } from 'antd';
+import { Image, Upload, message } from 'antd';
+import axios from 'axios';
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -10,17 +11,18 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const UploadImage = ({ onUploadSuccess, product }) => {
+const UploadImage = ({ onUploadSuccess, product, accessToken }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
     if (product && product.images) {
-      // Chuyển đổi URLs thành định dạng phù hợp cho Upload component
       const formattedFileList = product.images.map((url) => ({
-        url,
+        uid: url,
+        name: url,
         status: 'done',
+        url: url,
       }));
       setFileList(formattedFileList);
     }
@@ -34,37 +36,54 @@ const UploadImage = ({ onUploadSuccess, product }) => {
     setPreviewOpen(true);
   };
 
-  const handleChange = async ({ fileList: newFileList }) => {
+  const handleChange = async ({ file, fileList: newFileList }) => {
+    if (file.status === 'uploading') {
+      setFileList(newFileList);
+      return;
+    }
+    if (file.status === 'done') {
+      if (file.response && file.response.url) {
+        const uploadedUrls = newFileList.map((file) => file.response?.url || file.url);
+        onUploadSuccess(uploadedUrls);
+      } else {
+        message.error('Upload failed.');
+      }
+    } else if (file.status === 'error') {
+      // message.error('Upload failed.');
+    }
     setFileList(newFileList);
-    if (newFileList.every(file => file.status === 'done')) {
-      const uploadedUrls = newFileList.map(file => file.response?.url);
-      onUploadSuccess(uploadedUrls);
+  };
+
+  const customRequest = async ({ file, onSuccess, onError }) => {
+    const formData = new FormData();
+    formData.append('productId', product._id);
+    formData.append('files', file);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/uploads/product', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      onSuccess(response.data);
+    } catch (error) {
+      onError(error);
+      message.error('Upload failed.');
     }
   };
 
   const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: 'none',
-      }}
-      type='button'
-    >
+    <div>
       <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
   );
 
   return (
     <>
       <Upload
-        action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
+        customRequest={customRequest}
         listType='picture-card'
         fileList={fileList}
         onPreview={handlePreview}
@@ -72,19 +91,14 @@ const UploadImage = ({ onUploadSuccess, product }) => {
       >
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
-      {previewImage && (
-        <Image
-          wrapperStyle={{
-            display: 'none',
-          }}
-          preview={{
-            visible: previewOpen,
-            onVisibleChange: (visible) => setPreviewOpen(visible),
-            afterOpenChange: (visible) => !visible && setPreviewImage(''),
-          }}
-          src={previewImage}
-        />
-      )}
+      <Image
+        style={{ display: 'none' }}
+        preview={{
+          visible: previewOpen,
+          onVisibleChange: (visible) => setPreviewOpen(visible),
+        }}
+        src={previewImage}
+      />
     </>
   );
 };
