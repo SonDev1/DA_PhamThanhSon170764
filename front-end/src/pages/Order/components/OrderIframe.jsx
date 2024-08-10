@@ -14,7 +14,7 @@ const OrderIframe = ({ isVisible, handleClose,url ,orderId  }) => {
 
       if (status === 'Success') {
         // Chuyển trang
-        navigate('/success-page')
+        navigate('/success-page', { state: { orderId } });
       } else if (status === 'pending') {
         // Ở lại trang
         // Set order status hoặc làm hành động khác nếu cần

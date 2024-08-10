@@ -23,7 +23,11 @@ const orderApi = {
     updateShippingInfo(userId,payload){
         const url = `api/users/${userId}/shipping-infor`; 
         return axiosClient.put(url, { payload });
-    }
+    },
+      getOrderHistory(userId){
+        const url =`http://localhost:5000/api/orders/${userId}/user`
+        return axiosClient.get(url);
+      }
 }
 
 export default orderApi;
