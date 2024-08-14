@@ -41,7 +41,7 @@ const OrderIframe = ({ isVisible, handleClose,url ,orderId  }) => {
       <iframe
         src={ url } 
         title="Popup Content"
-        style={{ width: '100%', height: '500px', border: 'none' }}
+        style={{ width: '100%', height: '600px', border: 'none' }}
       ></iframe>
     </Modal>
   );

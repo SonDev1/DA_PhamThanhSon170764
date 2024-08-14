@@ -21,6 +21,7 @@ import Product from "../pages/Product";
 import ProductAdditional from "../pages/Product/components/ProductAdditional";
 import ProductDescription from "../pages/Product/components/ProductDescription";
 import ProductReviews from "../pages/Product/components/ProductReviews";
+import SuggestedProducts from "../pages/Product/components/SuggestedProducts ";
 import DetailPage from "../pages/Product/pages/DetailPage";
 
 export const routes = [
@@ -34,6 +35,7 @@ export const routes = [
     { 
         path:'/admin',
         page : AdminPage,
+        isPrivate: true,
         children: [
             {
               path: 'dashboard',
@@ -151,7 +153,7 @@ export const routes = [
     },
     { 
         path:'/test',
-        page : CartClear,
+        page : SuggestedProducts,
         isShowHeader : true,
         isShowFooter : true,
     },

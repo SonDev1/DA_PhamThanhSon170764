@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import { Variants } from 'antd/es/config-provider';
+import SuggestedProducts from '../components/SuggestedProducts ';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -120,6 +121,7 @@ function DetailPage() {
                             <ProductInfo product={product} />
                         </Grid>
                     </Grid>
+                    <SuggestedProducts productId={productId}/>
                 </Paper>
 
                 <Box className={classes.productMenu}>

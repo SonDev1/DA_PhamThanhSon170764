@@ -13,7 +13,8 @@ import { cartItemsCountSelector } from '../../pages/Cart/selectors';
 
 function Header(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State để điều khiển dropdown
+    const [isAdmin, setIsAdmin] = useState(false); 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const dispatch = useDispatch();
@@ -23,16 +24,16 @@ function Header(props) {
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
+        const userRole = localStorage.getItem('role'); 
         if (userId) {
             setIsLoggedIn(true);
             setUserId(userId);
+            if (userRole === 'admin') {
+                setIsAdmin(true);
+            }
         }
     }, []);
 
-    // const cartItemsCount = useSelector(cartItemsCountSelector);
-
-    // Call API de lay tong so luong san pham thay vi lay so luong tu Redux
-    //==========================================================================================
     useEffect(() => {
         if (!userId) {
             return;
@@ -46,11 +47,9 @@ function Header(props) {
             }
         })();
     }, [userId]);
-    // const cartItemsCount = cartList.length;
-    //==========================================================================================
-    // Handler để xử lý khi ấn vào icon search
+
     const handleSearchClick = () => {
-        setIsDropdownOpen(!isDropdownOpen); // Đảo ngược trạng thái hiển thị dropdown
+        setIsDropdownOpen(!isDropdownOpen);
     };
 
     const handleCartClick = () => {
@@ -73,6 +72,10 @@ function Header(props) {
         navigate('/');
     };
 
+    const handleAdminClick = () => {
+        console.log("Admin :" ,isAdmin);
+        navigate('/admin');
+    }
     const handleUserInfo = () => {
         navigate('/account');
     };
@@ -129,31 +132,51 @@ function Header(props) {
             <div className='wrapper__header__social-media'>
                 {isLoggedIn ? (
                     <Box>
-                        <IconButton
-                            size='large'
-                            color='inherit'
-                            onClick={handleSearchClick}
-                        >
-                            <Search />
-                        </IconButton>
-                        <IconButton
-                            size='large'
-                            color='inherit'
-                            onClick={handleCartClick}
-                        >
-                            <Badge
-                                badgeContent={cartItemsCount}
-                                color='error'
-                            >
-                                <ShoppingCart style={{ color: 'black' }} />
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            color='inherit'
-                            onClick={handleUserClick}
-                        >
-                            <AccountCircle />
-                        </IconButton>
+                        {isAdmin ? (
+                            <>
+                                <IconButton
+                                    size='large'
+                                    color='inherit'
+                                    onClick={handleAdminClick}
+                                >
+                                    <box-icon type='solid' name='lock-alt'></box-icon>
+                                </IconButton>
+                                <IconButton
+                                    color='inherit'
+                                    onClick={handleUserClick}
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <>
+                                <IconButton
+                                    size='large'
+                                    color='inherit'
+                                    onClick={handleSearchClick}
+                                >
+                                    <Search />
+                                </IconButton>
+                                <IconButton
+                                    size='large'
+                                    color='inherit'
+                                    onClick={handleCartClick}
+                                >
+                                    <Badge
+                                        badgeContent={cartItemsCount}
+                                        color='error'
+                                    >
+                                        <ShoppingCart style={{ color: 'black' }} />
+                                    </Badge>
+                                </IconButton>
+                                <IconButton
+                                    color='inherit'
+                                    onClick={handleUserClick}
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                            </>
+                        )}
                     </Box>
                 ) : (
                     <>
@@ -217,6 +240,4 @@ function Header(props) {
     );
 }
 
-Header.propTypes = {};
-
-export default Header;
+export default Header 
