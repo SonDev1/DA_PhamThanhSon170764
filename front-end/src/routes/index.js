@@ -34,6 +34,7 @@ export const routes = [
     { 
         path:'/admin',
         page : AdminPage,
+        isPrivate: true,
         children: [
             {
               path: 'dashboard',

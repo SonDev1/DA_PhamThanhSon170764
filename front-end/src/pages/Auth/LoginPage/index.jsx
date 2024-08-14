@@ -12,6 +12,7 @@ export const LoginPage = () => {
     const [isSignUp, setIsSignUp] = useState(true);
     const [isSwitch, setIsSwitch] = useState(false);
     const [formData, setFormData] = useState({ username: '', displayName: '', password: '' });
+    const isAdmin = localStorage.getItem('role') || ''
 
     const changeForm = (e) => {
         e.preventDefault();
@@ -25,24 +26,49 @@ export const LoginPage = () => {
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
 
+    // const handleLoginSubmit = async (values, { setSubmitting }) => {
+    //     try {
+    //         const action = login(values);
+    //         const resultAction = await dispatch(action);
+    //         unwrapResult(resultAction);
+    //         enqueueSnackbar('Login successfully !!!', { variant: 'success' });
+    //         if(isAdmin){
+    //             navigate('/admin')
+    //         }
+    //         navigate('/products')
+    //     } catch (error) {
+    //         const errMessage = error.response?.data?.message || error.message || 'Login failed';
+    //         console.log('Failed to login : ', errMessage);
+    //         enqueueSnackbar(errMessage, { variant: 'error' });
+    //         navigate('/login')
+    //     }
+    //     setSubmitting(false);
+    //     // navigate('/products')
+    // };
+      
     const handleLoginSubmit = async (values, { setSubmitting }) => {
         try {
             const action = login(values);
             const resultAction = await dispatch(action);
-            unwrapResult(resultAction);
+            const user = unwrapResult(resultAction);
+            
             enqueueSnackbar('Login successfully !!!', { variant: 'success' });
-            navigate('/products')
+    
+            if (user.role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate('/products');
+            }
         } catch (error) {
             const errMessage = error.response?.data?.message || error.message || 'Login failed';
             console.log('Failed to login : ', errMessage);
             enqueueSnackbar(errMessage, { variant: 'error' });
-            navigate('/login')
+            navigate('/login');
+        } finally {
+            setSubmitting(false);
         }
-        setSubmitting(false);
-        // navigate('/products')
     };
-      
-
+    
     const handleRegisterSubmit = async (values, { setSubmitting }) => {
         try {
             const action = register(values);

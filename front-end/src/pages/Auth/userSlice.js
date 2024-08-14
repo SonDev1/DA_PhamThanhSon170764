@@ -17,6 +17,7 @@ export const login = createAsyncThunk(
     console.log("data :",data);
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('userId', data.userId);
+    localStorage.setItem('role', data.role);
     //Demo 
     //============================================================================================================================
     // return data.userId
@@ -24,6 +25,7 @@ export const login = createAsyncThunk(
     return {
       userId: data.userId,
       access_token: data.access_token,
+      role: data.role,
     };
   }
 );
@@ -43,13 +45,18 @@ export const update = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    current: localStorage.getItem('userId') || {},
+    current: {
+      userId: localStorage.getItem('userId') || null,
+      accessToken: localStorage.getItem('access_token') || null,
+      role: localStorage.getItem('role') || null,
+    },
     settings: {},
   },
   reducers: {
     logout(state) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('userId');
+      localStorage.removeItem('role');
       // localStorage.removeItem('cart');
       state.current = {};
       state.settings = {};
