@@ -35,6 +35,7 @@ export class AuthService {
       access_token: token.accessToken,
       refresh_token: token.refreshToken,
       userId: user._id.toString(),
+      role: user.role,
     };
   }
 
@@ -59,6 +60,7 @@ export class AuthService {
       access_token: token.accessToken,
       refresh_token: token.refreshToken,
       userId: user._id.toString(),
+      role: user.role,
     };
   }
 
@@ -114,6 +116,7 @@ export class AuthService {
       access_token: token.accessToken,
       refresh_token: token.refreshToken,
       userId: user._id.toString(),
+      role: user.role,
     });
   }
 
