@@ -15,6 +15,8 @@ export class OrderController {
 
   @Get(':orderId')
   getOrderById(@Param('orderId') orderId: string) {
+    console.log("orderId :",orderId);
+    
     return this.orderService.getOrderById(orderId);
   }
 

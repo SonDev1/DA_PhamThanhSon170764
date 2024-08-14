@@ -5,7 +5,6 @@ import { configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = {
     user : userReducer,
-    // cart : cartReducer,
 }
 
 const store = configureStore({

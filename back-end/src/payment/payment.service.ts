@@ -35,8 +35,9 @@ export class PaymentService {
       description: `Curnon - Payment for the order #${transID}`,
       bank_code: '',
       mac: '',
+      // cho url vào đây
       callback_url:
-        'https://941a-2402-800-61b3-64bf-604f-66-6056-7681.ngrok-free.app/api/payment/zalopayCallback',
+      'https://5d0a-2402-800-6105-cfb1-3027-3266-3cfe-b01.ngrok-free.app/api/payment/zalopayCallback',
     };
 
     // appid|app_trans_id|appuser|amount|apptime|embeddata|item

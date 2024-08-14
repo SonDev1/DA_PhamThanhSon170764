@@ -5,16 +5,20 @@ import { enqueueSnackbar } from "notistack";
 
 export const SocialRedirect = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const accessToken = searchParams.get("accessToken");
-    const refreshToken = searchParams.get("refreshToken");
+    const access_token = searchParams.get("access_token");
+    const refresh_token = searchParams.get("refresh_token");
+    const userId =searchParams.get("userId");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
         const token = {
-            access_token: accessToken || "",
-            refresh_token: refreshToken || "",
+            access_token: access_token || "",
+            refresh_token: refresh_token || "",
+            userId : userId || ""
         };
+        console.log("access_token", token.access_token);
         localStorage.setItem("access_token", token.access_token);
+        localStorage.setItem("userId", token.userId);
         enqueueSnackbar("Chào mừng trở lại ", { variant: '' });
         navigate("/")
     }, []);

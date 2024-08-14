@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-    // baseURL: 'https://api.ezfrontend.com/',
     baseURL: 'http://localhost:5000/',
     headers: {
         'Content-Type': 'application/json',
@@ -11,7 +10,14 @@ const axiosClient = axios.create({
 // Add a request interceptor
 axiosClient.interceptors.request.use(
     function (config) {
-        // Do something before request is sent
+        // Retrieve the accessToken from localStorage or any other storage mechanism
+        const accessToken = localStorage.getItem('access_token'); // or get it from your state management
+
+        // If accessToken exists, set the Authorization header
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+
         return config;
     },
     function (error) {
@@ -27,35 +33,22 @@ axiosClient.interceptors.response.use(
         // Do something with response data
         return response.data;
     },
-    function(error) {
-      // Any status codes that fall outside the range of 2xx cause this function to trigger
-      // Do something with response error
-      const { config, status, data } = error.response;
-      const URLS = ['/api/auth/register','/api/auth/login']
-    //   if (URLS.includes(config.url) && status === 400) {
-    //       const errorList = data.data || [];
-    //       if (errorList.length > 0) {
-    //           const firstErrors = errorList[0];
-    //           if (firstErrors.messages && firstErrors.messages.length > 0) {
-    //               const firstMessage = firstErrors.messages[0];
-    //               throw new Error(firstMessage.message || 'Unknown error occurred');
-    //           }
-    //       }
-    //   }
-      // Handle 401 status
-    //   console.log("err :",data.message);
-      const err1 = data.message
-    //   debugger
-      if (URLS.includes(config.url) && status === 401 ) {
-        throw new Error(err1);
-        }
-        if (URLS.includes(config.url) && status === 409 ) {
+    function (error) {
+        // Any status codes that fall outside the range of 2xx cause this function to trigger
+        // Do something with response error
+        const { config, status, data } = error.response;
+        const URLS = ['/api/auth/register','/api/auth/login'];
+
+        const err1 = data.message;
+        if (URLS.includes(config.url) && status === 401) {
             throw new Error(err1);
-            }
-      // Handle other error cases here if needed
-      return Promise.reject(err1);
-  }
-  
+        }
+        if (URLS.includes(config.url) && status === 409) {
+            throw new Error(err1);
+        }
+        // Handle other error cases here if needed
+        return Promise.reject(err1);
+    }
 );
 
 export default axiosClient;
