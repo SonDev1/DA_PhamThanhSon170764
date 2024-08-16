@@ -16,9 +16,9 @@ span{
   margin-top: 100px;
 }
 
-.aban__wrap {
+.aban__wrapBlog {
   position: relative;
-  height: 600px;
+  height: 230px;
   overflow: hidden; 
 }
 
@@ -55,8 +55,10 @@ span{
 }
 
 .aban__ctn {
+  display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   flex-direction: column;
   text-align: center;
   opacity: 0;
@@ -81,7 +83,7 @@ span{
 
 .aban__desc {
   margin: 1rem 0 0 0;
-  // width: 55%;
+  width: 55%;
   color: white;
   font-weight: 600;
   font-family: 'Courier New', Courier, monospace;
@@ -163,6 +165,113 @@ span{
   font-family: 'Courier New', Courier, monospace;
 
 }
+.container2{
+  display: flex;
+  justify-content: center;
+  background-color: #F7F8F4;
+  height: 103px;
+}
+.wrapper__content{
+margin-top: 20px;
+padding: 30px;
+}
+// .wrapper__header1 {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   padding: 30px 8%;
+//   // background: #eaeaea;
+//   background: white;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   align-items: center;
+//   z-index: 1000;
+//   border-bottom: 1px solid #000;
+//   &__navbar {
+//     display: flex;
+//     align-items: center;
+    
+//     & a {
+//         display: inline-block;
+//         font-size: 18px;
+//         // color: #222;
+//         background-color: #F7F8F4;
+//         color: #000;
+//         text-decoration: none;
+//         font-weight: 600;
+//         margin: 0 20px;
+//         transition: .3s;
+//         opacity: 0;
+//         animation: slideBottom .5s ease forwards;
+//         animation-delay: calc(0.2s * var(--i));
+//         font-family: monospace;
+//         border-radius: 30%;
+//         padding: 13px 15px;
+
+
+//         &:hover,
+//         &.active {
+//             color: black; 
+//             background-color: #F7F8F4;
+//             font-size: 20px;
+//             font-weight: 600;
+//             // text-decoration:solid;
+//             // text-decoration: underline;
+//         }
+//     }
+// }
+// }
+.wrapper__header1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 8%;
+  background: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  border-bottom: 1px solid #000;
+
+  &__navbar {
+    display: flex;
+    align-items: center;
+
+    & a {
+      display: inline-block;
+      font-size: 18px;
+      background-color: #F7F8F4;
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 20px;
+      transition: 0.3s;
+      opacity: 0;
+      animation: slideRight 0.7s ease forwards;
+      animation-delay: calc(0.2s * var(--i));
+      font-family: monospace;
+      border-radius: 45%;
+      padding: 10px 15px;
+
+      &:hover {
+        color: #f7f8f4;
+        background-color: #000;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      &.active {
+        background-color: #000;
+        color: #f7f8f4;
+      }
+    }
+  }
+}
+
 
 @keyframes zoomOut {
   0% {
