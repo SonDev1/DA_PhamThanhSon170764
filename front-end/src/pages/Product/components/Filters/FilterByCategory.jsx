@@ -36,7 +36,6 @@ function FilterByCategory({onChange}) {
     (async () =>{
         try {    
             const list = await categoryApi.getAll()
-            console.log("data api  category :",list);
             setCategoryList(list.map(x => ({
                 id: x._id,
                 name : x.name,
@@ -47,7 +46,6 @@ function FilterByCategory({onChange}) {
     })()
 },[])
 
-// console.log("categoryList",categoryList);
 
 const handleCategoryClick = (category) => {
   if (onChange) {

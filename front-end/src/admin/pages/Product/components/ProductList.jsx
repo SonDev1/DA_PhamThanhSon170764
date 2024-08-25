@@ -12,9 +12,8 @@ const ProductList = ({ onEdit, onDelete }) => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/products/get-all');
-      console.log("response :",response);
       debugger
-      setProducts(response.data.rows); // Dựa vào cấu trúc dữ liệu từ API
+      setProducts(response.data.rows);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -41,7 +40,7 @@ const ProductList = ({ onEdit, onDelete }) => {
   const columns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
     { title: 'Price', dataIndex: 'salePrice', key: 'salePrice' },
-    { title: 'Category', dataIndex: 'typeId', key: 'typeId' }, // Thay đổi theo cấu trúc dữ liệu
+    { title: 'Category', dataIndex: 'typeId', key: 'typeId' },
     {
       title: 'Actions',
       key: 'actions',
@@ -59,7 +58,7 @@ const ProductList = ({ onEdit, onDelete }) => {
       columns={columns}
       dataSource={products}
       rowKey="_id"
-      pagination={{ pageSize: 10 }} // Thay đổi theo nhu cầu
+      pagination={{ pageSize: 10 }} 
     />
   );
 };

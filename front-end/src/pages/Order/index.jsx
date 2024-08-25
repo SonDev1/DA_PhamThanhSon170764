@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -13,18 +12,18 @@ import {
     styled,
     Typography,
 } from '@material-ui/core';
-import { Form, Formik, Field } from 'formik';
-import * as Yup from 'yup';
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import OrderIframe from './components/OrderIframe';
-import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { formatPrice } from '../../utils/common';
-import orderApi from '../../api/ordersApi';
-import UpdateShippingInfo from './components/UpdateShippingInfo';
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { Form, Formik } from 'formik';
 import { enqueueSnackbar } from "notistack";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import orderApi from '../../api/ordersApi';
+import { formatPrice } from '../../utils/common';
+import OrderIframe from './components/OrderIframe';
+import UpdateShippingInfo from './components/UpdateShippingInfo';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -79,14 +78,12 @@ const OrderPage = () => {
 
     const handleBuyNow = async (values) => {
         const { paymentMethod } = values;
-        console.log(paymentMethod);
         if (paymentMethod==='cash') {
             enqueueSnackbar("Đặt hàng thành công ",{variant:"success"})
             navigate('/success-page')
         }
         try {
             const res = await orderApi.payment(orderId, paymentMethod);
-            console.log("payment res :",res );
             const paymentUrl = res.paymentUrl.paymentInf.order_url;
 
             setPaymentUrl(paymentUrl);

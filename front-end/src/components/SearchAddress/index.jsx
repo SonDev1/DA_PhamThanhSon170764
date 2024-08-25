@@ -20,7 +20,6 @@ export const SearchAddress = () => {
                 )
                 .then((response) => {
                     const locations = response.data.predictions;
-                    console.log("locations :", locations);
                     const options = locations.map((location) => {
                         return {
                             value: location.description,

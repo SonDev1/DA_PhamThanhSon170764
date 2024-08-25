@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import {
     Box,
-    Button,
     Container,
     Grid,
     makeStyles,
     Paper,
-    TextField,
-    Typography,
-    useTheme,
+    useTheme
 } from '@material-ui/core';
-import { Formik, Field, Form } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import userApi from '../../api/userApi';
 import { logout, update } from '../Auth/userSlice';
-import ProductMenu from '../Product/components/ProductMenu';
-import ProductAdditional from '../Product/components/ProductAdditional';
-import ProductReviews from '../Product/components/ProductReviews';
-import AccountMenu from './components/AccountMenu';
-import AccountAdditional from './components/AccountAdditional';
 import Account from './components/Account';
+import AccountAdditional from './components/AccountAdditional';
+import AccountMenu from './components/AccountMenu';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -122,7 +114,6 @@ function AccountInfo() {
 
     const location = useLocation();
     const url = location.pathname;
-    // console.log("currentUser :",currentUser);
 
     // Lấy thông tin user
     useEffect(() => {
@@ -133,7 +124,6 @@ function AccountInfo() {
         (async () => {
             try {
                 const userData = await userApi.getInfo(userId);
-                console.log("userData :", userData);
                 setFormData(userData);
             } catch (error) {
                 setError('Failed to fetch account info');

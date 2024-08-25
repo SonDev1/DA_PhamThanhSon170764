@@ -9,7 +9,6 @@ function MenuItemLeft({onChange}) {
     (async () => {
       try {
         const data = await menuApi.getAll();
-        console.log(data);
         setData(data);
       } catch (error) {
         console.log('Failed to fetch carts list', error);

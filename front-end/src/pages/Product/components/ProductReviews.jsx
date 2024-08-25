@@ -12,8 +12,7 @@ function ProductReviews({ onSubmitReview }) {
     const [rating, setRating] = useState(0);
     const { productId } = useParams();
     const [reviews, setReviews] = useState([]);
-    const [authors, setAuthors] = useState({}); // Object để lưu thông tin tác giả
-    console.log(reviews);
+    const [authors, setAuthors] = useState({}); 
     
     useEffect(() => {
         const fetchReviews = async () => {

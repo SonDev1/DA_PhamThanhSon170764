@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Box, Typography, makeStyles ,Modal} from '@material-ui/core';
-import { discountPercentage, formatPrice } from '../../../utils/common';
+import { Box, makeStyles, Modal, Typography } from '@material-ui/core';
 import { Button, Form, Input } from 'antd';
-import cartsApi from '../../../api/cartApi';
 import { enqueueSnackbar } from 'notistack';
-import orderApi from '../../../api/ordersApi';
-import { useNavigate } from 'react-router-dom';
-import { addToCart } from '../../Cart/cartSlice';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import userApi from '../../../api/userApi'
+import { useNavigate } from 'react-router-dom';
+import cartsApi from '../../../api/cartApi';
+import orderApi from '../../../api/ordersApi';
+import userApi from '../../../api/userApi';
+import { discountPercentage, formatPrice } from '../../../utils/common';
+import { addToCart } from '../../Cart/cartSlice';
 
 
 ProductInfo.propTypes = {
@@ -120,7 +120,6 @@ function ProductInfo({ product = {} }) {
         addressDetail:userInfo.addressDetail,
         isInCart: false
     };
-    // console.log("shippingInfo :",shippingInfo);
     const [error, setError] = useState('');
 
 
@@ -145,7 +144,6 @@ function ProductInfo({ product = {} }) {
             try {
                 const userInfo = await userApi.getInfo(userId);
                 setUserInfo(userInfo);
-                // console.log("userInfo :",userInfo);
             } catch (error) {
                 setError('Failed to fetch account info');
             }

@@ -5,15 +5,8 @@ const categoryApi = {
         const category = await axiosClient.get('/api/categories');
         return category;
     },
-    // getAll(params){
-    //     const url = '/api/categories';
-    //     return axiosClient.get(url,{
-    //         params: params
-    //     })
-    // },
 
     getTypesByGender: async (typeGender) => {
-        console.log(`/api/categories/${typeGender}`);
         const response = await axiosClient.get(`/api/categories/${typeGender}`);
         return response;
       },

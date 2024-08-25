@@ -10,6 +10,7 @@ const OrderManagement = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [newShippingStatus, setNewShippingStatus] = useState('');  
+  const accessToken = localStorage.getItem('access_token');
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/orders')
@@ -19,7 +20,7 @@ const OrderManagement = () => {
       .catch(error => {
         console.error('There was an error fetching the orders!', error);
       });
-  }, []);
+  }, [orders]);
 
   const handleOpenModal = (order) => {
     setSelectedOrder(order);
@@ -28,9 +29,17 @@ const OrderManagement = () => {
 
   const handleOk = () => {
     if (selectedOrder) {
-      axios.put(`http://localhost:5000/api/orders/${selectedOrder._id}/shipping-status`, {
-        shippingStatus: newShippingStatus
-      })
+      axios.put(
+        `http://localhost:5000/api/orders/${selectedOrder._id}/shipping-status`,
+        {
+          shippingStatus: newShippingStatus
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}` 
+          }
+        }
+      )
       .then(response => {
         setOrders(orders.map(order => 
           order._id === selectedOrder._id ? { ...order, shippingStatus: newShippingStatus } : order
@@ -45,6 +54,7 @@ const OrderManagement = () => {
       });
     }
   };
+  
   
 
   const handleCancel = () => {
@@ -169,7 +179,7 @@ const OrderManagement = () => {
         >
           <Option value="Chờ xử lý">Chờ xử lý</Option>
           <Option value="Đang vận chuyển">Đang vận chuyển</Option>
-          <Option value="Đã giao">Đã giao</Option>
+          <Option value="đã giao hàng">Đã giao</Option>
           <Option value="Đã hủy">Đã hủy</Option>
         </Select>
       </Modal>

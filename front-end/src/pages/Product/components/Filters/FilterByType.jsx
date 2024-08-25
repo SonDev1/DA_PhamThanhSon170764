@@ -5,7 +5,6 @@ import { Typography } from 'antd'
 import { Box } from '@material-ui/core'
 
 function FilterByType(typeGender) {
-    console.log("data :",typeGender.type);
   const [type,setType] = useState([]) 
 
 
@@ -13,7 +12,6 @@ function FilterByType(typeGender) {
         (async () =>{
             try {    
                 const list = await categoryApi.getTypesByGender(typeGender.type)
-                console.log("list :",list);
                 setType(list.map(x => ({
                     id: x._id,
                     name : x.name,

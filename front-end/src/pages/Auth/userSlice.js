@@ -14,7 +14,6 @@ export const login = createAsyncThunk(
   'user/login',
   async (payload) => {
     const data = await userApi.login(payload);
-    console.log("data :",data);
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('userId', data.userId);
     localStorage.setItem('role', data.role);
@@ -34,7 +33,6 @@ export const update = createAsyncThunk(
   'user/update',
   async (payload) => {
     const { id, ...userData } = payload;
-    console.log('update' ,payload);
     const response = await userApi.update(id, userData);
     return response.data.userId; 
   }

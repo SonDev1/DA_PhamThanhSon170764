@@ -20,11 +20,9 @@ function UpdateShippingInfo({ shippingInfo, setShippingInfo, onClose }) {
             const userId = localStorage.getItem('userId');
             const payload = values
             const res = await orderApi.updateShippingInfo(userId,payload)
-            console.log(" cập nhật shipping info :" ,res);
         } catch (error) {
             
         }
-        console.log(values);
         setShippingInfo(values);
         onClose();
     };

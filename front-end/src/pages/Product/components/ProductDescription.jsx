@@ -13,13 +13,10 @@ function ProductDescription({product}) {
   const [data,setData] = useState({})
   const params = useParams();
   const id = params.productId;
-  // console.log(id);
-  // debugger
   useEffect(()=>{
     ( async () => {
       try {
         const data = await productsApi.get(id)
-        // console.log("data :" ,data);
         setData(data)
       } catch (error) {
         
