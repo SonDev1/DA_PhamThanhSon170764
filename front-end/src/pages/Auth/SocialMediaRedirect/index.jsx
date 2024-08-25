@@ -16,7 +16,6 @@ export const SocialRedirect = () => {
             refresh_token: refresh_token || "",
             userId : userId || ""
         };
-        console.log("access_token", token.access_token);
         localStorage.setItem("access_token", token.access_token);
         localStorage.setItem("userId", token.userId);
         enqueueSnackbar("Chào mừng trở lại ", { variant: '' });

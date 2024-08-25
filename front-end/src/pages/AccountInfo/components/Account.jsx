@@ -120,9 +120,7 @@ function Account() {
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
     const currentUser = useSelector((state) => state.user);
-    // console.log("currentUser :",currentUser);
 
-    // Lấy thông tin user
     useEffect(() => {
         if (!userId) {
             setError('No user ID found in local storage');

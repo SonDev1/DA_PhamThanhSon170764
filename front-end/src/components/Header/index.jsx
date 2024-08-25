@@ -73,7 +73,6 @@ function Header(props) {
     };
 
     const handleAdminClick = () => {
-        console.log("Admin :" ,isAdmin);
         navigate('/admin');
     }
     const handleUserInfo = () => {

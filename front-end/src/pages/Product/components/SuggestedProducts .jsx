@@ -16,7 +16,6 @@ const SuggestedProducts = ({ productId }) => {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log("response :",response);
         debugger
         
         setSuggestedProducts(response.data);

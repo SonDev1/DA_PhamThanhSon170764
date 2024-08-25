@@ -13,7 +13,6 @@ function ProductAdditional(props) {
     (async () => {
       try {
         const response = await productsApi.get(id);
-        console.log("data :", response);
         setData(response);
       } catch (error) {
         console.error(error);

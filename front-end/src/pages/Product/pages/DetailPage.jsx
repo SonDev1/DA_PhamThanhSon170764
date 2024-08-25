@@ -1,5 +1,8 @@
 import { Box, Container, Grid, LinearProgress, makeStyles, Paper } from '@material-ui/core';
-import { Outlet, Route, Routes, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { enqueueSnackbar } from 'notistack';
+import { useState } from 'react';
+import { Route, Routes, useParams } from 'react-router-dom';
 import ProductAdditional from '../components/ProductAdditional';
 import ProductDescription from '../components/ProductDescription';
 import ProductInfo from '../components/ProductInfo';
@@ -7,11 +10,6 @@ import ProductMenu from '../components/ProductMenu';
 import ProductReviews from '../components/ProductReviews';
 import ProductThumnail from '../components/ProductThumnail';
 import useProductDetail from '../hooks/useProductDetail';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { enqueueSnackbar } from 'notistack';
-import { Variants } from 'antd/es/config-provider';
-import SuggestedProducts from '../components/SuggestedProducts ';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -121,7 +119,7 @@ function DetailPage() {
                             <ProductInfo product={product} />
                         </Grid>
                     </Grid>
-                    <SuggestedProducts productId={productId}/>
+                    {/* <SuggestedProducts productId={productId}/> */}
                 </Paper>
 
                 <Box className={classes.productMenu}>

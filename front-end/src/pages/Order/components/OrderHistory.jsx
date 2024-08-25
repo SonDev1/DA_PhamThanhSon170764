@@ -17,10 +17,8 @@ const OrderHistory = () => {
         const fetchOrderHistory = async () => {
             try {
                 const orderData = await orderApi.getOrderHistory(userId);
-                // Sắp xếp đơn hàng theo ngày đặt hàng từ mới nhất đến cũ nhất
                 const sortedOrders = orderData.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
                 setOrders(sortedOrders);
-                console.log(sortedOrders);
                 
             } catch (err) {
                 setError(err.message);

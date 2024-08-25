@@ -1,12 +1,12 @@
 import { Box, Button, IconButton, makeStyles, TextField, Typography } from '@material-ui/core';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Radio } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { Field, Form, Formik } from 'formik';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { formatPrice } from '../../../src/utils/common';
 import cartsApi from '../../api/cartApi';
@@ -15,10 +15,7 @@ import userApi from '../../api/userApi';
 import SearchAddressField from '../../components/form-controls/SearchAddressField';
 import { removeFromCart } from './cartSlice';
 import CartClear from './components/CartClear';
-import { styled } from '@mui/material/styles';
 import { cartItemsCountSelector, cartTotalSelector } from './selectors';
-import paymentApi from '../../api/paymentApi';
-import { useNavigate } from 'react-router-dom';
 
 const CustomRadio = styled(Radio)({
     '&.Mui-checked': {
@@ -172,7 +169,6 @@ function CartPages(props) {
 
     const handleChangePay = (event) => {
         setPaymentMethod(event.target.value);
-        // console.log('paymentMethod :', paymentMethod);
     };
     const classes = useStyles();
     // Lấy danh sách sản phẩm từ Redux
@@ -191,7 +187,6 @@ function CartPages(props) {
     // Tính tổngg sản phẩm , giá trong giỏ hàng từ Redux
     const cartItemsCount = useSelector(cartItemsCountSelector);
     const cartItemsTotal = useSelector(cartTotalSelector);
-    // console.log("cartItemsCount :" ,cartItemsCount);
     const [cartList, setCartList] = useState([]);
 
     const userId = localStorage.getItem('userId');
@@ -211,9 +206,7 @@ function CartPages(props) {
     const handleRemoveItem = async (id) => {
         try {
             const userId = localStorage.getItem('userId');
-            console.log('id :', id);
             const productIds = [id];
-            console.log('productIds :', productIds);
             const req = await cartsApi.delete(userId, productIds);
             dispatch(removeFromCart(id));
             enqueueSnackbar('Đã xóa khỏi giỏ hàng!', { variant: 'error' });
@@ -236,7 +229,6 @@ function CartPages(props) {
                 ]);
 
                 setCartList(cartList);
-                console.log('cartList : ', cartList);
                 setFormData(userData);
             } catch (error) {
                 console.log('Failed to fetch data', error);
@@ -260,7 +252,6 @@ function CartPages(props) {
             }
         });
     });
-    console.log('products : ', products);
     // =========================================================
 
     //     const handleBuyNow = async (values) => {

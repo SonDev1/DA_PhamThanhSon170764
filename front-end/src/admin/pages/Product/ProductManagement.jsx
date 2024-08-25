@@ -16,7 +16,6 @@ const ProductManagement = () => {
 
     const fetchProducts = async () => {
         const response = await axios.get('http://localhost:5000/api/products/get-all');
-        // console.log(response);
         setProducts(response.data);
     };
 
