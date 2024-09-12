@@ -11,6 +11,42 @@ export class ProductService {
     private productRepository: ProductRepository,
     private typeService: TypeService,
   ) {}
+  async getRecommendedProducts(productId: string): Promise<Product[]> {
+    // Lấy sản phẩm hiện tại
+    const currentProduct = await this.productRepository.findById(productId);
+    if (!currentProduct) {
+      throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+    }
+
+    // Lấy tất cả sản phẩm
+    const allProducts = await this.productRepository.getAll();
+
+    // Tính toán độ tương tự và lọc các sản phẩm tương tự
+    const recommendedProducts = allProducts
+      .filter(product => product._id.toString() !== productId)
+      .map(product => ({
+        product,
+        similarity: this.calculateSimilarity(currentProduct, product),
+      }))
+      .sort((a, b) => b.similarity - a.similarity)
+      .map(item => item.product);
+
+    return recommendedProducts.slice(0, 10); // Giới hạn số sản phẩm gợi ý
+  }
+
+  private calculateSimilarity(product1: Product, product2: Product): number {
+    // Tính toán độ tương tự dựa trên các đặc điểm của sản phẩm
+    let similarity = 0;
+
+    // Tính toán dựa trên các thuộc tính khác nhau
+    similarity += product1.dialSize === product2.dialSize ? 1 : 0;
+    similarity += product1.dialColor === product2.dialColor ? 1 : 0;
+    similarity += product1.movementType === product2.movementType ? 1 : 0;
+    similarity += product1.strapMaterial === product2.strapMaterial ? 1 : 0;
+    similarity += product1.glassMaterial === product2.glassMaterial ? 1 : 0;
+
+    return similarity;
+  }
 
   async getAllProducts() {
     return await this.productRepository.getAll();

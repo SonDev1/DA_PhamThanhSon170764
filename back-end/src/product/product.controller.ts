@@ -15,9 +15,13 @@ import { ProductService } from 'src/product/service/product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Get('recommend/:productId')
+  async getRecommendedProducts(@Param('productId') productId: string) {
+    return this.productService.getRecommendedProducts(productId);
+  }
+
   @Post('')
   createProduct(@Body() createProductDto: CreateProductDto) {
-    console.log('createProductDto :', createProductDto);
     return this.productService.createProduct(createProductDto);
   }
 
@@ -36,6 +40,11 @@ export class ProductController {
     return this.productService.getProductById(productId);
   }
 
+  // @Get('search') // Thêm endpoint tìm kiếm
+  // async searchProducts(@Query('q') query: string) {
+  //   return this.productService.searchProducts(query);
+  // }
+
   @Get('')
   getProductsByFilter(@Query() filter: any) {
     return this.productService.getProductsByFilter(filter);
@@ -45,11 +54,12 @@ export class ProductController {
   deleteProductById(@Param('productId') productId: string) {
     return this.productService.deleteProductById(productId);
   }
+
   @Put(':productId')
   async updateProductById(
-  @Param('productId') productId: string,
-  @Body() updateProductDto: CreateProductDto,
-) {
-  return this.productService.updateProductById(productId, updateProductDto);
+    @Param('productId') productId: string,
+    @Body() updateProductDto: CreateProductDto,
+  ) {
+    return this.productService.updateProductById(productId, updateProductDto);
   }
 }

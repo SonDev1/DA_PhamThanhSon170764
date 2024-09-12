@@ -173,7 +173,7 @@ function ProductInfo({ product = {} }) {
             enqueueSnackbar('Đã thêm vào giỏ hàng  ', { variant: 'success' });
         } catch (error) {
             console.error('Add to cart failed:', error);
-            enqueueSnackbar('Đã xảy ra lỗi ! ', { variant: 'error' });
+            enqueueSnackbar('Đã xảy ra lỗi ! Vui lòng thử lại sau ', { variant: 'error' });
         }
     };
     

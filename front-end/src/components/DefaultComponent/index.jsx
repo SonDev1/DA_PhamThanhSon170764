@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import AppFooter from '../Footer';
 import Header from '../Header';
+import ChatBot from '../ChatBot/ChatBot';
 
 function DefaultComponent({ children }) {
     const [marginTop, setMarginTop] = useState(0);
@@ -38,6 +39,7 @@ function DefaultComponent({ children }) {
         <div>
             <Header />
             <div style={contentStyle}>{children}</div>
+            <ChatBot />
             <AppFooter />
         </div>
     );
