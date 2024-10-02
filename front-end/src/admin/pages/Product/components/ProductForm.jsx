@@ -107,6 +107,7 @@ const ProductForm = ({ product, onClose, accessToken }) => {
           <Option value='6696a62e8675a1be4a653e2b'>Futura</Option>
           <Option value='6696a63f8675a1be4a653e2d'>Whitesands</Option>
           <Option value='6696a64e8675a1be4a653e2f'>G-Forks</Option>
+          <Option value='66a7a229a80beca41f912877'>Vòng tay</Option>
           {/* Add more options as needed */}
         </Select>
       </Form.Item>

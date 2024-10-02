@@ -10,6 +10,7 @@ import ProductMenu from '../components/ProductMenu';
 import ProductReviews from '../components/ProductReviews';
 import ProductThumnail from '../components/ProductThumnail';
 import useProductDetail from '../hooks/useProductDetail';
+import SuggestedProducts from '../components/SuggestedProducts ';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -90,7 +91,7 @@ function DetailPage() {
             setReviews([...reviews, data]);
         } catch (error) {
             console.error('Error adding review:', error);
-            enqueueSnackbar("Bạn chưa từng mua sản phẩm này trước đây",{variant:'error'});
+            enqueueSnackbar('Bạn chưa từng mua sản phẩm này trước đây', { variant: 'error' });
         }
     };
 
@@ -119,9 +120,17 @@ function DetailPage() {
                             <ProductInfo product={product} />
                         </Grid>
                     </Grid>
-                    {/* <SuggestedProducts productId={productId}/> */}
                 </Paper>
 
+                <div className='suggested-section'>
+                    <h2 className='suggested-title'>Gợi ý sản phẩm</h2>
+                    {/* <Paper
+                        className='suggested-paper'
+                        elevation={3}
+                    > */}
+                        <SuggestedProducts productId={productId} />
+                    {/* </Paper> */}
+                </div>
                 <Box className={classes.productMenu}>
                     <ProductMenu />
                 </Box>

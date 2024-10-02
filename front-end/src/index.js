@@ -18,7 +18,7 @@ const messages = locale === 'en-US' ? enUS : zhCN;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
         <IntlProvider locale={locale} messages={messages}>
@@ -26,7 +26,7 @@ root.render(
         </IntlProvider>
       </SnackbarProvider>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 
