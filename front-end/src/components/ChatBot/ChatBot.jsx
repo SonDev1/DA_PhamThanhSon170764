@@ -1,7 +1,5 @@
-// src/components/ChatBot.jsx
 import React, { useState } from 'react';
-import './ChatBot.scss'; // Tạo file SCSS để style cho ChatBot
-// import logo from '../../../src/assets/logo'
+import './ChatBot.scss';
 import logo from '../../assets/logo/logo.svg'
 
 const ChatBot = () => {

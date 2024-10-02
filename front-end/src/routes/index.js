@@ -23,6 +23,7 @@ import ProductDescription from "../pages/Product/components/ProductDescription";
 import ProductReviews from "../pages/Product/components/ProductReviews";
 import SuggestedProducts from "../pages/Product/components/SuggestedProducts ";
 import DetailPage from "../pages/Product/pages/DetailPage";
+import Test from "../pages/Test/Test";
 
 export const routes = [
     { 
@@ -153,7 +154,7 @@ export const routes = [
     },
     { 
         path:'/test',
-        page : SuggestedProducts,
+        page : Test,
         isShowHeader : true,
         isShowFooter : true,
     },
