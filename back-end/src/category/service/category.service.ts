@@ -18,12 +18,36 @@ export class CategoryService {
     return await this.categoryRepository.delete(categoryId);
   }
 
+  // async updateCategory(
+  //   categoryId: string,
+  //   createCategoryDto: CreateCategoryDto,
+  // ) {
+  //   const categoryExist = await this.categoryRepository.findById(categoryId);
+  // }
   async updateCategory(
     categoryId: string,
     createCategoryDto: CreateCategoryDto,
-  ) {
+) {
     const categoryExist = await this.categoryRepository.findById(categoryId);
-  }
+
+    if (!categoryExist) {
+        throw new Error('Category not found');
+    }
+    
+    try {
+        const updatedCategory = await this.categoryRepository.update(categoryId, createCategoryDto);
+        
+        if (!updatedCategory) {
+            throw new Error('Failed to update category');
+        }
+        
+        return updatedCategory;
+    } catch (error) {
+        console.error('Error updating category:', error);
+        throw new Error('An error occurred while updating the category');
+    }
+}
+
   async createCategory(createCategoryDto: CreateCategoryDto) {
     try {
       const menuIdObjectId = new ObjectId(createCategoryDto.menuId);

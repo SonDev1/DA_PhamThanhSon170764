@@ -116,10 +116,10 @@ const MenuManagement = () => {
         try {
             const payload = {
                 ...values,
-                menuId: selectedMenu, 
-                order: values.order.toString() 
+                menuId: selectedMenu ? selectedMenu.toString() : '', 
+                order: values.order.toString(),
             };
-
+    
             if (editingCategory) {
                 // Edit
                 await axios.put(`http://localhost:5000/api/categories/${editingCategory._id}`, payload, {
@@ -130,6 +130,9 @@ const MenuManagement = () => {
                 message.success('Category updated successfully');
             } else {
                 // Add
+                if (!payload.menuId) {
+                    throw new Error('Menu ID is required');
+                }
                 await axios.post('http://localhost:5000/api/categories', payload, {
                     headers: { 
                         Authorization: `Bearer ${accessToken}`,
@@ -137,7 +140,7 @@ const MenuManagement = () => {
                 });
                 message.success('Category added successfully');
             }
-
+    
             setIsCategoryModalVisible(false);
             categoryForm.resetFields();
             setEditingCategory(null);
@@ -151,8 +154,10 @@ const MenuManagement = () => {
             }
         } catch (error) {
             message.error('Failed to save category');
+            console.error(error);
         }
     };
+    
 
     // Handle form submission for add/edit type
     const handleTypeFormSubmit = async (values) => {
